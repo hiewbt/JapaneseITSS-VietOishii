@@ -3,6 +3,7 @@ import { publicRoutes } from './routes'
 import { Fragment } from 'react'
 import DefaultLayouts from './components/DefaultLayouts'
 import './App.css'
+import "antd/dist/reset.css";
 
 function App() {
   return (
