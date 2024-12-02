@@ -32,7 +32,9 @@ const Header = () => {
     return (
         <HeaderContainer>
             <TopNav>
-                <Logo>VietOishii</Logo>
+                <Link to="/" style={{ textDecoration: 'none' }}>
+                    <Logo>VietOishii</Logo>
+                </Link>
                 <NavItems>
                     {menuItems.map((item) => (
                         <NavLink key={item.key} to={item.path}>

@@ -9,7 +9,6 @@ const foodList = [
   { id: 1, name: 'Tên món ăn 1', rating: 4.4, tags: ['Vùng 1', 'Vùng 2'] },
   { id: 2, name: 'Tên món ăn 2', rating: 4.5, tags: ['Vùng 3', 'Vùng 4'] },
   { id: 3, name: 'Tên món ăn 3', rating: 4.3, tags: ['Vùng 1', 'Vùng 5'] },
-  // Add more items here
 ];
 
 const ListFoodPage = () => {
