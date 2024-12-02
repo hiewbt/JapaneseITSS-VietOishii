@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import Header from "./components/Header"
 import Footer from "./components/Footer"
 
@@ -10,6 +11,9 @@ function DefaultLayouts({ children }) {
         </div>
     )
 }
+DefaultLayouts.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
 
 export default DefaultLayouts
   
