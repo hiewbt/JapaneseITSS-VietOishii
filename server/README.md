@@ -23,6 +23,11 @@ Initialize the database
 sh scripts/init_db.sh
 ```
 
+Export a secret key for the session
+```bash
+export SECRET_KEY=<your secret key>
+```
+
 Run the server in debug mode
 ```bash
 python src/app.py

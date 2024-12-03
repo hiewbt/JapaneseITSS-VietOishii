@@ -1,11 +1,15 @@
 from flask import Flask
+from flask_login import LoginManager
 from models import db
 from controllers import dish_blueprint, user_blueprint
+import os
 
 from config import *
 
 def create_app():
     app = Flask(__name__)
+    
+    app.secret_key = os.environ["SECRET_KEY"]
     
     app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -22,5 +26,8 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
+    
+    login_manager = LoginManager(app)
+    login_manager.login_view = "login"
     
     app.run(HOST, PORT, debug=True)

@@ -1,13 +1,11 @@
 from flask import Blueprint, jsonify, request
-from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from flask_login import login_user, login_required, logout_user, current_user
 
 from models import db
 from models.user import User
 
 
 user_blueprint = Blueprint("users", __name__)
-login_manager = LoginManager()
-login_manager.login_view = "login"
 
 
 @user_blueprint.route("/api/register", methods=["POST"])
@@ -53,7 +51,7 @@ def login():
     return jsonify({"error": "Invalid username or password"}), 401
 
 
-@user_blueprint.route("/api/logout", methods=["POST"])
+@user_blueprint.route("/api/logout", methods=["GET"])
 @login_required
 def logout():
     logout_user()
