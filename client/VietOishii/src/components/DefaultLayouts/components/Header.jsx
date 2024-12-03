@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dropdown, Space } from 'antd';
 import { DownOutlined, GlobalOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -6,28 +7,35 @@ import styled from '@emotion/styled';
 import banner from '../../../assets/banner.png';
 
 const Header = () => {
+    const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState('vi');
 
     const menuItems = [
-        { label: 'Trang chủ', key: 'home', path: '/' },
-        { label: 'Menu', key: 'menu', path: '/menu' },
-        { label: 'Về khẩu vị', key: 'taste', path: '/taste' },
-    ];
+        { label: t('home'), key: 'home', path: '/' },
+        { label: t('menu'), key: 'menu', path: '/menu' },
+        { label: t('taste'), key: 'taste', path: '/taste' },
+      ];
 
     const submenuItems = [
-        'Khai vị',
-        'Món chính',
-        'Hải sản',
-        'Món chay',
-        'Tráng miệng',
-        'Ăn vặt',
-        'Đồ uống',
-    ];
+        t('appetizer'),
+        t('main_course'),
+        t('seafood'),
+        t('vegetarian'),
+        t('dessert'),
+        t('snack'),
+        t('drink'),
+      ];
+    
 
     const languageItems = [
         { key: 'vi', label: 'Tiếng Việt' },
         { key: 'jp', label: '日本語' },
     ];
+
+    const changeLanguage = (key) => {
+        setLanguage(key);
+        i18n.changeLanguage(key);
+      };
 
     return (
         <HeaderContainer>
@@ -44,7 +52,7 @@ const Header = () => {
                     <Dropdown 
                         menu={{ 
                             items: languageItems,
-                            onClick: ({ key }) => setLanguage(key)
+                            onClick: ({ key }) => changeLanguage(key),
                         }}
                     >
                         <LanguageSelector>
@@ -55,7 +63,7 @@ const Header = () => {
                             </Space>
                         </LanguageSelector>
                     </Dropdown>
-                    <LoginButton>Đăng nhập</LoginButton>
+                    <LoginButton>{t('login')}</LoginButton>
                 </NavItems>
             </TopNav>
 

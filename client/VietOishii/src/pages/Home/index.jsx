@@ -2,6 +2,7 @@ import {useState, useRef } from "react";
 import { Layout, Tabs, Row, Card, Button, Input, Carousel, Modal } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
+import { useTranslation } from 'react-i18next';
 import { regionData } from "./regionData";
 import FilterComponent from "../../components/Filter/FilterComponent ";
 import ArrowLeftCircle from "../../assets/arrow-left-circle-fill.svg";
@@ -10,6 +11,7 @@ import ArrowRightCircle from "../../assets/arrow-right-circle-fill.svg";
 const { Content } = Layout;
 
 const Home = () => {
+  const { t } = useTranslation();
   const regions = Object.keys(regionData);
   const carouselRef = useRef();
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -18,7 +20,7 @@ const Home = () => {
     <Layout>
       <Content style={{ minHeight: "100vh", background: "#fff" }}>
         <Container>
-          <PageHeader>Khám phá món ăn</PageHeader>
+          <PageHeader>{t('explore_dishes')}</PageHeader>
 
           <Row justify="center" align="middle" style={{ marginBottom: 32 }}>
             <FilterButton
@@ -27,10 +29,10 @@ const Home = () => {
               size="large"
               onClick={() => setIsFilterVisible(true)}
             >
-              Bộ lọc
+              {t('filter')}
             </FilterButton>
             <StyledSearch
-              placeholder="Tìm kiếm món ăn..."
+              placeholder={t('search_placeholder')}
               style={{ width: 400 }}
               size="large"
             />
@@ -44,7 +46,7 @@ const Home = () => {
             <FilterComponent />
           </StyledModal>
 
-          <PageHeader>Khám phá khẩu vị người Nhật</PageHeader>
+          <PageHeader>{t('explore_taste')}</PageHeader>
           <StyledTabs
             defaultActiveKey="Hokkaido"
             centered
@@ -172,9 +174,9 @@ const Container = styled.div`
 
 const PageHeader = styled.div`
   text-align: center;
-  font-size: 32px;
+  font-size: 30px;
   font-weight: bold;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
   background: linear-gradient(to right, #e4003a, #ff9c73);
   background-clip: text;
   -webkit-background-clip: text;
