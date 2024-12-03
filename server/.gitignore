@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 test*
+.DS_Store
+*.db
+*.csv
 
 # C extensions
 *.so

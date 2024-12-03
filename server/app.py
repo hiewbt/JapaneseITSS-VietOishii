@@ -46,6 +46,17 @@ class Dish(db.Model):
     similar_japanese_dish = db.Column(db.String(500))
     ingredients = db.Column(db.String(1000))
     img_path = db.Column(db.String(500))
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+            "flavor": self.flavor,
+            "similar_japanese_dish": self.similar_japanese_dish,
+            "ingredients": self.ingredients,
+            "img_path": self.img_path
+        }
 
 
 @login_manager.user_loader
@@ -151,7 +162,7 @@ def not_found(error):
 @app.route("/api/dishes", methods=["GET"])
 def get_dishes():
     dishes = Dish.query.all()
-    return dishes
+    return jsonify([dish.to_dict() for dish in dishes])
 
 
 if __name__ == "__main__":
