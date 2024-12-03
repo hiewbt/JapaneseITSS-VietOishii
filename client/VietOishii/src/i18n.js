@@ -10,6 +10,7 @@ i18n
   .init({
     supportedLngs: ['vi', 'jp'],
     fallbackLng: 'vi',
+    lng: 'vi',
     debug: true,
     backend: {
       loadPath: '/locales/{{lng}}.json',
