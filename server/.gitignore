@@ -6,6 +6,7 @@ test*
 .DS_Store
 *.db
 *.csv
+*.ign
 
 # C extensions
 *.so

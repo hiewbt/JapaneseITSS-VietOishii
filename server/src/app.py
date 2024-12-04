@@ -6,6 +6,7 @@ import os
 
 from config import *
 
+
 def create_app():
     app = Flask(__name__)
     
@@ -21,13 +22,13 @@ def create_app():
     
     with app.app_context():
         db.create_all()
-    
+        
+    login_manager = LoginManager(app)
+    login_manager.login_view = "login"
     return app
+
 
 if __name__ == '__main__':
     app = create_app()
-    
-    login_manager = LoginManager(app)
-    login_manager.login_view = "login"
     
     app.run(HOST, PORT, debug=True)

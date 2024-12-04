@@ -3,7 +3,7 @@ from . import db
 
 class Dish(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), nullable=False)
+    name = db.Column(db.String(80), nullable=False, unique=True)
     description = db.Column(db.String(1000))
     flavor = db.Column(db.String(500))
     similar_japanese_dish = db.Column(db.String(500))
@@ -20,3 +20,10 @@ class Dish(db.Model):
             "ingredients": self.ingredients,
             "img_path": self.img_path
         }
+    
+    def meet_criteria(self, flavors: list, ingredients: list, allergy: list):
+        c1 = any(f.lower() in self.flavor.lower() for f in flavors)
+        c2 = any(i.lower() in self.ingredients.lower() for i in ingredients)
+        c3 = all(a.lower() not in self.ingredients.lower() for a in allergy)
+        
+        return c1 and c2 and c3

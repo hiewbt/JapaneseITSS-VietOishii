@@ -1,6 +1,11 @@
 endpoint=$1
-data=$2
 
-curl -X POST http://localhost:8888${endpoint} \
+if [ -z $2 ]; then
+  data_flag=""
+else
+  data_flag="-d $2"
+fi
+
+curl -X POST http://localhost:8888$endpoint \
   -H "Content-Type: application/json" \
-  -d ${data}
+  $data_flag

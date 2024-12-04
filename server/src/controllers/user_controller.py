@@ -51,7 +51,7 @@ def login():
     return jsonify({"error": "Invalid username or password"}), 401
 
 
-@user_blueprint.route("/api/logout", methods=["GET"])
+@user_blueprint.route("/api/logout", methods=["POST"])
 @login_required
 def logout():
     logout_user()

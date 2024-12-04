@@ -18,11 +18,6 @@ Install dependencies
 pip install -r requirements.txt
 ```
 
-Initialize the database
-```bash
-sh scripts/init_db.sh
-```
-
 Export a secret key for the session
 ```bash
 export SECRET_KEY=<your secret key>
@@ -33,11 +28,17 @@ Run the server in debug mode
 python src/app.py
 ```
 
+Import data into the database
+```bash
+sh scripts/import_data.sh
+```
+
 # List of APIs
 
-| End point     | Methods | Description |
-|---------------|---------|-------------|
-| /api/register | POST    |             |
-| /api/login    | POST    |             |
-| /api/logout   | GET     |             |
-| /api/dishes   | GET     |             |
+| End point             | Methods   | Description |
+|-----------------------|-----------|-------------|
+| /api/register         | POST      |             |
+| /api/login            | POST      |             |
+| /api/logout           | POST      |             |
+| /api/dishes           | GET       |             |
+| /api/filter_dishes    | POST      |             |
