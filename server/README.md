@@ -42,3 +42,4 @@ sh scripts/import_data.sh
 | /api/logout           | POST      |             |
 | /api/dishes           | GET       |             |
 | /api/filter_dishes    | POST      |             |
+| /api/search           | GET       |             |

@@ -5,6 +5,7 @@ from models.dish import Dish
 
 dish_blueprint = Blueprint("dishes", __name__)
 
+
 @dish_blueprint.route("/api/dishes", methods=["GET"])
 def get_dishes():
     dishes = Dish.query.all()
@@ -15,10 +16,23 @@ def get_dishes():
 def filter_dishes():
     data = request.get_json()
     dishes = Dish.query.all()
-    
+
     dishes_filtered = filter(
-        lambda item: item.meet_criteria(data["flavors"], data["ingredients"], data["allergy"]),
+        lambda item: item.meet_criteria(
+            data["flavors"], data["ingredients"], data["allergy"]),
         dishes
     )
-    
+
     return jsonify([dish.to_dict() for dish in dishes_filtered])
+
+
+@dish_blueprint.route("/api/search/<query>", methods=["GET"])
+def search(query):
+    def matched(dish):
+        return (
+            query.lower() in dish.name.lower() or
+            query.lower() in dish.description.lower()
+        )
+
+    dishes = Dish.query.all()
+    return jsonify([dish.to_dict() for dish in filter(matched, dishes)])
