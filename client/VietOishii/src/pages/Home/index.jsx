@@ -16,7 +16,7 @@ const { Content } = Layout;
 const Home = () => {
   const { t } = useTranslation();
   const regions = Object.keys(regionData);
-  const carouselRef = useRef();
+  const carouselRef = useRef([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const navigate = useNavigate();
 
@@ -65,13 +65,8 @@ const Home = () => {
             defaultActiveKey="Hokkaido"
             centered
             size="large"
-            onChange={() => {
-              if (carouselRef.current) {
-                carouselRef.current.goTo(0); 
-              }
-            }}
           >
-            {regions.map((region) => (
+            {regions.map((region, idx) => (
               <Tabs.TabPane tab={region} key={region}>
                 <TabContent>
                   <div style={{ display: "flex", marginBottom: 32 }}>
@@ -110,11 +105,11 @@ const Home = () => {
                           }}
                         />
                       }
-                      onClick={() => carouselRef.current?.prev()}
+                      onClick={() => carouselRef.current[idx]?.prev()}
                     />
 
                     <Carousel
-                      ref={(el) => (carouselRef.current = el)} 
+                      ref={(el) => (carouselRef.current[idx] = el)} 
                       key={region} 
                       slidesToShow={2}
                       dots={false}
@@ -166,7 +161,7 @@ const Home = () => {
                           }}
                         />
                       }
-                      onClick={() => carouselRef.current?.next()}
+                      onClick={() => carouselRef.current[idx]?.next()}
                     />
                   </CarouselContainer>
                 </TabContent>
