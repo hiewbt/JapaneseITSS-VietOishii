@@ -2,6 +2,7 @@ from flask import Flask
 from flask_login import LoginManager
 from models import db
 from controllers import dish_blueprint, user_blueprint
+from flask_cors import CORS
 import os
 
 from config import *
@@ -14,6 +15,8 @@ def create_app():
     
     app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    
+    CORS(app)
     
     db.init_app(app)
     
