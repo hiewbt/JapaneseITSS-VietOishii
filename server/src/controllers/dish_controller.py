@@ -16,7 +16,7 @@ def get_dishes():
 def filter_dishes():
     data = request.get_json()
     dishes = Dish.query.all()
-
+    
     dishes_filtered = filter(
         lambda item: item.meet_criteria(
             data["flavors"], data["ingredients"], data["allergy"]),
