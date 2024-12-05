@@ -1,4 +1,5 @@
 import {useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { Layout, Tabs, Row, Card, Button, Input, Carousel, Modal } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
@@ -7,6 +8,8 @@ import { regionData } from "./regionData";
 import FilterComponent from "../../components/Filter/FilterComponent ";
 import ArrowLeftCircle from "../../assets/arrow-left-circle-fill.svg";
 import ArrowRightCircle from "../../assets/arrow-right-circle-fill.svg";
+import DishService from '../../services/DishService';
+
 
 const { Content } = Layout;
 
@@ -15,6 +18,16 @@ const Home = () => {
   const regions = Object.keys(regionData);
   const carouselRef = useRef();
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSearch = async (value) => {
+    try {
+      const searchResults = await DishService.searchDishes(value);
+      navigate('/list-food', { state: { searchResults, searchTerm: value } });
+    } catch (error) {
+      console.error('Error searching dishes:', error);
+    }
+  };
 
   return (
     <Layout>
@@ -33,6 +46,7 @@ const Home = () => {
             </FilterButton>
             <StyledSearch
               placeholder={t('search_placeholder')}
+              onSearch={handleSearch}
               style={{ width: 400 }}
               size="large"
             />

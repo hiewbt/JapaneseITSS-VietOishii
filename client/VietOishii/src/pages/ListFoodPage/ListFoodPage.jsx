@@ -1,28 +1,59 @@
-import { useState } from 'react';
-import { Select, Input, Row, Col } from 'antd';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Select, Input, Row, Col, Spin, Alert } from 'antd';
 import FoodCard from '../../components/FoodCard/FoodCard';
+import DishService from '../../services/DishService';
 
 const { Option } = Select;
 const { Search } = Input;
 
-const foodList = [
-  { id: 1, name: 'Tên món ăn 1', rating: 4.4, tags: ['Vùng 1', 'Vùng 2'] },
-  { id: 2, name: 'Tên món ăn 2', rating: 4.5, tags: ['Vùng 3', 'Vùng 4'] },
-  { id: 3, name: 'Tên món ăn 3', rating: 4.3, tags: ['Vùng 1', 'Vùng 5'] },
-];
-
 const ListFoodPage = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState(foodList);
+  const location = useLocation();
+  const initialSearchTerm = location.state?.searchTerm || '';
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [data, setData] = useState(location.state?.searchResults || []);
+  const [loading, setLoading] = useState(!location.state?.searchResults);
+  const [error, setError] = useState(null);
 
-  const handleSearch = (value) => {
+  useEffect(() => {
+    if (!location.state?.searchResults) {
+      const fetchDishes = async () => {
+        try {
+          const dishes = await DishService.getDishes();
+          setData(dishes);
+        } catch (error) {
+          setError(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchDishes();
+    } else {
+      setLoading(false);
+    }
+  }, [location.state]);
+
+  const handleSearch = async (value) => {
     setSearchTerm(value);
-    setData(
-      foodList.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    setLoading(true);
+    try {
+      const searchResults = await DishService.searchDishes(value);
+      setData(searchResults);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return <Spin tip="Loading..." />;
+  }
+
+  if (error) {
+    return <Alert message="Error" description="Failed to fetch dishes." type="error" showIcon />;
+  }
 
   return (
     <div style={{ padding: "20px", flex: 1 }}>
@@ -42,7 +73,13 @@ const ListFoodPage = () => {
       <Row gutter={[16, 16]}>
         {data.map((food, index) => (
           <Col key={index} xs={24} sm={12} md={8} lg={6}>
-            <FoodCard name={food.name} tags={food.tags} rating={food.rating} />
+            <FoodCard
+              name={food.name}
+              description={food.description}
+              flavor={food.flavor}
+              ingredients={food.ingredients}
+              similarJapaneseDish={food.similar_japanese_dish}
+            />
           </Col>
         ))}
       </Row>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Space } from 'antd';
 import { DownOutlined, GlobalOutlined } from '@ant-design/icons';
@@ -9,6 +10,7 @@ import banner from '../../../assets/banner.png';
 const Header = () => {
     const { t, i18n } = useTranslation();
     const [language, setLanguage] = useState('vi');
+    const navigate = useNavigate();
 
     const menuItems = [
         { label: t('home'), key: 'home', path: '/' },
@@ -35,6 +37,9 @@ const Header = () => {
     const changeLanguage = (key) => {
         setLanguage(key);
         i18n.changeLanguage(key);
+      };
+      const handleSigninClick = () => {
+        navigate('/signin');
       };
 
     return (
@@ -63,7 +68,7 @@ const Header = () => {
                             </Space>
                         </LanguageSelector>
                     </Dropdown>
-                    <LoginButton>{t('login')}</LoginButton>
+                    <LoginButton onClick={handleSigninClick}>{t('login')}</LoginButton>
                 </NavItems>
             </TopNav>
 

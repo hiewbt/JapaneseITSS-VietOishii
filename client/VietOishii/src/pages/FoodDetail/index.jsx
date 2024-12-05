@@ -1,4 +1,3 @@
-import React from "react";
 import { Button, Card, Rate, Typography, Row, Col } from "antd";
 import { HeartOutlined, ArrowLeftOutlined, UserOutlined } from "@ant-design/icons";
 // import "./FoodDetails.css";
