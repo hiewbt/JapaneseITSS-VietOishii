@@ -16,8 +16,6 @@ def create_app():
     app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
-    CORS(app)
-    
     db.init_app(app)
     
     app.register_blueprint(user_blueprint)
@@ -28,6 +26,9 @@ def create_app():
         
     login_manager = LoginManager(app)
     login_manager.login_view = "login"
+    
+    CORS(app)
+    
     return app
 
 

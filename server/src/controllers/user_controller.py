@@ -92,3 +92,9 @@ def unauthorized(error):
 @user_blueprint.errorhandler(404)
 def not_found(error):
     return jsonify({"error": "Resource not found"}), 404
+
+
+@user_blueprint.route("/api/check-auth", methods=["GET"])
+@login_required
+def check_auth():
+    return jsonify({"message": f"User {current_user.id} is authenticated"}), 200
