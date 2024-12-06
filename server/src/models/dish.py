@@ -1,3 +1,5 @@
+from unidecode import unidecode as udec
+
 from . import db
 
 
@@ -22,8 +24,19 @@ class Dish(db.Model):
         }
     
     def meet_criteria(self, flavors: list, ingredients: list, allergy: list):
-        c1 = any(f.lower() in self.flavor.lower() for f in flavors)
-        c2 = any(i.lower() in self.ingredients.lower() for i in ingredients)
-        c3 = all(a.lower() not in self.ingredients.lower() for a in allergy)
+        if flavors is None or len(flavors) == 0:
+            c1 = True
+        else:
+            c1 = any(udec(f.lower()) in udec(self.flavor.lower()) for f in flavors)
+        
+        if ingredients is None or len(ingredients) == 0:
+            c2 = True
+        else:
+            c2 = any(udec(i.lower()) in udec(self.ingredients.lower()) for i in ingredients)
+        
+        if allergy is None or len(allergy) == 0:
+            c3 = True
+        else:
+            c3 = all(udec(a.lower()) not in udec(self.ingredients.lower()) for a in allergy)
         
         return c1 and c2 and c3

@@ -1,10 +1,10 @@
 from flask import Flask
-from flask_login import LoginManager
-from models import db
-from controllers import dish_blueprint, user_blueprint
 from flask_cors import CORS
 import os
 
+from models import db
+from controllers import dish_blueprint, user_blueprint
+from controllers.user_controller import login_manager
 from config import *
 
 
@@ -23,16 +23,15 @@ def create_app():
     
     with app.app_context():
         db.create_all()
-        
-    login_manager = LoginManager(app)
-    login_manager.login_view = "login"
+    
+    login_manager.init_app(app)
     
     CORS(app)
     
     return app
 
 
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
-    
     app.run(HOST, PORT, debug=True)

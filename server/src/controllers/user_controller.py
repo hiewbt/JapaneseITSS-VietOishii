@@ -1,11 +1,19 @@
 from flask import Blueprint, jsonify, request
-from flask_login import login_user, login_required, logout_user, current_user
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 from models import db
 from models.user import User
 
 
 user_blueprint = Blueprint("users", __name__)
+
+login_manager = LoginManager()
+login_manager.login_view = "login"
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 
 @user_blueprint.route("/api/register", methods=["POST"])

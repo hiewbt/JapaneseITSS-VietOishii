@@ -16,7 +16,7 @@ def get_dishes():
 def filter_dishes():
     data = request.get_json()
     dishes = Dish.query.all()
-    
+
     dishes_filtered = filter(
         lambda item: item.meet_criteria(
             data["flavors"], data["ingredients"], data["allergy"]),
@@ -24,6 +24,12 @@ def filter_dishes():
     )
 
     return jsonify([dish.to_dict() for dish in dishes_filtered])
+
+
+@dish_blueprint.route("/api/get_dish/<int:id>", methods=["GET"])
+def get_dish(id):
+    dish = Dish.query.filter(Dish.id == id)[0]
+    return jsonify(dish.to_dict())
 
 
 @dish_blueprint.route("/api/search/<query>", methods=["GET"])
