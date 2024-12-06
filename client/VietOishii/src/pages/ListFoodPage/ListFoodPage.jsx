@@ -66,7 +66,7 @@ const ListFoodPage = () => {
           <Option value="desc">Z-A</Option>
         </Select>
         <Search
-          placeholder={t("search.placeholder")}
+          placeholder={t("search_placeholder")}
           onSearch={handleSearch}
           style={{ width: 300 }}
         />
