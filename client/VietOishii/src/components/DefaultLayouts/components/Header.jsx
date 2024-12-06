@@ -14,8 +14,7 @@ const Header = () => {
 
     const menuItems = [
         { label: t('home'), key: 'home', path: '/' },
-        { label: t('menu'), key: 'menu', path: '/menu' },
-        { label: t('taste'), key: 'taste', path: '/taste' },
+        { label: t('list_food'), key: 'list_food', path: '/list-food' },
       ];
 
     const submenuItems = [

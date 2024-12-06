@@ -38,7 +38,7 @@ const FilterComponent = () => {
       { label: 'Thịt heo', value: 'thịt heo' },
       { label: 'Thịt bò', value: 'thịt bò' },
       { label: 'Hải sản', value: 'hải sản' },
-      { label: 'Gạo', value: 'gao' },
+      { label: 'Gạo', value: 'gạo' },
       { label: 'Ngô', value: 'ngô' },
     ],
     allergens: [

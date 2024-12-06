@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 import { Select, Input, Row, Col, Spin, Alert } from 'antd';
 import FoodCard from '../../components/FoodCard/FoodCard';
 import DishService from '../../services/DishService';
@@ -8,6 +9,7 @@ const { Option } = Select;
 const { Search } = Input;
 
 const ListFoodPage = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const initialSearchTerm = location.state?.searchTerm || '';
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
@@ -57,28 +59,27 @@ const ListFoodPage = () => {
 
   return (
     <div style={{ padding: "20px", flex: 1 }}>
-      <h2 style={{ marginBottom: 20 }}>Danh sách món ăn</h2>
+      <h2 style={{ marginBottom: 20 }}>{t('list_food')}</h2>
       <div style={{ marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Select defaultValue="Sort by" style={{ width: 120 }}>
           <Option value="asc">A-Z</Option>
           <Option value="desc">Z-A</Option>
         </Select>
         <Search
-          placeholder="Tìm kiếm món ăn"
+          placeholder={t("search.placeholder")}
           onSearch={handleSearch}
           style={{ width: 300 }}
         />
       </div>
-      <p>Searching for: <b>{searchTerm}</b></p> {/* Display the search term */}
+      <p>{t('searching_for')}: <b>{searchTerm}</b></p> {/* Display the search term */}
       <Row gutter={[16, 16]}>
         {data.map((food, index) => (
           <Col key={index} xs={24} sm={12} md={8} lg={6}>
             <FoodCard
+              id={food.id}
               name={food.name}
               description={food.description}
-              flavor={food.flavor}
-              ingredients={food.ingredients}
-              similarJapaneseDish={food.similar_japanese_dish}
+              img_path={food.img_path}
             />
           </Col>
         ))}

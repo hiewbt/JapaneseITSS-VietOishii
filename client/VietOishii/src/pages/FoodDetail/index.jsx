@@ -1,7 +1,9 @@
-import { Button, Card, Rate, Typography, Row, Col } from "antd";
-import { HeartOutlined, ArrowLeftOutlined, UserOutlined } from "@ant-design/icons";
-// import "./FoodDetails.css";
-
+import { Button, Card, Rate, Typography, Row, Col, Spin, Alert } from "antd";
+import {ArrowLeftOutlined,UserOutlined } from "@ant-design/icons";
+import DishService from "../../services/DishService";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const { Paragraph, Title, Text } = Typography;
 
 const FoodDetail = () => {
@@ -9,19 +11,78 @@ const FoodDetail = () => {
     { name: "Nguyễn Văn A", rating: 4, comment: "Món ăn rất ngon, hương vị đậm đà." },
     { name: "Trần Thị B", rating: 5, comment: "Thích cách trình bày và nguyên liệu rất tươi!" },
   ];
+  const [dishDetail, setDishDetail] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    const fetchDishDetail = async () => {
+      try {
+        setLoading(true);
+        const response = await DishService.getDetailDish(id);
+        setDishDetail(response);
+      } catch (error) {
+        console.error("Failed to fetch dish details:", error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDishDetail();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <Spin size="large" tip="Loading..." />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <Alert
+          message="Error"
+          description="Failed to load dish details"
+          type="error"
+          showIcon
+        />
+      </div>
+    );
+  }
+
+  if (!dishDetail) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <Alert
+          message="Not Found"
+          description="Dish details not found"
+          type="warning"
+          showIcon
+        />
+      </div>
+    );
+  }
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div style={{ padding: "20px", width: "70%" }}>
-        {/* Header */}
-        <Button icon={<ArrowLeftOutlined />} type="text" style={{ marginBottom: "20px" }}>
-          Chi tiết món ăn
+        <Button 
+          icon={<ArrowLeftOutlined />} 
+          type="text" 
+          style={{ marginBottom: "20px" }}
+          onClick={() => navigate(-1)}
+        >
+          {t('food_detail')}
         </Button>
 
-        {/* Main Content */}
         <Card style={{ width: "100%" }}>
           <Row gutter={[16, 16]}>
-            {/* Image Section */}
             <Col xs={24} md={10}>
               <div>
                 <div
@@ -30,68 +91,38 @@ const FoodDetail = () => {
                     height: "200px",
                     background: "#f0f0f0",
                     borderRadius: "8px",
-                    overflow: "hidden", // Đảm bảo không vượt khung
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    overflow: "hidden",
                   }}
                 >
-                  {/* Thêm thẻ ảnh */}
-                  <img
-                    src="https://via.placeholder.com/200x200" // Link ảnh mẫu
-                    alt="Food"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover", // Đảm bảo giữ tỷ lệ và che khung
-                    }}
-                  />
-                </div>
-                
-                <div style={{ marginTop: "20px", textAlign: "center" }}>
-                  {["Vùng 1", "Vùng 2", "Vùng 3"].map((region) => (
-                    <Button key={region} style={{ margin: "5px" }}>
-                      {region}
-                    </Button>
-                  ))}
+                  {dishDetail.img_path && (
+                    <img
+                      src={dishDetail.img_path}
+                      alt={dishDetail.name}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </Col>
-
-            {/* Right-side Information */}
             <Col xs={24} md={14}>
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <Title level={4} style={{ marginTop: 0 }}>Tên món ăn</Title>
-                  <Button type="text" icon={<HeartOutlined />} />
-                </div>
-                <Paragraph>
-                  Đây là món ăn trưa yêu thích của người Hà Nội
-                </Paragraph>
-                <Paragraph>
-                  Hương vị: Ngọt, chua nhẹ
-                </Paragraph>
-                <Paragraph>
-                  Món ăn Nhật Bản tương tự: Sushi
-                </Paragraph>
-              </div>
+              <Title level={2}>{dishDetail.name}</Title>
+              <Paragraph>{dishDetail.description}</Paragraph>
             </Col>
           </Row>
-
-          {/* Ingredients Section */}
           <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>Thành phần</Title>
+            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
             <Paragraph>
-              Gạo, thịt gà, rau thơm, nước mắm
+              {dishDetail.ingredients}
             </Paragraph>
-            <Text type="danger">
-              Chú ý một số thành phần gây dị ứng/ khó ăn: Lạc (đậu phộng)
-            </Text>
           </div>
 
           {/* Ratings Section */}
           <div style={{ marginTop: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>Đánh giá</Title>
+            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('review')}</Title>
             {userReviews.map((user, index) => (
               <div
                 key={index}
@@ -112,6 +143,7 @@ const FoodDetail = () => {
               </div>
             ))}
           </div>
+          
         </Card>
       </div>
     </div>

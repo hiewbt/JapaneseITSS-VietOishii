@@ -7,7 +7,7 @@ import ProfilePage from "../pages/Profile";
 
 const publicRoutes = [
   { path: "/", component: Home },
-  { path: "/food-detail", component: FoodDetail },
+  { path: "/food-detail/:id", component: FoodDetail },
   { path: "/list-food", component: ListFoodPage },
   { path: "/signin", component: SigninPage },
   { path: "/signup", component: SignupPage },

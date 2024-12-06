@@ -1,30 +1,38 @@
 import PropTypes from "prop-types"; // Import PropTypes
-import { Card} from "antd";
+import { Card } from "antd";
 import { HeartOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
-const FoodCard = ({ name, description,}) => {
+const FoodCard = ({ id, name, description, img_path }) => {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/food-detail/${id}`);
+  };
+
   return (
-    <Card
-      hoverable
-      style={{ width: 240 }}
-      cover={<div style={{ height: 150, background: "#f0f0f0" }} />}
-    >
-      <Card.Meta title={name} description={description} />
-      <div style={{ marginTop: 10 }}>
-      </div>
-      <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
-      </div>
-    </Card>
+    <>
+      <Card
+        hoverable
+        style={{ width: 240 }}
+        cover={<img alt={name} src={img_path} style={{ height: 150, objectFit: "cover" }} />}
+        onClick={handleCardClick}
+      >
+        <Card.Meta title={name} description={description} />
+        <div style={{ marginTop: 10 }}></div>
+        <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
+        </div>
+      </Card>
+    </>
   );
 };
 
 FoodCard.propTypes = {
-  name: PropTypes.string.isRequired, 
-  description: PropTypes.string.isRequired, 
-  flavor: PropTypes.string.isRequired, 
-  ingredients: PropTypes.string.isRequired, 
-  similarJapaneseDish: PropTypes.string.isRequired, 
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  img_path: PropTypes.string,
 };
 
 export default FoodCard;

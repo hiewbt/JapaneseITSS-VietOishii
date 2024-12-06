@@ -26,7 +26,11 @@ const searchDishes = async (query) => {
 
 const filterDishes = async (filters) => {
   try {
-    const response = await axios.post(`${API_URL}/filter_dishes`, filters);
+    const response = await axios.post(`${API_URL}/filter_dishes`, JSON.stringify(filters), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
     console.log('Filter API Response:', response.data);
     return response.data;
   } catch (error) {
@@ -35,8 +39,20 @@ const filterDishes = async (filters) => {
   }
 };
 
+const getDetailDish = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL}/get_dish/${id}`);
+    console.log('Detail API Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching detail dish:', error);
+    throw error;
+  }
+};
+
 export default {
   getDishes,
   searchDishes,
   filterDishes,
+  getDetailDish,
 };
