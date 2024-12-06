@@ -6,6 +6,11 @@ from models.dish import Dish
 dish_blueprint = Blueprint("dishes", __name__)
 
 
+@dish_blueprint.route("/", methods=["GET"])
+def index():
+    return "<p style=\"font-size: 100px\">It worked nha ae</p>"
+
+
 @dish_blueprint.route("/api/dishes", methods=["GET"])
 def get_dishes():
     dishes = Dish.query.all()

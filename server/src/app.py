@@ -5,15 +5,13 @@ import os
 from models import db
 from controllers import dish_blueprint, user_blueprint
 from controllers.user_controller import login_manager
-from config import *
 
 
 def create_app():
     app = Flask(__name__)
     
-    app.secret_key = os.environ["SECRET_KEY"]
-    
-    app.config["SQLALCHEMY_DATABASE_URI"] = DB_URI
+    app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URI"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     
     db.init_app(app)
@@ -34,4 +32,6 @@ def create_app():
 app = create_app()
 
 if __name__ == '__main__':
-    app.run(HOST, PORT, debug=True)
+    host = os.environ["HOST"]
+    port = os.environ["PORT"]
+    app.run(host, port, debug=True)
