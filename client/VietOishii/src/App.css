@@ -35,3 +35,17 @@ html, body {
     margin: 5px 0;
     color: #555;
   }
+
+  .food_detail_header {
+    display: "flex";
+    align-items: center;
+    margin-top: 4px;
+    font-size: 2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(to right, #e4003a, #e4003a);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }

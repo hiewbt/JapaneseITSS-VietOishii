@@ -72,23 +72,24 @@ const FoodDetail = () => {
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div style={{ padding: "20px", width: "70%" }}>
-        <Button 
-          icon={<ArrowLeftOutlined />} 
-          type="text" 
-          style={{ marginBottom: "20px" }}
-          onClick={() => navigate(-1)}
-        >
-          {t('food_detail')}
-        </Button>
+        <div style={{ display: "flex", marginBottom: "20px", position: "relative" }}>
+          <Button 
+            icon={<ArrowLeftOutlined />} 
+            type="text"
+            onClick={() => navigate(-1)}
+          >
+          </Button>
+          <div className="food_detail_header">{t('food_detail')}</div>
+        </div>
 
         <Card style={{ width: "100%" }}>
           <Row gutter={[16, 16]}>
-            <Col xs={24} md={10}>
+            <Col xs={24} md={12}>
               <div>
                 <div
                   style={{
                     width: "100%",
-                    height: "200px",
+                    height: "400px",
                     background: "#f0f0f0",
                     borderRadius: "8px",
                     overflow: "hidden",
@@ -108,23 +109,23 @@ const FoodDetail = () => {
                 </div>
               </div>
             </Col>
-            <Col xs={24} md={14}>
+            <Col xs={24} md={12}>
               <Title level={2}>{dishDetail.name}</Title>
               <Paragraph>{dishDetail.description}</Paragraph>
+              <div style={{ marginTop: "30px", borderRadius: "8px" }}>
+                <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
+                <Paragraph>
+                  {dishDetail.ingredients}
+                </Paragraph>
+              </div>
+              <div style={{ marginTop: "30px", borderRadius: "8px" }}>
+                <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
+                <Paragraph>
+                  {dishDetail.flavor}
+                </Paragraph>
+              </div>
             </Col>
           </Row>
-          <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
-            <Paragraph>
-              {dishDetail.ingredients}
-            </Paragraph>
-          </div>
-          <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
-            <Paragraph>
-              {dishDetail.flavor}
-            </Paragraph>
-          </div>
           <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
             <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
             <Paragraph>
