@@ -18,5 +18,12 @@
     "ingredients": "Thành phần",
     "food_detail": "Chi tiết món ăn",
     "review":"Đánh giá",
-    "searching_for":"Tìm kiếm cho"
+    "searching_for":"Tìm kiếm cho",
+    "sort_by":"Sắp xếp theo",
+    "loading":"Đang tải...",
+    "flavors":"Hương vị",
+    "allergens": "Thành phần dị ứng",
+    "regions": "Khu vực ",
+    "allergy": "Thành phần dị ứng",
+    "similar_japanese_dish": "Món ăn Nhật tương tự"
 }

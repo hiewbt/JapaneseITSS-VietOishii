@@ -119,6 +119,18 @@ const FoodDetail = () => {
               {dishDetail.ingredients}
             </Paragraph>
           </div>
+          <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
+            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
+            <Paragraph>
+              {dishDetail.flavor}
+            </Paragraph>
+          </div>
+          <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
+            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
+            <Paragraph>
+              {dishDetail.similar_japanese_dish}
+            </Paragraph>
+          </div>
 
           {/* Ratings Section */}
           <div style={{ marginTop: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>

@@ -105,7 +105,7 @@ const TopNav = styled.div`
 `;
 
 const Logo = styled.div`
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
     background: linear-gradient(to right, #E4003A, #FF9C73);
     background-clip: text;
@@ -123,6 +123,7 @@ const NavItems = styled.div`
     display: flex;
     align-items: center;
     gap: 24px;
+    font-size: 18px;
 `;
 
 const NavLink = styled(Link)`
@@ -205,6 +206,7 @@ const SubMenuItem = styled.div`
     transition: all 0.3s ease;
     color: #333;
     font-weight: 500;
+    font-size: 20px;
 
     &:hover {
         color: #E4003A;

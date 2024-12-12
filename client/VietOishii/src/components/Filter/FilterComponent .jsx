@@ -1,11 +1,11 @@
 import { Form, Checkbox, Button, Divider } from 'antd';
 import styled from '@emotion/styled';
-import DishService from '../../services/DishService';
+import PropTypes from 'prop-types';
 
-const FilterComponent = () => {
+const FilterComponent = ({ onFilter }) => {
   const [form] = Form.useForm();
 
-  const handleFilter = async (values) => {
+  const handleFilter = (values) => {
     console.log('Filter values:', values);
 
     const mappedValues = {
@@ -17,12 +17,7 @@ const FilterComponent = () => {
 
     console.log('Mapped Filter values:', mappedValues);
 
-    try {
-      const filteredDishes = await DishService.filterDishes(mappedValues);
-      console.log('Filtered Dishes:', filteredDishes);
-    } catch (error) {
-      console.error('Error filtering dishes:', error);
-    }
+    onFilter(mappedValues);
   };
 
   const filterCategories = {
@@ -201,5 +196,8 @@ const SubmitButton = styled(Button)`
     border-color: #ff1a1a !important;
   }
 `;
+FilterComponent.propTypes = {
+  onFilter: PropTypes.func.isRequired,
+};
 
 export default FilterComponent;

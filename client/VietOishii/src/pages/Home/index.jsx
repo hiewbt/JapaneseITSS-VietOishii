@@ -28,6 +28,14 @@ const Home = () => {
       console.error('Error searching dishes:', error);
     }
   };
+  const handleFilter = async (filters) => {
+    try {
+      const filteredResults = await DishService.filterDishes(filters);
+      navigate('/list-food', { state: { searchResults: filteredResults, filters } });
+    } catch (error) {
+      console.error('Error filtering dishes:', error);
+    }
+  };
 
   return (
     <Layout>
@@ -57,7 +65,7 @@ const Home = () => {
             footer={null}
             width={1000}
           >
-            <FilterComponent />
+            <FilterComponent onFilter={handleFilter}/>
           </StyledModal>
 
           <PageHeader>{t('explore_taste')}</PageHeader>
@@ -266,6 +274,9 @@ const NavButton = styled(Button)`
   box-shadow: none;
   &:hover {
     background: transparent !important;
+  }
+  &:active {
+    background: rgba(228, 0, 58, 0.1) !important;
   }
   &.prev {
     left: 0;

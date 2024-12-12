@@ -18,5 +18,12 @@
     "ingredients": "材料",
     "food_detail": "料理の詳細",
     "review":"レビュー",
-    "searching_for":"検索中"
+    "searching_for":"検索中",
+    "sort_by":"並べ替え",
+    "loading": "読み込み中...",
+    "flavors": "食べ物の味",
+    "allergens": "アレルギー成分",
+    "regions": "地域",
+    "allergy": "アレルギー成分",
+    "similar_japanese_dish": "似た日本料理"
 }
