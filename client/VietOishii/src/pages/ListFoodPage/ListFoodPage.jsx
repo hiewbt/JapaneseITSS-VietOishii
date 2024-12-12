@@ -74,6 +74,7 @@ const ListFoodPage = () => {
       setIsFilterVisible(false);
     }
   };
+  
 
   const renderFilterCriteria = () => {
     const filterKeys = Object.keys(filters);
@@ -88,6 +89,21 @@ const ListFoodPage = () => {
         ))}
       </div>
     );
+  };
+  const resetFilters = async () => {
+    setFilters({});
+    setFilterResults([]);
+    setSearchTerm('');
+    setSearchResults([]);
+    setLoading(true);
+    try {
+      const dishes = await DishService.getDishes();
+      setSearchResults(dishes);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const dataToDisplay = searchTerm ? searchResults : filterResults.length > 0 ? filterResults : searchResults;
@@ -119,6 +135,7 @@ const ListFoodPage = () => {
         gap: "16px", 
         flexWrap: "wrap" 
       }}>
+        <ResetButton type="primary" onClick={resetFilters}>{t("reset")}</ResetButton>
         <SelectWrapper defaultValue={t("sort_by")}>
           <Option value="asc">A-Z</Option>
           <Option value="desc">Z-A</Option>
@@ -180,11 +197,26 @@ const Container = styled.div`
   margin: 0 auto;
   padding: 24px;
 `;
+const ResetButton = styled(Button)`
+  background: #fff;
+  border-color: #d9d9d9;
+  color: #333;
+  padding: 3px 10px;
+  &:hover ,
+  &:focus .ant-select-selector {
+    color: #E4003A !important;
+    border-color: #E4003A !important;
+    background: rgba(228, 0, 58, 0.05) !important;
+  }
+`;
 const Header = styled(Title)`
   text-align: center;
   margin-bottom: 32px !important;
-  color: #E4003A !important;
   margin-top: 20px;
+  background: linear-gradient(to right, #e4003a, #ff9c73);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 `;
 const SelectWrapper = styled(Select)`
   width: 200px;

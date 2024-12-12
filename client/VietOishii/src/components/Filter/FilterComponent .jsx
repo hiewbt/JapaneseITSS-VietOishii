@@ -41,6 +41,7 @@ const FilterComponent = ({ onFilter }) => {
       { label: 'Đậu nành', value: 'đậu nành' },
       { label: 'Hạt điều', value: 'hạt điều' },
       { label: 'Ngũ cốc', value: 'ngũ cốc' },
+      { label: 'Tôm', value: 'tôm' },
     ],
     regions: [
       { label: 'Hokkaidō', value: 'hokkaido' },
