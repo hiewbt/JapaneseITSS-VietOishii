@@ -4,6 +4,7 @@ import DishService from "../../services/DishService";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import styled from "@emotion/styled";
 const { Paragraph, Title, Text } = Typography;
 
 const FoodDetail = () => {
@@ -70,6 +71,7 @@ const FoodDetail = () => {
   }
 
   return (
+    <PageContainer>
     <div style={{ display: "flex", justifyContent: "center" }}>
       <div style={{ padding: "20px", width: "70%" }}>
         <div style={{ display: "flex", marginBottom: "20px", position: "relative" }}>
@@ -111,31 +113,31 @@ const FoodDetail = () => {
             </Col>
             <Col xs={24} md={12}>
               <Title level={2}>{dishDetail.name}</Title>
-              <Paragraph>{dishDetail.description}</Paragraph>
+              <Paragraph style={{fontSize: 18}}>{dishDetail.description}</Paragraph>
               <div style={{ marginTop: "30px", borderRadius: "8px" }}>
-                <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
-                <Paragraph>
+                <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
+                <Paragraph style={{fontSize: 18}}>
                   {dishDetail.ingredients}
                 </Paragraph>
               </div>
               <div style={{ marginTop: "30px", borderRadius: "8px" }}>
-                <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
-                <Paragraph>
+                <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
+                <Paragraph style={{fontSize: 18}}>
                   {dishDetail.flavor}
                 </Paragraph>
               </div>
             </Col>
           </Row>
           <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
-            <Paragraph>
+            <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
+            <Paragraph style={{fontSize: 18}}>
               {dishDetail.similar_japanese_dish}
             </Paragraph>
           </div>
 
           {/* Ratings Section */}
           <div style={{ marginTop: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>
-            <Title level={5} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('review')}</Title>
+            <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('review')}</Title>
             {userReviews.map((user, index) => (
               <div
                 key={index}
@@ -160,7 +162,12 @@ const FoodDetail = () => {
         </Card>
       </div>
     </div>
+    </PageContainer>
   );
 };
+
+const PageContainer = styled.div`
+  font-size: 20px; 
+`;
 
 export default FoodDetail;

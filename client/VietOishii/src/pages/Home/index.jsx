@@ -202,6 +202,7 @@ const PageHeader = styled.div`
 
 const TabContent = styled.div`
   background: #fff;
+  font-size: 20px;
   padding: 24px;
   border: 2px solid #f0f0f0;
   border-radius: 12px;
@@ -210,6 +211,7 @@ const TabContent = styled.div`
 
 const FoodCard = styled(Card)`
   width: 100%;
+  font-size: 16px;
   border-radius: 8px;
   transition: all 0.3s ease;
   border: 2px solid #f5f5f5;
@@ -222,7 +224,7 @@ const FoodCard = styled(Card)`
 
 const RegionImage = styled.img`
   width: 500px;
-  height: 350px;
+  height: 380px;
   object-fit: cover;
   border-radius: 12px;
   margin-right: 24px;
@@ -235,7 +237,7 @@ const RegionInfo = styled.div`
   color: #333;
 
   h2 {
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 16px;
     color: #111;
   }
@@ -243,6 +245,7 @@ const RegionInfo = styled.div`
   ul {
     padding-left: 20px;
     li {
+      font-size: 16px;
       margin-bottom: 12px;
       line-height: 1.6;
 
@@ -255,6 +258,7 @@ const RegionInfo = styled.div`
 
 const CarouselContainer = styled.div`
   position: relative;
+  font-size: 20px;
   margin: 20px 0;
   .ant-carousel {
     padding: 0 20px;

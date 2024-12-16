@@ -1,19 +1,33 @@
 import { Button, Input, Typography, Form } from "antd";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { useNavigate } from 'react-router-dom';
-import UserService from '../../services/UserService';
+import axios from "axios";
 
 const SignupPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
+
+    const API_URL = 'https://dinoz.duckdns.org/api/register';
+
     try {
-      const response = await UserService.signup(values);
-      console.log('Signed up successfully:', response);
-      navigate('/signin'); 
+      // Gửi POST request
+      const response = await axios.post(API_URL, values, {
+        headers: {
+          'Content-Type': 'application/json', // Định dạng JSON
+        },
+      });
+
+      console.log('API Response:', response.data);
+      navigate('/signin');
     } catch (error) {
-      console.error('Error signing up:', error);
+      // Xử lý lỗi
+      console.error(
+        'Error registering:',
+        error.response ? error.response.data : error.message
+      );
+      throw new Error('Failed to register. Please try again later.');
     }
   };
 

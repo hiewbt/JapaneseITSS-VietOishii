@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
@@ -14,99 +13,55 @@ const { Title } = Typography;
 
 const ListFoodPage = () => {
   const { t } = useTranslation();
-  const location = useLocation();
-  const initialSearchTerm = location.state?.searchTerm || '';
-  const initialFilters = location.state?.filters || {};
-  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
-  const [filters, setFilters] = useState(initialFilters);
-  const [searchResults, setSearchResults] = useState(location.state?.searchResults || []);
-  const [filterResults, setFilterResults] = useState([]);
-  const [loading, setLoading] = useState(!location.state?.searchResults);
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+  const [filters, setFilters] = useState(JSON.parse(localStorage.getItem('filters')) || {});
+  const [data, setData] = useState([]); // Chứa dữ liệu hiển thị
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
   useEffect(() => {
-    if (!location.state?.searchResults) {
-      const fetchDishes = async () => {
-        try {
-          const dishes = await DishService.getDishes();
-          setSearchResults(dishes);
-        } catch (error) {
-          setError(error);
-        } finally {
-          setLoading(false);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        if (searchTerm) {
+          const results = await DishService.searchDishes(searchTerm);
+          setData(results);
+        } else if (Object.keys(filters).length > 0) {
+          const results = await DishService.filterDishes(filters);
+          setData(results);
+        } else {
+          const dishes = await DishService.getDishes(); // Lấy danh sách mặc định
+          setData(dishes);
         }
-      };
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchDishes();
-    } else {
-      setLoading(false);
-    }
-  }, [location.state]);
+    fetchData();
+  }, [searchTerm, filters]);
+
+  useEffect(() => {
+    localStorage.setItem('searchTerm', searchTerm);
+    localStorage.setItem('filters', JSON.stringify(filters));
+  }, [searchTerm, filters]);
 
   const handleSearch = async (value) => {
     setSearchTerm(value);
-    setFilters({});
-    setFilterResults([]);
-    setLoading(true);
-    try {
-      const results = await DishService.searchDishes(value);
-      setSearchResults(results);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
   };
 
   const handleFilter = async (filters) => {
     setFilters(filters);
+    setIsFilterVisible(false);
+  };
+
+  const resetFilters = () => {
     setSearchTerm('');
-    setSearchResults([]);
-    setLoading(true);
-    try {
-      const results = await DishService.filterDishes(filters);
-      setFilterResults(results);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-      setIsFilterVisible(false);
-    }
-  };
-  
-
-  const renderFilterCriteria = () => {
-    const filterKeys = Object.keys(filters);
-    if (filterKeys.length === 0) return null;
-
-    return (
-      <div>
-        {filterKeys.map((key) => (
-          <span key={key}>
-            {t(key)}: <b>{filters[key].join(', ')}</b>,{' '}
-          </span>
-        ))}
-      </div>
-    );
-  };
-  const resetFilters = async () => {
     setFilters({});
-    setFilterResults([]);
-    setSearchTerm('');
-    setSearchResults([]);
-    setLoading(true);
-    try {
-      const dishes = await DishService.getDishes();
-      setSearchResults(dishes);
-    } catch (error) {
-      setError(error);
-    } finally {
-      setLoading(false);
-    }
   };
-
-  const dataToDisplay = searchTerm ? searchResults : filterResults.length > 0 ? filterResults : searchResults;
 
   if (loading) {
     return (
@@ -125,7 +80,7 @@ const ListFoodPage = () => {
   }
 
   return (
-    <div style={{ padding: "20px", flex: 1 }}>
+    <Container>
       <Header level={2}>{t('list_food')}</Header>
       <div style={{ 
         marginBottom: 20, 
@@ -140,28 +95,33 @@ const ListFoodPage = () => {
           <Option value="asc">A-Z</Option>
           <Option value="desc">Z-A</Option>
         </SelectWrapper>
-        <FilterButton
+       
+        <StyledSearch
+          placeholder={t("search_placeholder")}
+          onSearch={handleSearch}
+          style={{ width: 350 }}
+        />
+         <FilterButton
           icon={<SearchOutlined />}
           size="large"
           onClick={() => setIsFilterVisible(true)}
         >
           {t('filter')}
         </FilterButton>
-        <StyledSearch
-          placeholder={t("search_placeholder")}
-          onSearch={handleSearch}
-          style={{ width: 350 }}
-        />
         {(searchTerm || Object.keys(filters).length > 0) && (
           <p style={{ textAlign: "center", margin: "0 16px" }}>
             {searchTerm && (
               <>
-                {t('searching_for')}: <b>{searchTerm}</b>
+                {t('searching_for')}: <b>{searchTerm}</b> ,{' '}
               </>
             )}
             {Object.keys(filters).length > 0 && (
               <>
-                {renderFilterCriteria()}
+                {Object.keys(filters).map((key) => (
+                  <span key={key}>
+                    {t(key)}: <b>{filters[key].join(', ')}</b>,{' '}
+                  </span>
+                ))}
               </>
             )}
           </p>
@@ -176,9 +136,9 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
       
-      <Row gutter={[16, 16]} style ={{margin: "20 20px", marginLeft: "150px"}}>
-        {dataToDisplay.map((food, index) => (
-          <Col key={index} xs={24} sm={12} md={8} lg={6}>
+      <Row gutter={[16, 16]} style={{ justifyContent: "centercenter", marginTop: 50 }}>
+        {data.map((food, index) => (
+          <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 }}>
             <FoodCard
               id={food.id}
               name={food.name}
@@ -188,12 +148,12 @@ const ListFoodPage = () => {
           </Col>
         ))}
       </Row>
-    </div>
+    </Container>
   );
 };
 
 const Container = styled.div`
-  max-width: 1200px;
+  font-size: 20px;
   margin: 0 auto;
   padding: 24px;
 `;

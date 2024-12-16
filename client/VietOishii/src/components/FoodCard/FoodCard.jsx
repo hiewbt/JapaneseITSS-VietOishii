@@ -18,7 +18,10 @@ const FoodCard = ({ id, name, description, img_path }) => {
         cover={<img alt={name} src={img_path} style={{ height: 150, objectFit: "cover" }} />}
         onClick={handleCardClick}
       >
-        <Card.Meta title={name} description={description} />
+        <Card.Meta 
+          title={<span style={{ fontSize: '18px' }}>{name}</span>} 
+          description={<span style={{ fontSize: '16px' }}>{description}</span>} 
+        />
         <div style={{ marginTop: 10 }}></div>
         <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
