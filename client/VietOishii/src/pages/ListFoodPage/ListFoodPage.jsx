@@ -136,7 +136,8 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
       
-      <Row gutter={[16, 16]} style={{ justifyContent: "centercenter", marginTop: 50 }}>
+      <Row gutter={[16, 16]} style={{  marginTop: 50 ,  minWidth: 1600,
+ }}>
         {data.map((food, index) => (
           <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 }}>
             <FoodCard
@@ -153,6 +154,7 @@ const ListFoodPage = () => {
 };
 
 const Container = styled.div`
+  min-width: 1600;
   font-size: 20px;
   margin: 0 auto;
   padding: 24px;
