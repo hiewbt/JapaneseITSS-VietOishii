@@ -38,7 +38,7 @@ def get_comments():
     
     dish_id = data["dish_id"]
     
-    comments_with_users = db.session.query(Comment).outerjoin(User).filter(Comment.dish_id == dish_id)
+    comments_with_users = db.session.query(Comment, User).join(User.id == Comment.user_id).all()
     comments = []
     
     for comment, user in comments_with_users:
