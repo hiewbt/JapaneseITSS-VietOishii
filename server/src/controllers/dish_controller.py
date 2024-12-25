@@ -1,4 +1,5 @@
 from flask import Blueprint, jsonify, request
+import flask_login
 
 from models.dish import Dish
 
@@ -12,7 +13,7 @@ def index():
 
 
 @dish_blueprint.route("/api/dishes", methods=["GET"])
-def get_dishes():
+def get_dishes():        
     dishes = Dish.query.all()
     return jsonify([dish.to_dict() for dish in dishes])
 
