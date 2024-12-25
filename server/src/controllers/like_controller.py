@@ -44,7 +44,7 @@ def get_users_liked():
     for like in likes:
         user = User.query.filter(User.id == like.user_id)[0]
         user = user.to_dict()
-        
+        user.pop("email")
         users_liked.append(user.to_dict())
         
     return jsonify(users_liked)
