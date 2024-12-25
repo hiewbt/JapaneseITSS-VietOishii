@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-import flask_login
+from unidecode import unidecode as udec
 
 from models.dish import Dish
 
@@ -48,3 +48,10 @@ def search(query):
 
     dishes = Dish.query.all()
     return jsonify([dish.to_dict() for dish in filter(matched, dishes)])
+
+
+@dish_blueprint.route("/api/by_category/<category>", methods=["GET"])
+def get_dishes_by_category(category):
+    dishes = Dish.query.filter_by(lambda item: udec(item.category.lower()) == udec(category.lower()))
+
+    return jsonify([dish.to_dict() for dish in dishes])
