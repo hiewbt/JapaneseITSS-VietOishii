@@ -38,14 +38,14 @@ def get_comments():
     
     dish_id = data["dish_id"]
     
-    comments_with_users = db.session.query(Comment, User).join(User.id == Comment.user_id).all()
+    comments_with_users = db.session.query(Comment, User).join(User, Comment.user_id == User.id).all()
     comments = []
     
     for comment, user in comments_with_users:
         comments.append({
             "user_id": user.id,
-            "username": user.username, 
-            "content": comment.content, 
+            "username": user.username,
+            "content": comment.content,
             "stars": comment.stars
         })
         
