@@ -37,8 +37,12 @@ def get_comments():
     data = request.get_json()
     
     dish_id = data["dish_id"]
-    
-    comments_with_users = db.session.query(Comment, User).join(User, Comment.user_id == User.id).all()
+     
+    comments_with_users = (
+        db.session.query(Comment, User)
+        .join(User, Comment.user_id == User.id)
+        .filter(Comment.dish_id == dish_id)
+    )
     comments = []
     
     for comment, user in comments_with_users:
