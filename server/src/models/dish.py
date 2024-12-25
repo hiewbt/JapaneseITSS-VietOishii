@@ -22,7 +22,9 @@ class Dish(db.Model):
             "flavor": self.flavor,
             "similar_japanese_dish": self.similar_japanese_dish,
             "ingredients": self.ingredients,
-            "img_path": self.img_path
+            "img_path": self.img_path,
+            "category": self.category,
+            "region": self.region
         }
     
     def meet_criteria(self, flavors: list, ingredients: list, allergy: list):
