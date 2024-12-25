@@ -1,0 +1,22 @@
+{
+    "home": "ホーム",
+    "menu": "メニュー",
+    "taste": "味について",
+    "login": "ログイン",
+    "appetizer": "前菜",
+    "main_course": "メインコース",
+    "seafood": "シーフード",
+    "vegetarian": "ベジタリアン",
+    "dessert": "デザート",
+    "snack": "スナック",
+    "drink": "飲み物",
+    "explore_dishes": "料理を探る",
+    "filter": "フィルター",
+    "search_placeholder": "料理を検索...",
+    "explore_taste": "日本人の味を探る",
+    "list_food": "料理リスト",
+    "ingredients": "材料",
+    "food_detail": "料理の詳細",
+    "review":"レビュー",
+    "searching_for":"検索中"
+}
