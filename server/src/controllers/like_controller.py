@@ -19,5 +19,7 @@ def like():
         
         db.session.add(new_like)
         db.session.commit()
+        
+        return jsonify({"message": "Liked"})
     else:
         return jsonify({"error": "Anonymous user cannot like"}), 400
