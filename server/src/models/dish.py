@@ -11,6 +11,8 @@ class Dish(db.Model):
     similar_japanese_dish = db.Column(db.String(500))
     ingredients = db.Column(db.String(1000))
     img_path = db.Column(db.String(500))
+    category = db.Column(db.String(50))
+    region = db.Column(db.String(100))
     
     def to_dict(self):
         return {
