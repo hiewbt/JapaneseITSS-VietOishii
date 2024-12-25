@@ -13,11 +13,14 @@ def like():
     data = request.get_json()
     
     if flask_login.current_user.is_authenticated:
-        new_like = Like()
-        new_like.dish_id = int(data["dish_id"])
-        new_like.user_id = flask_login.current_user.id
+        new_like = Like(
+            dish_id=int(data["dish_id"]),
+            user_id = flask_login.current_user.id
+        )
         
         db.session.add(new_like)
         db.session.commit()
+        
+        return jsonify({"message": "Liked"})
     else:
         return jsonify({"error": "Anonymous user cannot like"}), 400
