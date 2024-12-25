@@ -3,7 +3,7 @@ from flask_cors import CORS
 import os
 
 from models import db
-from controllers import dish_blueprint, user_blueprint, util_blueprint
+from controllers import *
 from controllers.user_controller import login_manager
 
 
@@ -20,6 +20,7 @@ def create_app():
     app.register_blueprint(user_blueprint)
     app.register_blueprint(dish_blueprint)
     app.register_blueprint(util_blueprint)
+    app.register_blueprint(like_blueprint)
     
     with app.app_context():
         db.create_all()
