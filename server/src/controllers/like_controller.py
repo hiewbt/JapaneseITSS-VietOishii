@@ -5,7 +5,7 @@ from models import db
 from models.like import Like
 
 
-like_blueprint = Blueprint("dishes", __name__)
+like_blueprint = Blueprint("likes", __name__)
 
 
 @like_blueprint.route("/api/like", methods=["POST"])
