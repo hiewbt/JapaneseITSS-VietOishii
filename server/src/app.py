@@ -21,6 +21,7 @@ def create_app():
     app.register_blueprint(dish_blueprint)
     app.register_blueprint(util_blueprint)
     app.register_blueprint(like_blueprint)
+    app.register_blueprint(comment_blueprint)
     
     with app.app_context():
         db.create_all()
