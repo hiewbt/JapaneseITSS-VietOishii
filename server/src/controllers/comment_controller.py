@@ -30,3 +30,22 @@ def comment():
         return jsonify({"message": "Commented"})
     else:
         return jsonify({"error": "Anonymous user cannot comment"}), 400
+
+
+@comment_blueprint.route("/api/users_commented", methods=["POST"])
+def get_users_commented():
+    data = request.get_json()
+    
+    dish_id = data["dish_id"]
+    
+    comments = Comment.query.filter(Comment.dish_id == dish_id)
+    
+    users_commented = []
+    
+    for comment in comments:
+        user = User.query.filter(User.id == comment.user_id)[0]
+        user = user.to_dict()
+        user.pop("email")
+        users_commented.append(user)
+        
+    return jsonify(users_commented)
