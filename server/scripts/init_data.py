@@ -8,9 +8,11 @@ def csv_to_db(df: pd.DataFrame, connect: sqlite3.Connection, cursor: sqlite3.Cur
     for item in (bar := tqdm(df.itertuples())):
         
         sql = (
-            f"insert into dish (name, description, flavor, similar_japanese_dish, ingredients, img_path) " +
+            f"insert into dish (name, description, flavor, similar_japanese_dish, " +
+            f"ingredients, img_path, category, region) " +
             f"values ('{item.dish_name}', '{item.description}', '{item.flavor}', " +
-            f"'{item.similar_japanese_dish}', '{item.ingredients}', '{item.img_path}');"
+            f"'{item.similar_japanese_dish}', '{item.ingredients}', '{item.img_path}', " +
+            f"'{item.category}', '{item.region}');"
         )
         
         cursor.execute(sql)
