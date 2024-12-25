@@ -32,7 +32,6 @@ def like():
     
 
 @like_blueprint.route("/api/users_liked", methods=["POST"])
-@like_blueprint.route("/api/users_liked", methods=["POST"])
 def get_users_liked():
     data = request.get_json()
     
@@ -46,6 +45,6 @@ def get_users_liked():
         user = User.query.filter(User.id == like.user_id)[0]
         user = user.to_dict()
         user.pop("email")
-        users_liked.append(user.to_dict())
+        users_liked.append(user)
         
     return jsonify(users_liked)
