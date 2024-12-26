@@ -14,5 +14,6 @@ class Comment(db.Model):
             "user_id": self.user_id,
             "dish_id": self.dish_id,
             "content": self.content,
-            "stars": self.stars
+            "stars": self.stars,
+            "img_url": self.img_url
         }
