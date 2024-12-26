@@ -26,5 +26,8 @@
     "regions": "Khu vực ",
     "allergy": "Thành phần dị ứng",
     "similar_japanese_dish": "Món ăn Nhật tương tự",
-    "reset": "Xóa bộ lọc "
+    "reset": "Xóa bộ lọc ",
+    "profile": "Tài khoản",
+    "logout" : "Đăng xuất",
+    "like": "Yêu Thích"
 }

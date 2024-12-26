@@ -26,5 +26,8 @@
     "regions": "地域",
     "allergy": "アレルギー成分",
     "similar_japanese_dish": "似た日本料理",
-    "reset": "リセット"
+    "reset": "リセット",
+    "profile": "プロフィール",
+    "logout": "ログアウト",
+    "like": "好き"
 }
