@@ -1,5 +1,5 @@
 import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input } from "antd";
-import {ArrowLeftOutlined,UserOutlined } from "@ant-design/icons";
+import {ArrowLeftOutlined,UserOutlined, HeartOutlined } from "@ant-design/icons";
 import DishService from "../../services/DishService";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -86,6 +86,22 @@ const FoodDetail = () => {
     }
   };
 
+  // const handleLikeDish = async (id) => {
+  //   try {
+  //     const response = await axios.post(`${import.meta.env.VITE_API_URL}/like`, {
+  //       dish_id: id,
+  //     }, {
+  //       withCredentials: true,
+  //     });
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error('Error liking dish:', error);
+  //   }
+  // };
+  const handleLikeDish = (id) => {
+    console.log('Like dish:', id);
+  };
+
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
@@ -162,7 +178,12 @@ const FoodDetail = () => {
               </div>
             </Col>
             <Col xs={24} md={12}>
-              <Title level={2}>{dishDetail.name}</Title>
+              <div style={{ position: "relative" }}>
+                <Title level={2}>{dishDetail.name}</Title>
+                <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
+                  onClick={() => {handleLikeDish(id)}}
+                />
+              </div>
               <Paragraph style={{fontSize: 18}}>{dishDetail.description}</Paragraph>
               <div style={{ marginTop: "30px", borderRadius: "8px" }}>
                 <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
