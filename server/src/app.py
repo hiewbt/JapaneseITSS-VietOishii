@@ -9,8 +9,11 @@ from controllers.user_controller import login_manager
 
 def create_app():
     app = Flask(__name__)
-    CORS(app, supports_credentials=True)    
+    CORS(app, supports_credentials=True, origins="*")    
 
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Options: 'Lax', 'Strict', or 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True 
+    
     app.config["SECRET_KEY"] = os.environ["SECRET_KEY"]
     app.config["SQLALCHEMY_DATABASE_URI"] = os.environ["DB_URI"]
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
