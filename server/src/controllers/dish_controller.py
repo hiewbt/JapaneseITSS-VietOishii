@@ -52,6 +52,7 @@ def search(query):
 
 @dish_blueprint.route("/api/by_category/<category>", methods=["GET"])
 def get_dishes_by_category(category):
-    dishes = Dish.query.filter_by(lambda item: udec(item.category.lower()) == udec(category.lower()))
+    dishes = Dish.query.all()
+    dishes = filter(lambda item: udec(item.category.lower()) == udec(category.lower()), dishes)
 
     return jsonify([dish.to_dict() for dish in dishes])
