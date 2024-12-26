@@ -39,6 +39,8 @@ const FoodDetail = () => {
         const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_comments`, {
           dish_id: id,
         });
+        let myData = response.data;
+        console.log(myData);
         setUserReviews(response.data);
       } catch (error) {
         console.error('Error fetching user reviews:', error);
@@ -62,7 +64,7 @@ const FoodDetail = () => {
   const handleReviewSubmit = async () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/comment`, {
-        dish_id: id,
+        dish_id: parseInt(id),
         content: reviewContent,
         stars: reviewRating,
       }, {
@@ -72,6 +74,13 @@ const FoodDetail = () => {
       setReviewContent('');
       setReviewRating(0);
       setShowReviewForm(false);
+      // const reviewData = {
+      //   dish_id: parseInt(id),
+      //   content: reviewContent,
+      //   stars: reviewRating,
+      // };
+    
+      // console.log('Review Data:', reviewData);
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -220,6 +229,7 @@ const FoodDetail = () => {
                 <Paragraph style={{ marginLeft: "30px", color: "gray" }}>
                   {user.content}
                 </Paragraph>
+                {user.image && <img src={user.image} alt="Review" style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }} />}
               </div>
             ))}
           </div>
