@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, make_response, request
 import flask_login
 
 from models import db
@@ -30,6 +30,20 @@ def like():
         return jsonify({"message": "Liked"})
     else:
         return jsonify({"error": "Anonymous user cannot like"}), 400
+    
+
+@like_blueprint.route("/api/unlike", methods=["POST"])
+def unlike():
+    data = request.get_json()
+    
+    try:
+        Like.query.filter(
+            Like.dish_id == data["dish_id"] and Like.user_id == flask_login.current_user.id
+        ).delete()
+        return make_response("OK")
+    
+    except:
+        return jsonify({"error": "Idk wtf is goining on but you cannot unlike now"})
     
 
 @like_blueprint.route("/api/users_liked", methods=["POST"])
