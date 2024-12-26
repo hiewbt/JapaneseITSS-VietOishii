@@ -8,6 +8,7 @@ test*
 *.csv
 *.ign
 *.out
+migrations
 
 # C extensions
 *.so
