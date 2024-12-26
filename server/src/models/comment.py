@@ -7,7 +7,7 @@ class Comment(db.Model):
     dish_id = db.Column(db.Integer, db.ForeignKey("dish.id"))
     content = db.Column(db.String(1000), nullable=False)
     stars = db.Column(db.Integer, nullable=False)
-    img_url = db.Column(db.String(500))
+    img_url = db.Column(db.String(500), default="https://img.freepik.com/free-vector/illustration-gallery-icon_53876-27002.jpg")
     
     def to_dict(self):
         return {
