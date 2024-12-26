@@ -3,7 +3,6 @@ import flask_login
 
 from models import db
 from models.comment import Comment
-from models.like import Like
 from models.user import User
 
 
