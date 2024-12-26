@@ -48,3 +48,9 @@ def get_users_liked():
         users_liked.append(user)
         
     return jsonify(users_liked)
+
+
+@like_blueprint.route("/api/liked_dishes")
+def get_liked_dishes():
+    likes = Like.query.filter(Like.user_id == flask_login.current_user.id)
+    return jsonify([like.to_dict() for like in likes])
