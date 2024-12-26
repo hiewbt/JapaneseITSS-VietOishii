@@ -1,24 +1,21 @@
-import { Button, Card, Rate, Typography, Row, Col, Spin, Alert } from "antd";
+import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input } from "antd";
 import {ArrowLeftOutlined,UserOutlined } from "@ant-design/icons";
 import DishService from "../../services/DishService";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+import axios from 'axios';
 import styled from "@emotion/styled";
 const { Paragraph, Title, Text } = Typography;
 
 const FoodDetail = () => {
-  const userReviews = [
-    { name: "Nguyễn Văn A", rating: 4, comment: "Món ăn rất ngon, hương vị đậm đà." },
-    { name: "Trần Thị B", rating: 5, comment: "Thích cách trình bày và nguyên liệu rất tươi!" },
-  ];
+  const [userReviews, setUserReviews] = useState([]);
   const [dishDetail, setDishDetail] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [reviewContent, setReviewContent] = useState('');
+  const [reviewRating, setReviewRating] = useState(0);
   const { id } = useParams();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-
   useEffect(() => {
     const fetchDishDetail = async () => {
       try {
@@ -35,6 +32,57 @@ const FoodDetail = () => {
 
     fetchDishDetail();
   }, [id]);
+
+  useEffect(() => {
+    const fetchUserReviews = async () => {
+      try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_comments`, {
+          dish_id: id,
+        });
+        setUserReviews(response.data);
+      } catch (error) {
+        console.error('Error fetching user reviews:', error);
+      }
+    };
+
+    fetchUserReviews();
+  }, [id]);
+
+  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+
+  const handleAddReview = () => {
+    setShowReviewForm(true);
+  };
+
+  const handleReviewSubmit = async () => {
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/comment`, {
+        dish_id: id,
+        content: reviewContent,
+        stars: reviewRating,
+      }, {
+        withCredentials: true,
+      });
+      setUserReviews([...userReviews, response.data]);
+      setReviewContent('');
+      setReviewRating(0);
+      setShowReviewForm(false);
+      // const reviewData = {
+      //   dish_id: id,
+      //   content: reviewContent,
+      //   stars: reviewRating,
+      // };
+    
+      // console.log('Review Data:', reviewData);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
+  };
 
   if (loading) {
     return (
@@ -137,7 +185,31 @@ const FoodDetail = () => {
 
           {/* Ratings Section */}
           <div style={{ marginTop: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>
-            <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('review')}</Title>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>
+            <Title level={4} style={{ margin: 0 }}>{t('review')}</Title>
+            <Button type="primary" onClick={handleAddReview} style={{ marginTop: '20px' }}>
+              Thêm
+            </Button>
+          </div>
+          {showReviewForm && (
+            <div style={{ marginTop: '20px' }}>
+              <Input.TextArea
+                rows={4}
+                value={reviewContent}
+                onChange={(e) => setReviewContent(e.target.value)}
+                placeholder="Nhập nội dung đánh giá"
+              />
+              <Rate
+                value={reviewRating}
+                onChange={(value) => setReviewRating(value)}
+                style={{ marginTop: '10px' }}
+              />
+              <Button type="primary" onClick={handleReviewSubmit} style={{ marginTop: '10px' }}>
+                Gửi đánh giá
+              </Button>
+            </div>
+          )}
+            
             {userReviews.map((user, index) => (
               <div
                 key={index}
@@ -149,11 +221,11 @@ const FoodDetail = () => {
               >
                 <div style={{ display: "flex", alignItems: "center", marginBottom: "10px" }}>
                   <UserOutlined style={{ fontSize: "20px", marginRight: "10px" }} />
-                  <Text style={{ flex: 1, fontWeight: "bold" }}>{user.name}</Text>
-                  <Rate disabled defaultValue={user.rating} />
+                  <Text style={{ flex: 1, fontWeight: "bold" }}>{user.username}</Text>
+                  <Rate disabled defaultValue={user.stars} />
                 </div>
                 <Paragraph style={{ marginLeft: "30px", color: "gray" }}>
-                  {user.comment}
+                  {user.content}
                 </Paragraph>
               </div>
             ))}

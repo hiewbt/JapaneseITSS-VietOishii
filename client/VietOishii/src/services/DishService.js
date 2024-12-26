@@ -4,7 +4,9 @@ const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const getDishes = async () => {
   try {
-    const response = await axios.get(`${API_URL}/dishes`);
+    const response = await axios.get(`${API_URL}/dishes`, {
+      withCredentials: true,
+    });
     console.log('API Response:', response.data);
     return response.data;
   } catch (error) {
