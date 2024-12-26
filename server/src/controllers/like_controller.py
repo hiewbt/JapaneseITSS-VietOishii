@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 import flask_login
 
 from models import db
+from models.dish import Dish
 from models.like import Like
 from models.user import User
 
@@ -53,4 +54,11 @@ def get_users_liked():
 @like_blueprint.route("/api/liked_dishes")
 def get_liked_dishes():
     likes = Like.query.filter(Like.user_id == flask_login.current_user.id)
-    return jsonify([like.to_dict() for like in likes])
+    
+    like_dicts = []
+    
+    for like in likes:
+        dish = Dish.query.filter(Dish.id == like.dish_id).first()
+        like_dicts.append(dict(**dish.to_dict()))
+    
+    return jsonify(like_dicts)
