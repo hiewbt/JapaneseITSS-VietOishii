@@ -14,19 +14,16 @@ def comment():
     data = request.get_json()
     
     if flask_login.current_user.is_authenticated:
-        try:
-            new_comment = Comment(
-                user_id=flask_login.current_user.id,
-                **data
-            )
-            
-            db.session.add(new_comment)
-            db.session.commit()
-            
-        except:
-            return jsonify({"error": "You cannot comment. Some error occured :))"}), 400
+        new_comment = Comment(
+            user_id=flask_login.current_user.id,
+            **data
+        )
         
+        db.session.add(new_comment)
+        db.session.commit()
+
         return jsonify({"message": "Commented"})
+    
     else:
         return jsonify({"error": "Anonymous user cannot comment"}), 400
 
