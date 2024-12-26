@@ -41,12 +41,10 @@ def get_comments():
     )
     comments = []
     
-    for comment, user in comments_with_users:
-        comments.append({
-            "user_id": user.id,
-            "username": user.username,
-            "content": comment.content,
-            "stars": comment.stars
-        })
+    for comment, user in comments_with_users:        
+        comments.append(dict(
+            username=user.username,
+            **comment.to_dict()
+        ))
         
     return jsonify(comments)
