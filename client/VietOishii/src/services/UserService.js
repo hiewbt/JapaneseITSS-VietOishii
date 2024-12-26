@@ -11,6 +11,7 @@ const signin = async (username, password) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        withCredentials: true,
       }
     );
     console.log('signin API Response:', response.data);

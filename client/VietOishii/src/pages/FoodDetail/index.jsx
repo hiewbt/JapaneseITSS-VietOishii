@@ -72,13 +72,6 @@ const FoodDetail = () => {
       setReviewContent('');
       setReviewRating(0);
       setShowReviewForm(false);
-      // const reviewData = {
-      //   dish_id: id,
-      //   content: reviewContent,
-      //   stars: reviewRating,
-      // };
-    
-      // console.log('Review Data:', reviewData);
     } catch (error) {
       console.error('Error submitting review:', error);
     }
