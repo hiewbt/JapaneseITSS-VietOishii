@@ -229,7 +229,7 @@ const FoodDetail = () => {
                 <Paragraph style={{ marginLeft: "30px", color: "gray" }}>
                   {user.content}
                 </Paragraph>
-                {user.image && <img src={user.image} alt="Review" style={{ width: "100%", maxHeight: "200px", objectFit: "cover" }} />}
+                {user.img_url && <img src={user.img_url} alt="Review" style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "cover" }} />}
               </div>
             ))}
           </div>
