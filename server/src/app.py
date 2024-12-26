@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_cors import CORS
+from flask_migrate import Migrate
 import os
 
 from models import db
@@ -10,6 +11,8 @@ from controllers.user_controller import login_manager
 def create_app():
     app = Flask(__name__)
     CORS(app, supports_credentials=True, origins="*")    
+    
+    migrate = Migrate(app, db)
 
     app.config['SESSION_COOKIE_SAMESITE'] = 'None'  # Options: 'Lax', 'Strict', or 'None'
     app.config['SESSION_COOKIE_SECURE'] = True 
