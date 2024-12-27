@@ -10,7 +10,7 @@ const FoodCard = ({ id, name, description, img_path }) => {
   const navigate = useNavigate();
   // eslint-disable-next-line no-unused-vars
   const [userReviews, setUserReviews] = useState([]);
-  const [averageStars, setAverageStars] = useState(5); // Mặc định là 5 sao
+  const [averageStars, setAverageStars] = useState(5); 
 
   const handleCardClick = () => {
     navigate(`/food-detail/${id}`);
@@ -26,13 +26,12 @@ const FoodCard = ({ id, name, description, img_path }) => {
         console.log(myData);
         setUserReviews(myData);
 
-        // Tính số sao trung bình
         if (myData.length > 0) {
           const totalStars = myData.reduce((acc, review) => acc + review.stars, 0);
           const average = totalStars / myData.length;
           setAverageStars(average);
         } else {
-          setAverageStars(5); // Nếu không có đánh giá, mặc định là 5 sao
+          setAverageStars(5); 
         }
       } catch (error) {
         console.error('Error fetching user reviews:', error);
