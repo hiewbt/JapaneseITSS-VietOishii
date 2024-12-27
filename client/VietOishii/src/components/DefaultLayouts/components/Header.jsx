@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Space, message, Menu, Avatar } from 'antd';
-import { DownOutlined, GlobalOutlined,HeartOutlined, UserOutlined , LogoutOutlined} from '@ant-design/icons';
+import { DownOutlined, GlobalOutlined, HeartOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
-import axios from 'axios'; // Import axios
+import axios from 'axios'; 
 import banner from '../../../assets/banner.png';
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const Header = () => {
   const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState('vi');
-  const [user, setUser] = useState(null); // State để lưu trữ dữ liệu người dùng
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [activeSubmenu, setActiveSubmenu] = useState('');
 
   const menuItems = [
     { label: t('home'), key: 'home', path: '/' },
@@ -21,13 +23,13 @@ const Header = () => {
   ];
 
   const submenuItems = [
-    t('appetizer'),
-    t('main_course'),
-    t('seafood'),
-    t('vegetarian'),
-    t('dessert'),
-    t('snack'),
-    t('drink'),
+    { key: 'khai vi', label: t('appetizer') },
+    { key: 'món chính', label: t('main_course') },
+    { key: 'hải sản', label: t('seafood') },
+    { key: 'món chay', label: t('vegetarian') },
+    { key: 'tráng miệng', label: t('dessert') },
+    { key: 'ăn vặt', label: t('snack') },
+    { key: 'đồ uống', label: t('drink') },
   ];
 
   const languageItems = [
@@ -55,11 +57,25 @@ const Header = () => {
     }
   };
 
+  const handleCategoricalClick = (key) => {
+    navigate(`/list-food?categorical=${encodeURIComponent(key)}`);
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categorical = params.get('categorical');
+    if (categorical) {
+      setActiveSubmenu(categorical);
+    } else {
+      setActiveSubmenu('');
+    }
+  }, [location]);
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await axios.get(`${API_URL}/profile`, {
-          withCredentials: true, // Gửi cookie kèm theo yêu cầu
+          withCredentials: true,
         });
         console.log('User profile fetched:', response.data);
         setUser(response.data.user);
@@ -71,11 +87,10 @@ const Header = () => {
     fetchUserProfile();
   }, []);
 
-
   const userMenu = (
     <Menu>
       <Menu.Item key="profile" onClick={() => navigate('/profile')}>
-        <UserOutlined style={{ marginRight: 8 }}  />
+        <UserOutlined style={{ marginRight: 8 }} />
         {t('profile')}
       </Menu.Item>
       <Menu.Item key="like" onClick={() => navigate('/like')}>
@@ -83,7 +98,7 @@ const Header = () => {
         {t('like')}
       </Menu.Item>
       <Menu.Item key="logout" onClick={handleLogout}>
-      <LogoutOutlined style={{ marginRight: 8 }} />
+        <LogoutOutlined style={{ marginRight: 8 }} />
         {t('logout')}
       </Menu.Item>
     </Menu>
@@ -120,9 +135,9 @@ const Header = () => {
               <UserName>
                 <Space>
                   {user.username}
-                  <Avatar style={{ backgroundColor: 'rgb(245, 16, 0)', verticalAlign: 'middle' }}>
+                  <Avatar style={{ backgroundColor: '#E4003A' }}>
                     {user.username.charAt(0).toUpperCase()}
-                  </Avatar> 
+                  </Avatar>
                 </Space>
               </UserName>
             </Dropdown>
@@ -138,9 +153,13 @@ const Header = () => {
 
       <SubMenuContainer>
         <SubMenuWrapper>
-          {submenuItems.map((item, index) => (
-            <SubMenuItem key={index}>
-              {item}
+          {submenuItems.map((item) => (
+            <SubMenuItem
+              key={item.key}
+              onClick={() => handleCategoricalClick(item.key)}
+              active={activeSubmenu === item.key}
+            >
+              {item.label}
             </SubMenuItem>
           ))}
         </SubMenuWrapper>
@@ -272,9 +291,10 @@ const SubMenuItem = styled.div`
   padding: 8px 16px;
   border-radius: 4px;
   transition: all 0.3s ease;
-  color: #333;
+  color: ${({ active }) => (active ? '#E4003A' : '#333')};
   font-weight: 500;
   font-size: 20px;
+  background: ${({ active }) => (active ? 'rgba(228, 0, 58, 0.05)' : 'transparent')};
 
   &:hover {
     color: #E4003A;

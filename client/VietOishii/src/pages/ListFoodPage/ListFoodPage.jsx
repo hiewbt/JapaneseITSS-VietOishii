@@ -5,9 +5,10 @@ import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 
 import { SearchOutlined } from "@ant-design/icons";
 import FoodCard from '../../components/FoodCard/FoodCard';
 import styled from "@emotion/styled";
+import axios from 'axios';
 import DishService from '../../services/DishService';
 import FilterComponent from "../../components/Filter/FilterComponent ";
-
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 const { Search } = Input;
 const { Title } = Typography;
 
@@ -25,14 +26,27 @@ const ListFoodPage = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        const params = new URLSearchParams(location.search);
+        const categorical = params.get('categorical');
+        let results = [];
+
+        const categoricalResults = categorical ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data : [];
         const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
         const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
-        
-        let results = [];
-        if (searchResults.length > 0 && filterResults.length > 0) {
-          results = searchResults.filter(dish => filterResults.some(filteredDish => filteredDish.id === dish.id));
+
+        if (categoricalResults.length > 0) {
+          results = categoricalResults;
+          if (searchResults.length > 0) {
+            results = results.filter(dish => searchResults.some(searchDish => searchDish.id === dish.id));
+          }
+          if (filterResults.length > 0) {
+            results = results.filter(dish => filterResults.some(filterDish => filterDish.id === dish.id));
+          }
         } else if (searchResults.length > 0) {
           results = searchResults;
+          if (filterResults.length > 0) {
+            results = results.filter(dish => filterResults.some(filterDish => filterDish.id === dish.id));
+          }
         } else if (filterResults.length > 0) {
           results = filterResults;
         } else {
@@ -48,7 +62,7 @@ const ListFoodPage = () => {
     };
 
     fetchData();
-  }, [searchTerm, filters]);
+  }, [searchTerm, filters, location]);
 
   useEffect(() => {
     localStorage.setItem('searchTerm', searchTerm);
@@ -65,11 +79,15 @@ const ListFoodPage = () => {
   };
 
   const resetFilters = async () => {
+    const params = new URLSearchParams(location.search);
+    const categorical = params.get('categorical');
     setSearchTerm('');
     setFilters({});
     setLoading(true);
     try {
-      const results = await DishService.getDishes(); // Lấy danh sách mặc định
+      const results = categorical 
+        ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data 
+        : await DishService.getDishes(); // Lấy danh sách mặc định
       setData(results);
     } catch (error) {
       setError(error);

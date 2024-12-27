@@ -51,10 +51,16 @@ const getDetailDish = async (id) => {
     throw error;
   }
 };
+ const getDishesByCategorical = async (categorical) => {
+  const response = await axios.get(`${API_URL}/by_category/${categorical}`);
+  return response.data;
+
+};
 
 export default {
   getDishes,
   searchDishes,
   filterDishes,
   getDetailDish,
+  getDishesByCategorical,
 };
