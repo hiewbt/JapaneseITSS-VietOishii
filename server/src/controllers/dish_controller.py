@@ -56,3 +56,11 @@ def get_dishes_by_category(category):
     dishes = filter(lambda item: udec(item.category.lower()) == udec(category.lower()), dishes)
 
     return jsonify([dish.to_dict() for dish in dishes])
+
+
+@dish_blueprint.route("/api/by_region/<region>", methods=["GET"])
+def get_dishes_by_region(region):
+    dishes = Dish.query.all()
+    dishes = filter(lambda item: udec(item.region.lower()) == udec(region.lower()), dishes)
+    
+    return jsonify([dish.to_dict() for dish in dishes])
