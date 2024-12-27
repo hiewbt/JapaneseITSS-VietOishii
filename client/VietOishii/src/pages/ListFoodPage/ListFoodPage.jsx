@@ -15,8 +15,18 @@ const { Title } = Typography;
 const ListFoodPage = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
-  const [filters, setFilters] = useState(location.state?.filters || {});
+  
+  const getInitialSearchTerm = () => {
+    return location.state?.searchTerm || localStorage.getItem('searchTerm') || '';
+  };
+
+  const getInitialFilters = () => {
+    const savedFilters = localStorage.getItem('filters');
+    return location.state?.filters || (savedFilters ? JSON.parse(savedFilters) : {});
+  };
+
+  const [searchTerm, setSearchTerm] = useState(getInitialSearchTerm());
+  const [filters, setFilters] = useState(getInitialFilters());
   const [data, setData] = useState(location.state?.searchResults || []);
   const [loading, setLoading] = useState(!location.state?.searchResults);
   const [error, setError] = useState(null);
