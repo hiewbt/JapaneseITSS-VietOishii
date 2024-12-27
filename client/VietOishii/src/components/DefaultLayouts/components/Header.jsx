@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Dropdown, Space, message, Menu, Avatar } from 'antd';
-import { DownOutlined, GlobalOutlined } from '@ant-design/icons';
+import { DownOutlined, GlobalOutlined,HeartOutlined, UserOutlined , LogoutOutlined} from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import axios from 'axios'; // Import axios
@@ -75,13 +75,16 @@ const Header = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="profile" onClick={() => navigate('/profile')}>
+        <UserOutlined style={{ marginRight: 8 }}  />
         {t('profile')}
       </Menu.Item>
-      <Menu.Item key="logout" onClick={handleLogout}>
-        {t('logout')}
-      </Menu.Item>
       <Menu.Item key="like" onClick={() => navigate('/like')}>
+        <HeartOutlined style={{ marginRight: 8 }} />
         {t('like')}
+      </Menu.Item>
+      <Menu.Item key="logout" onClick={handleLogout}>
+      <LogoutOutlined style={{ marginRight: 8 }} />
+        {t('logout')}
       </Menu.Item>
     </Menu>
   );

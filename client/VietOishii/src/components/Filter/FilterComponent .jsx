@@ -29,9 +29,9 @@ const FilterComponent = ({ onFilter }) => {
       { label: 'Đắng', value: 'đắng' },
     ],
     mainIngredients: [
-      { label: 'Thịt gà', value: 'thịt gà' },
-      { label: 'Thịt heo', value: 'thịt heo' },
-      { label: 'Thịt bò', value: 'thịt bò' },
+      { label: 'Thịt gà', value: 'gà' },
+      { label: 'Thịt heo', value: 'heo' },
+      { label: 'Thịt bò', value: 'bò' },
       { label: 'Hải sản', value: 'hải sản' },
       { label: 'Gạo', value: 'gạo' },
       { label: 'Ngô', value: 'ngô' },

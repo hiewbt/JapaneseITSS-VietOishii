@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 'antd';
 import { SearchOutlined } from "@ant-design/icons";
@@ -7,16 +8,16 @@ import styled from "@emotion/styled";
 import DishService from '../../services/DishService';
 import FilterComponent from "../../components/Filter/FilterComponent ";
 
-const { Option } = Select;
 const { Search } = Input;
 const { Title } = Typography;
 
 const ListFoodPage = () => {
   const { t } = useTranslation();
-  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
-  const [filters, setFilters] = useState(JSON.parse(localStorage.getItem('filters')) || {});
-  const [data, setData] = useState([]); // Chứa dữ liệu hiển thị
-  const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const [searchTerm, setSearchTerm] = useState(location.state?.searchTerm || '');
+  const [filters, setFilters] = useState(location.state?.filters || {});
+  const [data, setData] = useState(location.state?.searchResults || []);
+  const [loading, setLoading] = useState(!location.state?.searchResults);
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
 
@@ -24,16 +25,21 @@ const ListFoodPage = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        if (searchTerm) {
-          const results = await DishService.searchDishes(searchTerm);
-          setData(results);
-        } else if (Object.keys(filters).length > 0) {
-          const results = await DishService.filterDishes(filters);
-          setData(results);
+        const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
+        const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
+        
+        let results = [];
+        if (searchResults.length > 0 && filterResults.length > 0) {
+          results = searchResults.filter(dish => filterResults.some(filteredDish => filteredDish.id === dish.id));
+        } else if (searchResults.length > 0) {
+          results = searchResults;
+        } else if (filterResults.length > 0) {
+          results = filterResults;
         } else {
-          const dishes = await DishService.getDishes(); // Lấy danh sách mặc định
-          setData(dishes);
+          results = await DishService.getDishes(); // Lấy danh sách mặc định
         }
+
+        setData(results);
       } catch (error) {
         setError(error);
       } finally {
@@ -58,9 +64,18 @@ const ListFoodPage = () => {
     setIsFilterVisible(false);
   };
 
-  const resetFilters = () => {
+  const resetFilters = async () => {
     setSearchTerm('');
     setFilters({});
+    setLoading(true);
+    try {
+      const results = await DishService.getDishes(); // Lấy danh sách mặc định
+      setData(results);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -92,8 +107,6 @@ const ListFoodPage = () => {
       }}>
         <ResetButton type="primary" onClick={resetFilters}>{t("reset")}</ResetButton>
         <SelectWrapper defaultValue={t("sort_by")}>
-          <Option value="asc">A-Z</Option>
-          <Option value="desc">Z-A</Option>
         </SelectWrapper>
        
         <StyledSearch
@@ -136,8 +149,7 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
       
-      <Row gutter={[16, 16]} style={{  marginTop: 50 ,  minWidth: 1600,
- }}>
+      <Row gutter={[16, 16]} style={{  marginTop: 50 ,  minWidth: 1600 }}>
         {data.map((food, index) => (
           <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 }}>
             <FoodCard

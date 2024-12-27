@@ -87,13 +87,13 @@ const Home = () => {
                       <ul>
                         <li>
                           <p>
-                            <strong>Đặc điểm:</strong>{" "}
+                            <strong>{t('Dac_diem')}:</strong>{" "}
                             {regionData[region].characteristics}
                           </p>
                         </li>
                         <li>
                           <p>
-                            <strong>Khẩu vị:</strong> {regionData[region].taste}
+                            <strong>{t('Khau_vi')}:</strong> {regionData[region].taste}
                           </p>
                         </li>
                       </ul>
