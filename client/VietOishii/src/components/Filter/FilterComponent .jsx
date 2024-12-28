@@ -43,7 +43,7 @@ const FilterComponent = ({ onFilter }) => {
       { label: 'Ngũ cốc', value: 'ngũ cốc' },
       { label: 'Tôm', value: 'tôm' },
     ],
-    regions: [
+    region: [
       { label: 'Hokkaidō', value: 'hokkaido' },
       { label: 'Tōhoku', value: 'tohoku' },
       { label: 'Kantō', value: 'kanto' },
@@ -98,7 +98,7 @@ const FilterComponent = ({ onFilter }) => {
         {/* Regions */}
         <FilterSection name="regions" label="Khu vực">
           <Checkbox.Group>
-            {filterCategories.regions.map((item) => (
+            {filterCategories.region.map((item) => (
               <StyledCheckbox key={item.value} value={item.value}>
                 {item.label}
               </StyledCheckbox>

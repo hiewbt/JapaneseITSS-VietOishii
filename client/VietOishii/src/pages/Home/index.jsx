@@ -14,7 +14,7 @@ import DishService from '../../services/DishService';
 const { Content } = Layout;
 
 const Home = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const regions = Object.keys(regionData);
   const carouselRef = useRef([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -75,25 +75,25 @@ const Home = () => {
             size="large"
           >
             {regions.map((region, idx) => (
-              <Tabs.TabPane tab={region} key={region}>
+              <Tabs.TabPane tab={regionData[region].name[i18n.language]} key={region}>
                 <TabContent>
                   <div style={{ display: "flex", marginBottom: 32 }}>
                     <RegionImage
                       src={regionData[region].image}
-                      alt={regionData[region].name}
+                      alt={regionData[region].name[i18n.language]}
                     />
                     <RegionInfo>
-                      <h2>{regionData[region].name}</h2>
+                      <h2>{regionData[region].name[i18n.language]}</h2>
                       <ul>
                         <li>
                           <p>
                             <strong>{t('Dac_diem')}:</strong>{" "}
-                            {regionData[region].characteristics}
+                            {regionData[region].characteristics[i18n.language]}
                           </p>
                         </li>
                         <li>
                           <p>
-                            <strong>{t('Khau_vi')}:</strong> {regionData[region].taste}
+                            <strong>{t('Khau_vi')}:</strong> {regionData[region].taste[i18n.language]}
                           </p>
                         </li>
                       </ul>
