@@ -56,6 +56,15 @@ const getDetailDish = async (id) => {
   return response.data;
 
 };
+const getDishesByRegion = async (region) => {
+  try {
+    const response = await axios.get(`${API_URL}/by_region/${region}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching dishes by region:', error);
+    throw error;
+  }
+};
 
 export default {
   getDishes,
@@ -63,4 +72,5 @@ export default {
   filterDishes,
   getDetailDish,
   getDishesByCategorical,
+  getDishesByRegion,
 };

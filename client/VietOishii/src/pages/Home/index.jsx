@@ -1,6 +1,6 @@
-import {useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Layout, Tabs, Row, Card, Button, Input, Carousel, Modal } from "antd";
+import { Layout, Tabs, Row, Button, Input, Carousel, Modal } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { useTranslation } from 'react-i18next';
@@ -9,7 +9,7 @@ import FilterComponent from "../../components/Filter/FilterComponent ";
 import ArrowLeftCircle from "../../assets/arrow-left-circle-fill.svg";
 import ArrowRightCircle from "../../assets/arrow-right-circle-fill.svg";
 import DishService from '../../services/DishService';
-
+import FoodCard from '../../components/FoodCard/FoodCardHome';
 
 const { Content } = Layout;
 
@@ -18,7 +18,27 @@ const Home = () => {
   const regions = Object.keys(regionData);
   const carouselRef = useRef([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [dishesByRegion, setDishesByRegion] = useState({});
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDishesByRegion = async () => {
+      const dishes = {};
+      for (const region of regions) {
+        try {
+          const regionResults = await DishService.getDishesByRegion(region);
+          dishes[region] = regionResults;
+        } catch (error) {
+          console.error(`Error fetching dishes for region ${region}:`, error);
+        }
+      }
+      setDishesByRegion(dishes);
+    };
+
+    if (Object.keys(dishesByRegion).length === 0) {
+      fetchDishesByRegion();
+    }
+  }, [regions, dishesByRegion]);
 
   const handleSearch = async (value) => {
     try {
@@ -28,6 +48,7 @@ const Home = () => {
       console.error('Error searching dishes:', error);
     }
   };
+
   const handleFilter = async (filters) => {
     try {
       const filteredResults = await DishService.filterDishes(filters);
@@ -124,35 +145,9 @@ const Home = () => {
                       infinite={true}
                       style={{ margin: "0 40px" }}
                     >
-                      {regionData[region].dishes?.map((dish, index) => (
+                      {dishesByRegion[region]?.map((dish, index) => (
                         <div key={index} style={{ padding: "16px 32px" }}>
-                          <FoodCard
-                            hoverable
-                            style={{
-                              margin: "0 16px",
-                              width: "calc(100% - 32px)",
-                            }}
-                          >
-                            <div style={{ display: "flex", alignItems: "center" }}>
-                              <img
-                                src={dish.image}
-                                alt={dish.name}
-                                style={{
-                                  width: 140,
-                                  height: 140,
-                                  marginRight: 20,
-                                  borderRadius: 8,
-                                  objectFit: "cover",
-                                }}
-                              />
-                              <div>
-                                <h3>{dish.name}</h3>
-                                <p>
-                                  ⭐ {dish.rating} ❤️ {dish.likes}
-                                </p>
-                              </div>
-                            </div>
-                          </FoodCard>
+                          <FoodCard dish={dish} />
                         </div>
                       ))}
                     </Carousel>
@@ -207,19 +202,6 @@ const TabContent = styled.div`
   border: 2px solid #f0f0f0;
   border-radius: 12px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
-`;
-
-const FoodCard = styled(Card)`
-  width: 100%;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  border: 2px solid #f5f5f5;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 4px 12px rgba(228, 0, 58, 0.08);
-  }
 `;
 
 const RegionImage = styled.img`
