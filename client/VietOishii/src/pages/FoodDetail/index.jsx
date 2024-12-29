@@ -8,6 +8,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import styled from "@emotion/styled";
+import ImageUploader from '../../components/ImageUploader'; // Import ImageUploader
+
 const { Paragraph, Title, Text } = Typography;
 
 const FoodDetail = () => {
@@ -16,6 +18,7 @@ const FoodDetail = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [reviewContent, setReviewContent] = useState('');
   const [reviewRating, setReviewRating] = useState(0);
+  const [reviewImageUrl, setReviewImageUrl] = useState(''); // State to store uploaded image URL
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -90,11 +93,13 @@ const FoodDetail = () => {
         dish_id: parseInt(id),
         content: reviewContent,
         stars: reviewRating,
+        img_url: reviewImageUrl, // Include the uploaded image URL
       }, {
         withCredentials: true,
       });
       setReviewContent('');
       setReviewRating(0);
+      setReviewImageUrl(''); // Reset the image URL
       setShowReviewForm(false);
       fetchUserReviews(); // Refetch reviews after submitting
     } catch (error) {
@@ -263,10 +268,7 @@ const FoodDetail = () => {
                     onBlur={(e) => e.target.style.borderColor = '#E4003A'}
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-                    <UploadButton type="default">
-                      <CameraOutlined style={{ marginRight: 8 }} />
-                      {t('upload_image')}
-                    </UploadButton>
+                    <ImageUploader onUpload={setReviewImageUrl} /> {/* Use ImageUploader here */}
                     <RedButton type="primary" onClick={handleReviewSubmit}>
                       {t('gui_danh_gia')}
                     </RedButton>
@@ -317,11 +319,6 @@ const RedButton = styled(Button)`
     color: #fff !important;
   }
 `;
-const UploadButton = styled(Button)`
-  &:hover, &:focus {
-    border-color: #ff4d4f !important;
-    color: #ff4d4f !important;
-  }
-`;
+
 
 export default FoodDetail;
