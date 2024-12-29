@@ -3,6 +3,7 @@ import flask_login
 
 from models import db
 from models.comment import Comment
+from models.dish import Dish
 from models.user import User
 
 
@@ -14,12 +15,24 @@ def comment():
     data = request.get_json()
     
     if flask_login.current_user.is_authenticated:
+        # add new comment
         new_comment = Comment(
             user_id=flask_login.current_user.id,
             **data
         )
         
         db.session.add(new_comment)
+        db.session.commit()
+        
+        # update num_ratings and the rating on average
+        dish_id = int(data["dish_id"])
+        dish = Dish.query.get(dish_id)
+        
+        # recalc the rating on average
+        new_rating = int(data["stars"])
+        dish.rating = (dish.rating * dish.num_ratings + new_rating) / (dish.num_ratings + 1)
+        dish.num_ratings += 1
+        
         db.session.commit()
 
         return jsonify({"message": "Commented"})

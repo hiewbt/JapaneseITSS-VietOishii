@@ -5,7 +5,8 @@ db_file=database/database.db
 export HOST=0.0.0.0
 export PORT=8081
 
-database_path=`pwd $db_file`/$db_file
+database_path=`pwd`/$db_file
 export DB_URI="sqlite:///$database_path"
 
 export SECRET_KEY=dino12345@
+export FLASK_APP=src/app.py
