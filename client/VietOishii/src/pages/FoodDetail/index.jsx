@@ -169,7 +169,7 @@ const FoodDetail = () => {
                   {dishDetail.img_path && (
                     <img
                       src={dishDetail.img_path}
-                      alt={dishDetail.name}
+                      alt={getLocalizedText(dishDetail.name)}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -181,10 +181,11 @@ const FoodDetail = () => {
               </Col>
               <Col xs={24} md={12}>
                 <div style={{ position: "relative" }}>
-                  <Title level={2}>{dishDetail.name}</Title>
+                  <Title level={2}>{getLocalizedText(dishDetail.name)}</Title>
                   <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
                     onClick={() => {handleLikeDish(id)}}
-                  /> : <HeartFilled style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer", color: "red" }}/>
+                  />  
+                  <HeartFilled style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer", color: "red" }}/>
                 </div>
                 <Paragraph style={{fontSize: 18}}>{getLocalizedText(dishDetail.description)}</Paragraph>
                 <div style={{ marginTop: "30px", borderRadius: "8px" }}>
@@ -236,8 +237,7 @@ const FoodDetail = () => {
                   />
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
                     <UploadButton type="default">
-                    <CameraOutlined style={{ marginRight: 8 }}
-                    />
+                      <CameraOutlined style={{ marginRight: 8 }} />
                       {t('upload_image')}
                     </UploadButton>
                     <RedButton type="primary" onClick={handleReviewSubmit}>

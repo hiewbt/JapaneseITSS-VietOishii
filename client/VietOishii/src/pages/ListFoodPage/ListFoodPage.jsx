@@ -188,6 +188,7 @@ const ListFoodPage = () => {
               name={getLocalizedText(food.name)}
               description={getLocalizedText(food.description)}
               img_path={food.img_path}
+              num_likes={food.num_likes}
             />
           </Col>
         ))}

@@ -11,6 +11,7 @@ const FoodCard = ({ id, name, description, img_path }) => {
   // eslint-disable-next-line no-unused-vars
   const [userReviews, setUserReviews] = useState([]);
   const [averageStars, setAverageStars] = useState(5); 
+  const [numLikes, setNumLikes] = useState(0);
 
   const handleCardClick = () => {
     navigate(`/food-detail/${id}`);
@@ -38,7 +39,19 @@ const FoodCard = ({ id, name, description, img_path }) => {
       }
     };
 
+    const fetchNumLikes = async () => {
+      try {
+        const response = await axios.post(`${API_URL}/get_likes`, {
+          dish_id: id,
+        });
+        setNumLikes(response.data.num_likes);
+      } catch (error) {
+        console.error('Error fetching number of likes:', error);
+      }
+    };
+
     fetchUserReviews();
+    fetchNumLikes();
   }, [id]);
 
   return (
@@ -56,7 +69,10 @@ const FoodCard = ({ id, name, description, img_path }) => {
         <div style={{ marginTop: 10 }}></div>
         <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <Rate disabled allowHalf value={averageStars} />
-          <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
+            <span style={{ marginLeft: 5 }}>{numLikes}</span>
+          </div>
         </div>
       </Card>
     </>
