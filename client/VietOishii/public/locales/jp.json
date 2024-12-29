@@ -36,5 +36,9 @@
     "add_comment": "コメントを追加",
     "gui_danh_gia": "評価を送信",
     "chat_luong_mon_an": "料理の品質",
-    "upload_image": "画像をアップロード"
+    "upload_image": "画像をアップロード",
+    "added_to_favorites": "お気に入りに追加しました",
+    "success": "成功",
+    "failed_to_add_to_favorites": "お気に入りに追加できませんでした",
+    "error": "エラー"
 }

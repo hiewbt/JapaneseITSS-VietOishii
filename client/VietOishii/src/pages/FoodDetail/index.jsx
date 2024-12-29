@@ -1,6 +1,5 @@
-/* eslint-disable no-undef */
 import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input, notification } from "antd";
-import { ArrowLeftOutlined, UserOutlined, HeartOutlined, CameraOutlined, HeartFilled } from "@ant-design/icons";
+import { ArrowLeftOutlined, UserOutlined, HeartOutlined, HeartFilled, CameraOutlined } from "@ant-design/icons";
 import DishService from "../../services/DishService";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -8,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import styled from "@emotion/styled";
 const { Paragraph, Title, Text } = Typography;
-const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const FoodDetail = () => {
   const [userReviews, setUserReviews] = useState([]);
@@ -19,8 +17,9 @@ const FoodDetail = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [liked, setLiked] = useState(false);
   const navigate = useNavigate();
-  const { t , i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchDishDetail = async () => {
@@ -80,21 +79,23 @@ const FoodDetail = () => {
     }
   };
 
-  const handleLikeDish = async (id) => {
+  const handleLikeDish = async () => {
     try {
-      await axios.post(`${API_URL}/like`, {
+      await axios.post(`${import.meta.env.VITE_API_URL}/like`, {
         dish_id: id,
       }, {
         withCredentials: true,
       });
+      setLiked(true);
       notification.success({
-        description: 'Đã thêm vào danh sách yêu thích!',
+        message: t('success'),
+        description: t('added_to_favorites'),
       });
-      setLike(true);
     } catch (error) {
       console.error('Error liking dish:', error);
       notification.error({
-        description: 'Thêm thất bại!',
+        message: t('error'),
+        description: t('failed_to_add_to_favorites'),
       });
     }
   };
@@ -182,10 +183,13 @@ const FoodDetail = () => {
               <Col xs={24} md={12}>
                 <div style={{ position: "relative" }}>
                   <Title level={2}>{getLocalizedText(dishDetail.name)}</Title>
-                  <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
-                    onClick={() => {handleLikeDish(id)}}
-                  />  
-                  <HeartFilled style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer", color: "red" }}/>
+                  {liked ? (
+                    <HeartFilled style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer", color: "red" }} />
+                  ) : (
+                    <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer" }}
+                      onClick={handleLikeDish}
+                    />
+                  )}
                 </div>
                 <Paragraph style={{fontSize: 18}}>{getLocalizedText(dishDetail.description)}</Paragraph>
                 <div style={{ marginTop: "30px", borderRadius: "8px" }}>

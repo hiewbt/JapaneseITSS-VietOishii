@@ -65,7 +65,7 @@ const FoodCardHome = ({ dish }) => {
         <div>
           <h3>{dish.name}</h3>
           <p>
-            ⭐ {averageStars} ❤️ {dish.likes}
+            ⭐ {averageStars} ❤️ {dish.num_likes ?? 0}
           </p>
         </div>
       </div>
@@ -78,7 +78,7 @@ FoodCardHome.propTypes = {
     id: PropTypes.number.isRequired,
     img_path: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
+    num_likes: PropTypes.number.isRequired,
   }).isRequired,
 };
 

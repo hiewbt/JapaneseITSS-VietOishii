@@ -36,5 +36,9 @@
     "add_comment": "Thêm bình luận",
     "gui_danh_gia": "Gửi đánh giá",
     "chat_luong_mon_an": "Chất lượng món ăn",
-    "upload_image": "Tải ảnh lên"
+    "upload_image": "Tải ảnh lên",
+    "success": "Thành công",
+    "added_to_favorites": "Đã thêm vào mục yêu thích",
+    "error": "Lỗi",
+    "failed_to_add_to_favorites": "Thêm vào mục yêu thích thất bại"
 }
