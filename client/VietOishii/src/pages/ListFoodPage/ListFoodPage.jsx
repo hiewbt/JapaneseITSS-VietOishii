@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 'antd';
@@ -7,7 +7,8 @@ import FoodCard from '../../components/FoodCard/FoodCard';
 import styled from "@emotion/styled";
 import axios from 'axios';
 import DishService from '../../services/DishService';
-import FilterComponent from "../../components/Filter/FilterComponent ";
+import FilterComponent from "../../components/Filter/FilterComponent";
+
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 const { Search } = Input;
 const { Title } = Typography;
@@ -15,7 +16,7 @@ const { Title } = Typography;
 const ListFoodPage = () => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
-  
+
   const getInitialSearchTerm = () => {
     return location.state?.searchTerm || localStorage.getItem('searchTerm') || '';
   };
@@ -45,13 +46,8 @@ const ListFoodPage = () => {
         const params = new URLSearchParams(location.search);
         const categorical = params.get('categorical');
         let results = [];
-
-        const categoricalResults = categorical 
-          ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data 
-          : [];
-        const searchResults = searchTerm 
-          ? (await DishService.searchDishes(searchTerm)).data 
-          : [];
+        const categoricalResults = categorical ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data : [];
+        const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
         const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
 
         if (categoricalResults.length > 0) {
@@ -70,7 +66,8 @@ const ListFoodPage = () => {
         } else if (filterResults.length > 0) {
           results = filterResults;
         } else {
-          results = await DishService.getDishes(); // Lấy danh sách mặc định
+          const response = await DishService.getDishes();
+          results = response || []; // Lấy danh sách mặc định
         }
 
         setData(results);
@@ -105,6 +102,15 @@ const ListFoodPage = () => {
     localStorage.setItem('filters', JSON.stringify(filters));
   }, [searchTerm, filters]);
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categorical = params.get('categorical');
+    if (categorical) {
+      setSearchTerm('');
+      setFilters({});
+    }
+  }, [location.search]);
+
   const handleSearch = async (value) => {
     setSearchTerm(value);
   };
@@ -115,18 +121,16 @@ const ListFoodPage = () => {
   };
 
   const resetFilters = async () => {
-    const params = new URLSearchParams(location.search);
-    const categorical = params.get('categorical');
     setSearchTerm('');
     setFilters({});
     setLoading(true);
     try {
-      const results = categorical 
-        ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data 
-        : await DishService.getDishes(); // Lấy danh sách mặc định
+      const response = await DishService.getDishes();
+      const results = response || []; // Lấy danh sách mặc định
       setData(results);
     } catch (error) {
-      setError(error);
+      console.error('Failed to fetch dishes:', error);
+      setError(t('failed_to_fetch_dishes'));
     } finally {
       setLoading(false);
     }
@@ -143,7 +147,7 @@ const ListFoodPage = () => {
   if (error) {
     return (
       <Container>
-        <Alert message={t('error')} description={t('failed_to_fetch_dishes')} type="error" showIcon />
+        <Alert message={t('error')} description={error.message} type="error" showIcon />
       </Container>
     );
   }
@@ -160,15 +164,13 @@ const ListFoodPage = () => {
         flexWrap: "wrap" 
       }}>
         <ResetButton type="primary" onClick={resetFilters}>{t("reset")}</ResetButton>
-        <SelectWrapper defaultValue={t("sort_by")}>
-        </SelectWrapper>
-       
+        <SelectWrapper defaultValue={t("sort_by")}></SelectWrapper>
         <StyledSearch
           placeholder={t("search_placeholder")}
           onSearch={handleSearch}
           style={{ width: 350 }}
         />
-         <FilterButton
+        <FilterButton
           icon={<SearchOutlined />}
           size="large"
           onClick={() => setIsFilterVisible(true)}
@@ -202,20 +204,26 @@ const ListFoodPage = () => {
       >
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
-      
-      <Row gutter={[16, 16]} style={{  marginTop: 50 ,  minWidth: 1600 }}>
-        {data.map((food, index) => (
-          <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 }}>
-            <FoodCard
-              id={food.id}
-              name={getLocalizedText(food.name)}
-              description={getLocalizedText(food.description)}
-              img_path={food.img_path}
-              num_likes={food.num_likes}
-              isLike={likedDishes.some(dish => dish.id === food.id) ? 1 : 0}
-            />
+
+      <Row gutter={[16, 16]} style={{ marginTop: 50, minWidth: 1400 }}>
+        {data.length > 0 ? (
+          data.map((food, index) => (
+            <Col key={index} xs={24} sm={8} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginTop: 25, padding: '0 40px' }}>
+              <FoodCard
+                id={food.id}
+                name={getLocalizedText(food.name)}
+                description={getLocalizedText(food.description)}
+                img_path={food.img_path}
+                num_likes={food.num_likes + 100}
+                isLike={likedDishes.some(dish => dish.id === food.id) ? 1 : 0}
+              />
+            </Col>
+          ))
+        ) : (
+          <Col span={24} style={{ textAlign: 'center', marginTop: 50 }}>
+            <Alert message={t('no_dishes_found')} type="info" />
           </Col>
-        ))}
+        )}
       </Row>
     </Container>
   );

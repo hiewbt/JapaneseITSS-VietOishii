@@ -40,5 +40,6 @@
     "added_to_favorites": "お気に入りに追加しました",
     "success": "成功",
     "failed_to_add_to_favorites": "お気に入りに追加できませんでした",
-    "error": "エラー"
+    "error": "エラー",
+    "no_dishes_found": "料理が見つかりません"
 }

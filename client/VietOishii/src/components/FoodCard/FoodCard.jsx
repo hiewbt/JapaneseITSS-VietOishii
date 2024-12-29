@@ -44,16 +44,17 @@ const FoodCard = ({ id, name, description, img_path, num_likes, isLike }) => {
     <>
       <Card
         hoverable
-        style={{ width: 240 }}
-        cover={<img alt={name} src={img_path} style={{ height: 150, objectFit: "cover" }} />}
+        style={{ width: 340, display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+        cover={<img alt={name} src={img_path} style={{ height: 160, objectFit: "cover" }} />}
         onClick={handleCardClick}
       >
-        <Card.Meta 
-          title={<span style={{ fontSize: '18px' }}>{name}</span>} 
-          description={<span style={{ fontSize: '16px' }}>{description}</span>} 
-        />
-        <div style={{ marginTop: 10 }}></div>
-        <div style={{ marginTop: 10, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <Card.Meta 
+            title={<span style={{ fontSize: '18px' }}>{name}</span>} 
+            description={<span style={{ fontSize: '16px' }}>{description}</span>} 
+          />
+        </div>
+        <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center" ,  }}>
           <Rate disabled allowHalf value={averageStars} />
           <div style={{ display: "flex", alignItems: "center" }}>
             {isLike ? (

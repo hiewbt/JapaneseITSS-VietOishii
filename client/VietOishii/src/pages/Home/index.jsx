@@ -5,7 +5,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { useTranslation } from 'react-i18next';
 import { regionData } from "./regionData";
-import FilterComponent from "../../components/Filter/FilterComponent ";
+import FilterComponent from "../../components/Filter/FilterComponent";
 import ArrowLeftCircle from "../../assets/arrow-left-circle-fill.svg";
 import ArrowRightCircle from "../../assets/arrow-right-circle-fill.svg";
 import DishService from '../../services/DishService';

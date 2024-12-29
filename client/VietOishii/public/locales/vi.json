@@ -40,5 +40,6 @@
     "success": "Thành công",
     "added_to_favorites": "Đã thêm vào mục yêu thích",
     "error": "Lỗi",
-    "failed_to_add_to_favorites": "Thêm vào mục yêu thích thất bại"
+    "failed_to_add_to_favorites": "Thêm vào mục yêu thích thất bại",
+    "no_dishes_found": "Không tìm thấy món ăn"
 }

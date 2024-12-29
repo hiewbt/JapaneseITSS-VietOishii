@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from '@emotion/styled';
 import Col from 'antd/es/grid/col';
 import axios from 'axios';
-import FoodLikeCard from '../../components/FoodCard/FoodLikeCard';
+import FoodCard from '../../components/FoodCard/FoodCard';
 import { Spin, Alert,} from 'antd';
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
@@ -60,10 +60,14 @@ const LikePage = () => {
       <DishesContainer>
         {likedDishes.map(dish => (
             <Col key={dish.id} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 , marginBottom: 25 }}>
-          <FoodLikeCard id={dish.id}
-              name={getLocalizedText(dish.name)}
-              description={getLocalizedText(dish.description)}
-              img_path={dish.img_path}/>
+          <FoodCard
+                          id={dish.id}
+                          name={getLocalizedText(dish.name)}
+                          description={getLocalizedText(dish.description)}
+                          img_path={dish.img_path}
+                          num_likes={dish.num_likes}
+                          isLike={likedDishes.some(dish => dish.id === dish.id) ? 1 : 0}
+                        />
           </Col>
         ))}
       </DishesContainer>

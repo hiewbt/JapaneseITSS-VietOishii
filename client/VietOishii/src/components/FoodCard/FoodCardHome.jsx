@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import styled from "@emotion/styled";
+import { useTranslation } from "react-i18next";
+
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const FoodCardHome = ({ dish }) => {
@@ -11,7 +13,7 @@ const FoodCardHome = ({ dish }) => {
   // eslint-disable-next-line no-unused-vars
   const [userReviews, setUserReviews] = useState([]);
   const [averageStars, setAverageStars] = useState(5); 
-
+  const { i18n } = useTranslation();
   const handleCardClick = () => {
     navigate(`/food-detail/${dish.id}`);
   };
@@ -29,9 +31,9 @@ const FoodCardHome = ({ dish }) => {
         if (myData.length > 0) {
           const totalStars = myData.reduce((acc, review) => acc + review.stars, 0);
           const average = totalStars / myData.length;
-          setAverageStars(average);
+          setAverageStars(average.toFixed(1));
         } else {
-          setAverageStars(5); 
+          setAverageStars(5.0.toFixed(1)); 
         }
       } catch (error) {
         console.error('Error fetching user reviews:', error);
@@ -40,7 +42,10 @@ const FoodCardHome = ({ dish }) => {
 
     fetchUserReviews();
   }, [dish.id]);
-
+  const getLocalizedText = (text) => {
+    const [viText, jpText] = text.split('|');
+    return i18n.language === 'vi' ? viText : jpText;
+  };
   return (
     <StyledCard
       hoverable
@@ -63,9 +68,9 @@ const FoodCardHome = ({ dish }) => {
           }}
         />
         <div>
-          <h3>{dish.name}</h3>
+          <h3>{getLocalizedText(dish.name)}</h3>
           <p>
-            ⭐ {averageStars} ❤️ {dish.num_likes ?? 0}
+            ⭐ {averageStars} ❤️ {dish.num_likes + 100}
           </p>
         </div>
       </div>
