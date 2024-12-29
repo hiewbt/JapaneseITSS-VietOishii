@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import axios from 'axios'; 
 import { Layout, Row, Col, Card, Avatar, Menu, Input, Button, Divider, Form, notification } from "antd";
+
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const { Sider, Content } = Layout;
 
@@ -9,21 +12,38 @@ const ProfilePage = () => {
     const [selectedKey, setSelectedKey] = useState("profile");
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
-        name: "Bùi Thế Hiếu",
-        email: "Hieu.bt215047@sis.hust.edu.vn",
-        phoneNumber: "0123456789",
-        sex: "Nam",
-        dateOfbirth: "01/01/2000",
+        username: "",
+        email: "",
+        phone: "",
+        gender: "",
+        date_of_birth: "",
     });
-    const userName = "Bùi Thế Hiếu";
+    const [userName, setUserName] = useState("");
     const fields = [
-        { label: "Tên", name: "name" },
+        { label: "Tên", name: "username" },
         { label: "Email", name: "email" },
-        { label: "Số điện thoại", name: "phoneNumber" },
-        { label: "Giới tính", name: "sex" },
-        { label: "Ngày sinh", name: "dateOfbirth" },
+        { label: "Số điện thoại", name: "phone" },
+        { label: "Giới tính", name: "gender" },
+        { label: "Ngày sinh", name: "date_of_birth" },
     ];
     const [avatarUrl, setAvatarUrl] = useState("https://picsum.photos/200");
+
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+          try {
+            const response = await axios.get(`${API_URL}/profile`, {
+              withCredentials: true,
+            });
+            console.log('User profile fetched:', response.data);
+            setFormData(response.data.user);
+            setUserName(response.data.user.username);
+          } catch (error) {
+            console.error('Failed to fetch user profile:', error);
+          }
+        };
+    
+        fetchUserProfile();
+    }, []);
 
     const handleMenuClick = (e) => {
         setSelectedKey(e.key);
@@ -33,11 +53,36 @@ const ProfilePage = () => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
+    
+    const updateUserProfile = async () => {
+        const { username, phone, gender, date_of_birth } = formData;
+        const updatedData = {
+            displayed_name: username,
+            phone,
+            gender,
+            // date_of_birth: `${date_of_birth} 00:00:00`,
+        };
+        console.log(updatedData);
+
+        try {
+            const response = await axios.post(`${API_URL}/update-displayed-info`, updatedData, {
+                withCredentials: true,
+            });
+            console.log('User profile updated:', response.data);
+            notification.success({
+                message: "Cập nhật thông tin thành công",
+            });
+        } catch (error) {
+            console.error('Failed to update user profile:', error);
+            notification.error({
+                message: "Cập nhật thông tin thất bại",
+            });
+        }
+    };
 
     const toggleEdit = () => {
         if (isEditing) {
-            // Gửi yêu cầu cập nhật về server (giả lập console log)
-            console.log("Cập nhật thông tin:", formData);
+            updateUserProfile();
         }
         setIsEditing(!isEditing);
     };
@@ -63,6 +108,27 @@ const ProfilePage = () => {
       });
   };
 
+  const changePassword = async () => {
+    const { oldPassword, newPassword } = passwordFormData;
+    try {
+        const response = await axios.post(`${API_URL}/change-password`, {
+            old_password: oldPassword,
+            new_password: newPassword,
+        }, {
+            withCredentials: true,
+        });
+        console.log('Password changed:', response.data);
+        notification.success({
+            message: "Đổi mật khẩu thành công",
+        });
+    } catch (error) {
+        console.error('Failed to change password:', error);
+        notification.error({
+            message: "Đổi mật khẩu thất bại",
+        });
+    }
+};
+
   const handleSubmit = () => {
       const { oldPassword, newPassword, confirmPassword } = passwordFormData;
       if (newPassword !== confirmPassword) {
@@ -79,10 +145,7 @@ const ProfilePage = () => {
           return;
       }
 
-      // Xử lý đổi mật khẩu ở đây (gửi request API hoặc cập nhật dữ liệu)
-      notification.success({
-          message: "Đổi mật khẩu thành công",
-      });
+      changePassword();
   };
 
     const renderContent = () => {
