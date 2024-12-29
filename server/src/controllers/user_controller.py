@@ -1,5 +1,6 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, make_response, request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+import flask_login
 
 from models import db
 from models.user import User
@@ -106,6 +107,24 @@ def change_password():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
+
+
+@user_blueprint.route("/api/update-displayed-info", methods=["POST"])
+@login_required
+def update_displayed_info():
+    data = request.get_json()
+    
+    user = User.query.get(flask_login.current_user.id)
+    
+    try:
+        for key, value in data:
+            setattr(user, key, value)
+    except:
+        return make_response("Idk wtf just happened but it was an error")
+    
+    db.session.commit()
+    
+    return make_response("OK")
 
 
 @user_blueprint.errorhandler(401)
