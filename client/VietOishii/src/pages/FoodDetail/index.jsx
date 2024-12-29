@@ -18,7 +18,7 @@ const FoodDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   useEffect(() => {
     const fetchDishDetail = async () => {
@@ -41,6 +41,7 @@ const FoodDetail = () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_comments`, {
         dish_id: id,
+        language: i18n.language,
       });
       let myData = response.data;
       console.log(myData);
@@ -53,7 +54,7 @@ const FoodDetail = () => {
   useEffect(() => {
     fetchUserReviews();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, i18n.language]);
 
   const handleAddReview = () => {
     setShowReviewForm(true);
@@ -71,7 +72,7 @@ const FoodDetail = () => {
       setReviewContent('');
       setReviewRating(0);
       setShowReviewForm(false);
-      fetchUserReviews();
+      fetchUserReviews(); // Refetch reviews after submitting
     } catch (error) {
       console.error('Error submitting review:', error);
     }
@@ -114,6 +115,11 @@ const FoodDetail = () => {
       </div>
     );
   }
+
+  const getLocalizedText = (text) => {
+    const [viText, jpText] = text.split('|');
+    return i18n.language === 'vi' ? viText : jpText;
+  };
 
   return (
     <PageContainer>
@@ -158,22 +164,22 @@ const FoodDetail = () => {
               </Col>
               <Col xs={24} md={12}>
                 <div style={{ position: "relative" }}>
-                  <Title level={2}>{dishDetail.name}</Title>
+                  <Title level={2}>{getLocalizedText(dishDetail.name)}</Title>
                   <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
                     onClick={() => {handleLikeDish(id)}}
                   />
                 </div>
-                <Paragraph style={{fontSize: 18}}>{dishDetail.description}</Paragraph>
+                <Paragraph style={{fontSize: 18}}>{getLocalizedText(dishDetail.description)}</Paragraph>
                 <div style={{ marginTop: "30px", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
                   <Paragraph style={{fontSize: 18}}>
-                    {dishDetail.ingredients}
+                    {getLocalizedText(dishDetail.ingredients)}
                   </Paragraph>
                 </div>
                 <div style={{ marginTop: "30px", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
                   <Paragraph style={{fontSize: 18}}>
-                    {dishDetail.flavor}
+                    {getLocalizedText(dishDetail.flavor)}
                   </Paragraph>
                 </div>
               </Col>
@@ -181,7 +187,7 @@ const FoodDetail = () => {
             <div style={{ marginTop: "30px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
               <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
               <Paragraph style={{fontSize: 18}}>
-                {dishDetail.similar_japanese_dish}
+                {getLocalizedText(dishDetail.similar_japanese_dish)}
               </Paragraph>
             </div>
 
@@ -239,7 +245,7 @@ const FoodDetail = () => {
                     <Rate disabled defaultValue={user.stars} />
                   </div>
                   <Paragraph style={{ marginLeft: "30px", color: "gray" }}>
-                    {user.content}
+                    {getLocalizedText(user.content)}
                   </Paragraph>
                   {user.img_url && <img src={user.img_url} alt="Review" style={{ maxWidth: "100%", maxHeight: "200px", objectFit: "cover" }} />}
                 </div>

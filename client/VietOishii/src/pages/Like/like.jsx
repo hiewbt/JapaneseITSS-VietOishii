@@ -4,32 +4,66 @@ import styled from '@emotion/styled';
 import Col from 'antd/es/grid/col';
 import axios from 'axios';
 import FoodLikeCard from '../../components/FoodCard/FoodLikeCard';
+import { Spin, Alert,} from 'antd';
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const LikePage = () => {
-  const { t } = useTranslation();
-  const [dishes, setDishes] = useState([]);
+  const { t, i18n } = useTranslation();
+  const [likedDishes, setLikedDishes] = useState([]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const getLocalizedText = (text) => {
+    const [viText, jpText] = text.split('|');
+    return i18n.language === 'vi' ? viText : jpText;
+  };
 
   useEffect(() => {
     const fetchLikedDishes = async () => {
       try {
-        const response = await axios.get(`${API_URL}/liked_dishes`, { withCredentials: true });
-        setDishes(response.data);
+        setLoading(true);
+        const response = await axios.get(`${API_URL}/liked_dishes`, {
+          params: { language: i18n.language },
+          withCredentials: true,
+        });
+        setLikedDishes(response.data);
       } catch (error) {
         console.error('Failed to fetch liked dishes:', error);
+        setError(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchLikedDishes();
-  }, []);
+  }, [i18n.language]);
+  if (loading) {
+    return (
+      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+        <Spin size="large" tip={t('loading')} />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <Alert message={t('error')} description={t('failed_to_fetch_liked_dishes')} type="error" showIcon />
+      </Container>
+    );
+  }
 
   return (
     <div>
       <PageHeader>{t('favorite food list')}</PageHeader>
       <DishesContainer>
-        {dishes.map(dish => (
+        {likedDishes.map(dish => (
             <Col key={dish.id} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 , marginBottom: 25 }}>
-          <FoodLikeCard key={dish.id} {...dish} />
+          <FoodLikeCard id={dish.id}
+              name={getLocalizedText(dish.name)}
+              description={getLocalizedText(dish.description)}
+              img_path={dish.img_path}/>
           </Col>
         ))}
       </DishesContainer>
@@ -54,6 +88,9 @@ const DishesContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   gap: 16px;
+`;
+const Container = styled.div`
+  padding: 20px;
 `;
 
 export default LikePage;

@@ -13,7 +13,7 @@ const { Search } = Input;
 const { Title } = Typography;
 
 const ListFoodPage = () => {
-  const { t } = useTranslation();
+  const { t , i18n} = useTranslation();
   const location = useLocation();
   
   const getInitialSearchTerm = () => {
@@ -31,7 +31,10 @@ const ListFoodPage = () => {
   const [loading, setLoading] = useState(!location.state?.searchResults);
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
-
+  const getLocalizedText = (text) => {
+    const [viText, jpText] = text.split('|');
+    return i18n.language === 'vi' ? viText : jpText;
+  };
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -182,8 +185,8 @@ const ListFoodPage = () => {
           <Col key={index} xs={24} sm={12} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center' , marginTop: 25 }}>
             <FoodCard
               id={food.id}
-              name={food.name}
-              description={food.description}
+              name={getLocalizedText(food.name)}
+              description={getLocalizedText(food.description)}
               img_path={food.img_path}
             />
           </Col>
