@@ -116,11 +116,8 @@ def update_displayed_info():
     
     user = User.query.get(flask_login.current_user.id)
     
-    try:
-        for key, value in data:
-            setattr(user, key, value)
-    except:
-        return make_response("Idk wtf just happened but it was an error")
+    for key, value in data:
+        setattr(user, key, value)
     
     db.session.commit()
     
