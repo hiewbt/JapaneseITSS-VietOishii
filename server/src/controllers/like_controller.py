@@ -29,7 +29,11 @@ def like():
         
         # update number of likes
         dish = Dish.query.get(int(data["dish_id"]))
+        
+        if dish.num_likes is None:
+            dish.num_likes = 0    
         dish.num_likes += 1
+        
         db.session.commit()
         
         return jsonify({"message": "Liked"})
