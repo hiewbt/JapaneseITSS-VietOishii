@@ -122,6 +122,8 @@ def update_displayed_info():
     except:
         return make_response("Idk wtf just happened but it was an error")
     
+    db.session.commit()
+    
     return make_response("OK")
 
 
