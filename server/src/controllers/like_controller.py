@@ -27,6 +27,11 @@ def like():
         except:
             return jsonify({"error": "You cannot like it. Some error occured :))"}), 400
         
+        # update number of likes
+        dish = Dish.query.get(int(data["dish_id"]))
+        dish.num_likes += 1
+        db.session.commit()
+        
         return jsonify({"message": "Liked"})
     else:
         return jsonify({"error": "Anonymous user cannot like"}), 400
