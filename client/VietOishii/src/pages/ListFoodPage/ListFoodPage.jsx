@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 'antd';
@@ -13,7 +13,7 @@ const { Search } = Input;
 const { Title } = Typography;
 
 const ListFoodPage = () => {
-  const { t , i18n} = useTranslation();
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   
   const getInitialSearchTerm = () => {
@@ -22,19 +22,22 @@ const ListFoodPage = () => {
 
   const getInitialFilters = () => {
     const savedFilters = localStorage.getItem('filters');
-    return location.state?.filters || (savedFilters ? JSON.parse(savedFilters) : {});
+    return savedFilters ? JSON.parse(savedFilters) : {};
   };
 
   const [searchTerm, setSearchTerm] = useState(getInitialSearchTerm());
   const [filters, setFilters] = useState(getInitialFilters());
-  const [data, setData] = useState(location.state?.searchResults || []);
-  const [loading, setLoading] = useState(!location.state?.searchResults);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
+  const [likedDishes, setLikedDishes] = useState([]);
+
   const getLocalizedText = (text) => {
     const [viText, jpText] = text.split('|');
     return i18n.language === 'vi' ? viText : jpText;
   };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -43,8 +46,12 @@ const ListFoodPage = () => {
         const categorical = params.get('categorical');
         let results = [];
 
-        const categoricalResults = categorical ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data : [];
-        const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
+        const categoricalResults = categorical 
+          ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data 
+          : [];
+        const searchResults = searchTerm 
+          ? (await DishService.searchDishes(searchTerm)).data 
+          : [];
         const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
 
         if (categoricalResults.length > 0) {
@@ -76,6 +83,22 @@ const ListFoodPage = () => {
 
     fetchData();
   }, [searchTerm, filters, location]);
+
+  useEffect(() => {
+    const fetchLikedDishes = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/liked_dishes`, {
+          params: { language: i18n.language },
+          withCredentials: true,
+        });
+        setLikedDishes(response.data);
+      } catch (error) {
+        console.error('Failed to fetch liked dishes:', error);
+      }
+    };
+
+    fetchLikedDishes();
+  }, [i18n.language]);
 
   useEffect(() => {
     localStorage.setItem('searchTerm', searchTerm);
@@ -189,6 +212,7 @@ const ListFoodPage = () => {
               description={getLocalizedText(food.description)}
               img_path={food.img_path}
               num_likes={food.num_likes}
+              isLike={likedDishes.some(dish => dish.id === food.id) ? 1 : 0}
             />
           </Col>
         ))}

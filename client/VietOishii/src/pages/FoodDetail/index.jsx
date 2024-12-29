@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input, notification } from "antd";
 import { ArrowLeftOutlined, UserOutlined, HeartOutlined, HeartFilled, CameraOutlined } from "@ant-design/icons";
 import DishService from "../../services/DishService";
@@ -18,6 +20,7 @@ const FoodDetail = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [liked, setLiked] = useState(false);
+  const [likedDishes, setLikedDishes] = useState([]);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
@@ -38,6 +41,27 @@ const FoodDetail = () => {
     fetchDishDetail();
   }, [id]);
 
+  useEffect(() => {
+    const fetchLikedDishes = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/liked_dishes`, {
+          params: { language: i18n.language },
+          withCredentials: true,
+        });
+        setLikedDishes(response.data);
+        setLiked(response.data.some(dish => dish.id === parseInt(id)));
+      } catch (error) {
+        console.error('Failed to fetch liked dishes:', error);
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLikedDishes();
+  }, [id, i18n.language]);
+
   const fetchUserReviews = async () => {
     try {
       const response = await axios.post(`${import.meta.env.VITE_API_URL}/get_comments`, {
@@ -54,7 +78,6 @@ const FoodDetail = () => {
 
   useEffect(() => {
     fetchUserReviews();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, i18n.language]);
 
   const handleAddReview = () => {
