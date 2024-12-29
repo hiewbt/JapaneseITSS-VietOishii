@@ -29,6 +29,12 @@ def comment():
         dish = Dish.query.get(dish_id)
         
         # recalc the rating on average
+        if dish.rating is None:
+            dish.rating = 0.0
+        
+        if dish.num_ratings is None:
+            dish.num_ratings = 0
+        
         new_rating = int(data["stars"])
         dish.rating = (dish.rating * dish.num_ratings + new_rating) / (dish.num_ratings + 1)
         dish.num_ratings += 1
