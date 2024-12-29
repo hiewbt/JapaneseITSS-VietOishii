@@ -53,7 +53,7 @@ def search(query):
 @dish_blueprint.route("/api/by_category/<category>", methods=["GET"])
 def get_dishes_by_category(category):
     dishes = Dish.query.all()
-    dishes = filter(lambda item: udec(item.category.lower()) == udec(category.lower()), dishes)
+    dishes = filter(lambda item: udec(category.lower()) in udec(item.category.lower()), dishes)
 
     return jsonify([dish.to_dict() for dish in dishes])
 
@@ -61,6 +61,6 @@ def get_dishes_by_category(category):
 @dish_blueprint.route("/api/by_region/<region>", methods=["GET"])
 def get_dishes_by_region(region):
     dishes = Dish.query.all()
-    dishes = filter(lambda item: udec(item.region.lower()) == udec(region.lower()), dishes)
+    dishes = filter(lambda item: udec(region.lower()) in udec(item.region.lower()), dishes)
     
     return jsonify([dish.to_dict() for dish in dishes])
