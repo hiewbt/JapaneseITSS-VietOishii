@@ -121,7 +121,7 @@ def update_displayed_info():
     
     db.session.commit()
     
-    return make_response("OK")
+    return make_response("OK") 
 
 
 @user_blueprint.errorhandler(401)
