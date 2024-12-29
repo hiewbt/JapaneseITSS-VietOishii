@@ -116,7 +116,7 @@ def update_displayed_info():
     
     user = User.query.get(flask_login.current_user.id)
     
-    for key, value in data:
+    for key, value in data.items():
         setattr(user, key, value)
     
     db.session.commit()
