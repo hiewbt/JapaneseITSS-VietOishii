@@ -1,5 +1,5 @@
-import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input } from "antd";
-import { ArrowLeftOutlined, UserOutlined, HeartOutlined, CameraOutlined } from "@ant-design/icons";
+import { Button, Card, Rate, Typography, Row, Col, Spin, Alert, Input, notification } from "antd";
+import { ArrowLeftOutlined, UserOutlined, HeartOutlined, CameraOutlined, HeartFilled } from "@ant-design/icons";
 import DishService from "../../services/DishService";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import styled from "@emotion/styled";
 const { Paragraph, Title, Text } = Typography;
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const FoodDetail = () => {
   const [userReviews, setUserReviews] = useState([]);
@@ -19,6 +20,25 @@ const FoodDetail = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const [like, setLike] = useState(false);
+  
+  useEffect(() => {
+    const fetchLikedDishes = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/liked_dishes`, { withCredentials: true });
+        response.data.forEach(element => {
+          if (element.id === parseInt(id)) {
+            setLike(true);
+          }
+        });
+        console.log("dish" ,response.data);
+      } catch (error) {
+        console.error('Failed to fetch liked dishes:', error);
+      }
+    };
+
+    fetchLikedDishes();
+  }, []);
 
   useEffect(() => {
     const fetchDishDetail = async () => {
@@ -77,8 +97,23 @@ const FoodDetail = () => {
     }
   };
 
-  const handleLikeDish = (id) => {
-    console.log('Like dish:', id);
+  const handleLikeDish = async (id) => {
+    try {
+      await axios.post(`${API_URL}/like`, {
+        dish_id: id,
+      }, {
+        withCredentials: true,
+      });
+      notification.success({
+        description: 'Đã thêm vào danh sách yêu thích!',
+      });
+      setLike(true);
+    } catch (error) {
+      console.error('Error liking dish:', error);
+      notification.error({
+        description: 'Thêm thất bại!',
+      });
+    }
   };
 
   if (loading) {
@@ -159,9 +194,9 @@ const FoodDetail = () => {
               <Col xs={24} md={12}>
                 <div style={{ position: "relative" }}>
                   <Title level={2}>{dishDetail.name}</Title>
-                  <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
+                  {!like ? <HeartOutlined style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer"}}
                     onClick={() => {handleLikeDish(id)}}
-                  />
+                  /> : <HeartFilled style={{ position: "absolute", top: 0, right: 0, fontSize: "24px", marginTop: "8px", cursor: "pointer", color: "red" }}/>}
                 </div>
                 <Paragraph style={{fontSize: 18}}>{dishDetail.description}</Paragraph>
                 <div style={{ marginTop: "30px", borderRadius: "8px" }}>
