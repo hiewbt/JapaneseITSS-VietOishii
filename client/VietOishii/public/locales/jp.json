@@ -42,5 +42,9 @@
     "failed_to_add_to_favorites": "お気に入りに追加できませんでした",
     "error": "エラー",
     "no_dishes_found": "料理が見つかりません",
-    "Vung_phu_hop_voi_mon_an": "料理に適した地域"
+    "Vung_phu_hop_voi_mon_an": "料理に適した地域",
+    "thanh_phan_de_gay_di_ung": "アレルギーを引き起こす成分",
+    "default": "デフォルト",
+    "rating_desc": "評価が高い順",
+    "rating_asc": "評価が低い順"
 }

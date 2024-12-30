@@ -220,19 +220,28 @@ const FoodDetail = () => {
                   )}
                 </div>
                 <Paragraph style={{fontSize: 18}}>{getLocalizedText(dishDetail.description)}</Paragraph>
-                <div style={{ marginTop: "25px", borderRadius: "8px" }}>
+                <div style={{ marginTop: "20px", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('ingredients')}</Title>
                   <Paragraph style={{fontSize: 18}}>
                     {getLocalizedText(dishDetail.ingredients)}
                   </Paragraph>
                 </div>
-                <div style={{ marginTop: "25px", borderRadius: "8px" }}>
+                <div style={{ marginTop: "20px", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('flavors')}</Title>
                   <Paragraph style={{fontSize: 18}}>
                     {getLocalizedText(dishDetail.flavor)}
                   </Paragraph>
                 </div>
-                <div style={{ marginTop: "25px", borderRadius: "8px" }}>
+                <div style={{ marginTop: "20px", borderRadius: "8px" }}>
+                  <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('thanh_phan_de_gay_di_ung')}</Title>
+                  <Paragraph style={{fontSize: 18}}>
+                    {getLocalizedText(dishDetail.flavor)}
+                  </Paragraph>
+                </div>
+                
+              </Col>
+            </Row>
+            <div style={{ marginTop: "20px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('Vung_phu_hop_voi_mon_an')}</Title>
                   {getLocalizedText(dishDetail.region).split(',').map((region, index) => (
                     <Tag color="red" style={{fontSize: 18}} key={index}>
@@ -240,9 +249,7 @@ const FoodDetail = () => {
                     </Tag>
                   ))}
                 </div>
-              </Col>
-            </Row>
-            <div style={{ marginTop: "25px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
+            <div style={{ marginTop: "20px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
               <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('similar_japanese_dish')}</Title>
               <Paragraph style={{fontSize: 18}}>
                 {getLocalizedText(dishDetail.similar_japanese_dish)}

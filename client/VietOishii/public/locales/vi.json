@@ -42,5 +42,9 @@
     "error": "Lỗi",
     "failed_to_add_to_favorites": "Thêm vào mục yêu thích thất bại",
     "no_dishes_found": "Không tìm thấy món ăn",
-    "Vung_phu_hop_voi_mon_an": "Vùng phù hợp với món ăn"
+    "Vung_phu_hop_voi_mon_an": "Vùng phù hợp với món ăn",
+    "thanh_phan_de_gay_di_ung": "Thành phần dễ gây di ứng",
+    "default": "Mặc định",
+    "rating_desc": "Đánh giá cao nhất",
+    "rating_asc": "Đánh giá thấp nhất"
 }

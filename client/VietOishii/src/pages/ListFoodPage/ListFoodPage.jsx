@@ -12,6 +12,7 @@ import FilterComponent from "../../components/Filter/FilterComponent";
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 const { Search } = Input;
 const { Title } = Typography;
+const { Option } = Select;
 
 const ListFoodPage = () => {
   const { t, i18n } = useTranslation();
@@ -33,6 +34,7 @@ const ListFoodPage = () => {
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [likedDishes, setLikedDishes] = useState([]);
+  const [sortOrder, setSortOrder] = useState('default');
 
   const getLocalizedText = (text) => {
     const [viText, jpText] = text.split('|');
@@ -70,6 +72,13 @@ const ListFoodPage = () => {
           results = response || []; // Lấy danh sách mặc định
         }
 
+        // Sắp xếp dữ liệu dựa trên lựa chọn của người dùng
+        if (sortOrder === 'rating_desc') {
+          results.sort((a, b) => b.rating - a.rating);
+        } else if (sortOrder === 'rating_asc') {
+          results.sort((a, b) => a.rating - b.rating);
+        }
+
         setData(results);
       } catch (error) {
         setError(error);
@@ -79,7 +88,7 @@ const ListFoodPage = () => {
     };
 
     fetchData();
-  }, [searchTerm, filters, location]);
+  }, [searchTerm, filters, location, sortOrder]);
 
   useEffect(() => {
     const fetchLikedDishes = async () => {
@@ -118,6 +127,10 @@ const ListFoodPage = () => {
   const handleFilter = async (filters) => {
     setFilters(filters);
     setIsFilterVisible(false);
+  };
+
+  const handleSortChange = (value) => {
+    setSortOrder(value);
   };
 
   const resetFilters = async () => {
@@ -171,7 +184,11 @@ const ListFoodPage = () => {
         flexWrap: "wrap" 
       }}>
         <ResetButton type="primary" onClick={resetFilters}>{t("reset")}</ResetButton>
-        <SelectWrapper defaultValue={t("sort_by")}></SelectWrapper>
+        <SelectWrapper defaultValue={sortOrder} onChange={handleSortChange}>
+          <Option value="default">{t("default")}</Option>
+          <Option value="rating_desc">{t("rating_desc")}</Option>
+          <Option value="rating_asc">{t("rating_asc")}</Option>
+        </SelectWrapper>
         <StyledSearch
           placeholder={t("search_placeholder")}
           onSearch={handleSearch}
@@ -212,7 +229,7 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
 
-      <Row gutter={[16, 16]} style={{ padding: '0 80px',marginTop: 50, minWidth: 1400 }}>
+      <Row gutter={[16, 16]} style={{ padding: '0 100px',marginTop: 50, minWidth: 1400 }}>
         {data.length > 0 ? (
           data.map((food, index) => (
             <Col key={index} xs={24} sm={8} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginTop: 25 }}>
