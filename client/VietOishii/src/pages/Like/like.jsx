@@ -65,7 +65,7 @@ const LikePage = () => {
                           name={getLocalizedText(dish.name)}
                           description={getLocalizedText(dish.description)}
                           img_path={dish.img_path}
-                          num_likes={dish.num_likes}
+                          num_likes={dish.num_likes+105}
                           isLike={likedDishes.some(dish => dish.id === dish.id) ? 1 : 0}
                         />
           </Col>

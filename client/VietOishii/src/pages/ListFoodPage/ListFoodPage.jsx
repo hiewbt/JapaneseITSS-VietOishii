@@ -121,12 +121,19 @@ const ListFoodPage = () => {
   };
 
   const resetFilters = async () => {
+    const params = new URLSearchParams(location.search);
+    const categorical = params.get('categorical');
     setSearchTerm('');
     setFilters({});
     setLoading(true);
     try {
-      const response = await DishService.getDishes();
-      const results = response || []; // Lấy danh sách mặc định
+      let results = [];
+      if (categorical) {
+        results = (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data;
+      } else {
+        const response = await DishService.getDishes();
+        results = response || []; // Lấy danh sách mặc định
+      }
       setData(results);
     } catch (error) {
       console.error('Failed to fetch dishes:', error);
@@ -205,16 +212,17 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
 
-      <Row gutter={[16, 16]} style={{ marginTop: 50, minWidth: 1400 }}>
+      <Row gutter={[16, 16]} style={{ padding: '0 80px',marginTop: 50, minWidth: 1400 }}>
         {data.length > 0 ? (
           data.map((food, index) => (
-            <Col key={index} xs={24} sm={8} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginTop: 25, padding: '0 40px' }}>
+            <Col key={index} xs={24} sm={8} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginTop: 25 }}>
               <FoodCard
                 id={food.id}
                 name={getLocalizedText(food.name)}
                 description={getLocalizedText(food.description)}
                 img_path={food.img_path}
-                num_likes={food.num_likes + 100}
+                num_likes={food.num_likes + 105}
+                rating={food.rating ?? 5}
                 isLike={likedDishes.some(dish => dish.id === food.id) ? 1 : 0}
               />
             </Col>

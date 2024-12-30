@@ -41,5 +41,6 @@
     "success": "成功",
     "failed_to_add_to_favorites": "お気に入りに追加できませんでした",
     "error": "エラー",
-    "no_dishes_found": "料理が見つかりません"
+    "no_dishes_found": "料理が見つかりません",
+    "Vung_phu_hop_voi_mon_an": "料理に適した地域"
 }

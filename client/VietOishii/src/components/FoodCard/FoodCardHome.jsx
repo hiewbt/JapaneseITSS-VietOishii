@@ -70,7 +70,7 @@ const FoodCardHome = ({ dish }) => {
         <div>
           <h3>{getLocalizedText(dish.name)}</h3>
           <p>
-            ⭐ {averageStars} ❤️ {dish.num_likes + 100}
+            ⭐ {averageStars} ❤️ {dish.num_likes + 105}
           </p>
         </div>
       </div>
@@ -89,7 +89,7 @@ FoodCardHome.propTypes = {
 
 const StyledCard = styled(Card)`
   width: 100%;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: 8px;
   transition: all 0.3s ease;
   border: 2px solid #f5f5f5;
