@@ -277,7 +277,7 @@ const FoodDetail = () => {
                     rows={4}
                     value={reviewContent}
                     onChange={(e) => setReviewContent(e.target.value)}
-                    placeholder="Nhập nội dung đánh giá"
+                    placeholder={t('nhap_binh_luan_cua_ban')}
                     style={{ borderColor: '#d9d9d9', transition: 'border-color 0.3s' }}
                     onFocus={(e) => e.target.style.borderColor = '#E4003A'}
                     onBlur={(e) => e.target.style.borderColor = '#E4003A'}

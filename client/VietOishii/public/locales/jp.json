@@ -47,5 +47,6 @@
     "default": "デフォルト",
     "rating_desc": "評価が高い順",
     "rating_asc": "評価が低い順",
-    "de_xuat_mon_an_hop_khau_vi": "味に合った料理を提案"
+    "de_xuat_mon_an_hop_khau_vi": "味に合った料理を提案",
+    "nhap_binh_luan_cua_ban": "コメントを入力してください"
 }
