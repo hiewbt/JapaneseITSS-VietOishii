@@ -26,7 +26,11 @@ def filter_dishes():
 
     dishes_filtered = filter(
         lambda item: item.meet_criteria(
-            data["flavors"], data["ingredients"], data["allergy"]),
+            data["flavors"],
+            data["ingredients"],
+            data["allergy"],
+            data["region"]
+        ),
         dishes
     )
 
@@ -46,11 +50,13 @@ def search(query: str):
         name = udec(dish.name).lower()
         desc = udec(dish.description).lower()
         japdish = udec(dish.similar_japanese_dish).lower()
+        region = udec(dish.region).lower()
         
         return (
             query in name or
             query in desc or
-            query in japdish
+            query in japdish or
+            query in region
         )
 
     dishes = Dish.query.all()

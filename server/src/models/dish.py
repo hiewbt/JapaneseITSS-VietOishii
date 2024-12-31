@@ -34,7 +34,7 @@ class Dish(db.Model):
             "num_likes": self.num_likes
         }
     
-    def meet_criteria(self, flavors: list, ingredients: list, allergy: list):
+    def meet_criteria(self, flavors: list, ingredients: list, allergy: list, region: list = None):
         if flavors is None or len(flavors) == 0:
             c1 = True
         else:
@@ -49,5 +49,10 @@ class Dish(db.Model):
             c3 = True
         else:
             c3 = all(udec(a.lower()) not in udec(self.ingredients.lower()) for a in allergy)
+            
+        if region is None or len(region) == 0:
+            c4 = True
+        else:
+            c4 = any(udec(r).lower() in udec(self.region).lower() for r in region)
         
-        return c1 and c2 and c3
+        return c1 and c2 and c3 and c4

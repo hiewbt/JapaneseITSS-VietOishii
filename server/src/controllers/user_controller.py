@@ -42,22 +42,6 @@ def register():
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": str(e)}), 500
-    
-
-@user_blueprint.route("/login", methods=["POST"])
-def login_():
-    data = request.get_json()
-
-    if not all(k in data for k in ["username", "password"]):
-        return jsonify({"error": "Username and password are required"}), 400
-
-    user = User.query.filter_by(username=data["username"]).first()
-
-    if user and user.check_password(data["password"]):
-        login_user(user)
-        return jsonify({"message": "Logged in successfully", "user": user.to_dict()}), 200
-
-    return jsonify({"error": "Invalid username or password"}), 401
 
 
 @user_blueprint.route("/api/login", methods=["POST"])
