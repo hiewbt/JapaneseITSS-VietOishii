@@ -69,7 +69,14 @@ const Home = () => {
   const handleFilter = async (filters) => {
     try {
       const filteredResults = await DishService.filterDishes(filters);
-      navigate('/list-food', { state: { searchResults: filteredResults, filters } });
+      localStorage.setItem('appliedFilters', JSON.stringify(filters)); // Save filters
+      navigate('/list-food', { 
+        state: { 
+          filteredResults, 
+          filters,
+          fromHome: true 
+        } 
+      });
     } catch (error) {
       console.error('Error filtering dishes:', error);
     }

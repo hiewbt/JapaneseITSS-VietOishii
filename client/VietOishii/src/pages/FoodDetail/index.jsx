@@ -8,8 +8,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import axios from 'axios';
 import styled from "@emotion/styled";
-import ImageUploader from '../../components/ImageUploader'; // Import ImageUploader
-
+import ImageUploader from '../../components/ImageUploader'; 
+import JapanRate from '../../components/JapanRate';
 const { Paragraph, Title, Text } = Typography;
 
 const FoodDetail = () => {
@@ -255,6 +255,10 @@ const FoodDetail = () => {
                 {getLocalizedText(dishDetail.similar_japanese_dish)}
               </Paragraph>
             </div>
+            {/* Review Section */}
+            <div style={{ marginTop: "20px", padding: "20px", textAlign: "center" }}>
+            <JapanRate id={dishDetail.id} j_like={dishDetail.j_like} j_dislike={dishDetail.j_dislike} />
+            </div> 
 
             {/* Ratings Section */}
             <div style={{ marginTop: "30px", padding: "20px", background: "#f9f9f9", borderRadius: "8px" }}>
