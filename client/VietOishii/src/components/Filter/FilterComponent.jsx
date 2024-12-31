@@ -12,7 +12,7 @@ const FilterComponent = ({ onFilter }) => {
       flavors: values.flavors || [],
       ingredients: values.mainIngredients || [],
       allergy: values.allergens || [],
-      regions: values.regions || [],
+      region: values.region || [],
     };
 
     console.log('Mapped Filter values:', mappedValues);
@@ -97,7 +97,7 @@ const FilterComponent = ({ onFilter }) => {
         <StyledDivider />
 
         {/* Regions */}
-        <FilterSection name="regions" label="Khu vực">
+        <FilterSection name="region" label="Khu vực">
           <Checkbox.Group>
             {filterCategories.region.map((item) => (
               <StyledCheckbox key={item.value} value={item.value}>
@@ -108,7 +108,7 @@ const FilterComponent = ({ onFilter }) => {
         </FilterSection>
 
         <SubmitButton type="primary" htmlType="submit">
-          Xác nhận
+          {t('Xác nhận')}
         </SubmitButton>
       </Form>
     </FilterContainer>

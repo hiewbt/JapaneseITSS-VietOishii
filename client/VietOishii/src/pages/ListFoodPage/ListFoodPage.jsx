@@ -36,7 +36,7 @@ const ListFoodPage = () => {
 
   const getInitialFilters = () => {
     const savedFilters = localStorage.getItem("filters");
-    return savedFilters ? JSON.parse(savedFilters) : {};
+    return savedFilters ? JSON.parse(savedFilters) : location.state?.filters || {};
   };
 
   const [searchTerm, setSearchTerm] = useState(getInitialSearchTerm());
