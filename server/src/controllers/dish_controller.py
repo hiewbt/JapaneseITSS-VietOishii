@@ -85,8 +85,12 @@ def j_like():
     data = request.get_json()
     
     dish_id = int(data["dish_id"])
+    dish = Dish.query.get(dish_id)
     
-    Dish.query.get(dish_id).j_likes += 1
+    if dish.j_likes is None:
+        dish.j_likes = 0
+    
+    dish.j_likes += 1
     
     db.session.commit()
     
@@ -99,7 +103,12 @@ def j_dislike():
     
     dish_id = int(data["dish_id"])
     
-    Dish.query.get(dish_id).j_dislikes += 1
+    dish = Dish.query.get(dish_id)
+    
+    if dish.j_dislikes is None:
+        dish.j_dislikes = 0
+    
+    dish.j_dislikes += 1
     
     db.session.commit()
     
