@@ -41,11 +41,11 @@ def get_dish(id):
 
 @dish_blueprint.route("/api/search/<query>", methods=["GET"])
 def search(query: str):
-    def matched(dish):
-        query = query.lower()
-        name = dish.name.lower()
-        desc = dish.description.lower()
-        japdish = dish.similar_japanese_dish.lower()
+    def matched(query, dish):
+        query = udec(query).lower()
+        name = udec(dish.name).lower()
+        desc = udec(dish.description).lower()
+        japdish = udec(dish.similar_japanese_dish).lower()
         
         return (
             query in name or
@@ -54,7 +54,7 @@ def search(query: str):
         )
 
     dishes = Dish.query.all()
-    return jsonify([dish.to_dict() for dish in filter(matched, dishes)])
+    return jsonify([dish.to_dict() for dish in filter(lambda dish: matched(query, dish), dishes)])
 
 
 @dish_blueprint.route("/api/by_category/<category>", methods=["GET"])
