@@ -79,7 +79,7 @@ const ListFoodPage = () => {
         const params = new URLSearchParams(location.search);
         const categorical = params.get('categorical');
         let results = [];
-
+    
         if (location.state?.fromHome && location.state.filteredResults) {
           results = location.state.filteredResults;
         } else {
@@ -88,35 +88,35 @@ const ListFoodPage = () => {
           const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
           const filterResults = Object.keys(filters).length > 0 ? 
             await DishService.filterDishes(filters) : [];
-  
+    
           if (categoricalResults.length > 0) {
             results = categoricalResults;
           } else if (searchResults.length > 0) {
             results = searchResults;
           } else if (filterResults.length > 0) {
             results = filterResults;
-          } else {
+          } else if (!searchTerm && Object.keys(filters).length === 0) {
             const response = await DishService.getDishes();
             results = response || [];
           }
-  
+    
           if (searchResults.length > 0) {
             results = results.filter(dish => 
               searchResults.some(searchDish => searchDish.id === dish.id));
           }
-  
+    
           if (filterResults.length > 0) {
             results = results.filter(dish => 
               filterResults.some(filterDish => filterDish.id === dish.id));
           }
         }
-  
+    
         if (sortOrder === 'rating_desc') {
           results.sort((a, b) => b.rating - a.rating);
         } else if (sortOrder === 'rating_asc') {
           results.sort((a, b) => a.rating - b.rating);
         }
-  
+    
         setData(results);
       } catch (error) {
         setError(error);
