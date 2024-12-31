@@ -235,7 +235,7 @@ const FoodDetail = () => {
                 <div style={{ marginTop: "20px", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('thanh_phan_de_gay_di_ung')}</Title>
                   <Paragraph style={{fontSize: 18}}>
-                    {getLocalizedText(dishDetail.flavor)}
+                    {getLocalizedText(dishDetail.allergy)}
                   </Paragraph>
                 </div>
                 
@@ -243,7 +243,7 @@ const FoodDetail = () => {
             </Row>
             <div style={{ marginTop: "20px", padding: "20px", background: "#fafafa", borderRadius: "8px" }}>
                   <Title level={4} style={{ borderBottom: "1px solid #ddd", paddingBottom: "5px" }}>{t('Vung_phu_hop_voi_mon_an')}</Title>
-                  {getLocalizedText(dishDetail.region).split(',').map((region, index) => (
+                  {getLocalizedText(dishDetail.region).split('/').map((region, index) => (
                     <Tag color="red" style={{fontSize: 18}} key={index}>
                       {region.trim()}
                     </Tag>

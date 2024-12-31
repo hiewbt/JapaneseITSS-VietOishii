@@ -52,48 +52,37 @@ const ListFoodPage = () => {
     const [viText, jpText] = text.split("|");
     return i18n.language === "vi" ? viText : jpText;
   };
+  
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categorical = params.get("categorical");
+    if (categorical) {
+      setSearchTerm("");
+      setFilters({});
+      localStorage.removeItem('searchTerm'); 
+      localStorage.removeItem('filters');
+      setLoading(true);
+    }
+    else {
+      setLoading(true);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      if (!loading) return;
       try {
         const params = new URLSearchParams(location.search);
-        const categorical = params.get("categorical");
+        const categorical = params.get('categorical');
         let results = [];
-        const categoricalResults = categorical
-          ? (
-              await axios.get(
-                `${API_URL}/by_category/${encodeURIComponent(categorical)}`
-              )
-            ).data
-          : [];
-        const searchResults = searchTerm
-          ? await DishService.searchDishes(searchTerm)
-          : [];
-        const filterResults =
-          Object.keys(filters).length > 0
-            ? await DishService.filterDishes(filters)
-            : [];
+        const categoricalResults = categorical ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data : [];
+        const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
+        const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
 
         if (categoricalResults.length > 0) {
           results = categoricalResults;
-          if (searchResults.length > 0) {
-            results = results.filter((dish) =>
-              searchResults.some((searchDish) => searchDish.id === dish.id)
-            );
-          }
-          if (filterResults.length > 0) {
-            results = results.filter((dish) =>
-              filterResults.some((filterDish) => filterDish.id === dish.id)
-            );
-          }
         } else if (searchResults.length > 0) {
           results = searchResults;
-          if (filterResults.length > 0) {
-            results = results.filter((dish) =>
-              filterResults.some((filterDish) => filterDish.id === dish.id)
-            );
-          }
         } else if (filterResults.length > 0) {
           results = filterResults;
         } else {
@@ -101,10 +90,18 @@ const ListFoodPage = () => {
           results = response || []; // Lấy danh sách mặc định
         }
 
+        if (searchResults.length > 0) {
+          results = results.filter(dish => searchResults.some(searchDish => searchDish.id === dish.id));
+        }
+
+        if (filterResults.length > 0) {
+          results = results.filter(dish => filterResults.some(filterDish => filterDish.id === dish.id));
+        }
+
         // Sắp xếp dữ liệu dựa trên lựa chọn của người dùng
-        if (sortOrder === "rating_desc") {
+        if (sortOrder === 'rating_desc') {
           results.sort((a, b) => b.rating - a.rating);
-        } else if (sortOrder === "rating_asc") {
+        } else if (sortOrder === 'rating_asc') {
           results.sort((a, b) => a.rating - b.rating);
         }
 
@@ -117,7 +114,7 @@ const ListFoodPage = () => {
     };
 
     fetchData();
-  }, [searchTerm, filters, location, sortOrder]);
+  }, [searchTerm, filters, location, sortOrder, loading]);
 
   useEffect(() => {
     const fetchLikedDishes = async () => {
@@ -134,32 +131,27 @@ const ListFoodPage = () => {
 
     fetchLikedDishes();
   }, [i18n.language]);
+  
 
   useEffect(() => {
     localStorage.setItem("searchTerm", searchTerm);
     localStorage.setItem("filters", JSON.stringify(filters));
   }, [searchTerm, filters]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const categorical = params.get("categorical");
-    if (categorical) {
-      setSearchTerm("");
-      setFilters({});
-    }
-  }, [location.search]);
-
   const handleSearch = async (value) => {
     setSearchTerm(value);
+    setLoading(true);
   };
 
   const handleFilter = async (filters) => {
     setFilters(filters);
     setIsFilterVisible(false);
+    setLoading(true);
   };
 
   const handleSortChange = (value) => {
     setSortOrder(value);
+    setLoading(true);
   };
 
   const resetFilters = async () => {
@@ -167,6 +159,8 @@ const ListFoodPage = () => {
     const categorical = params.get("categorical");
     setSearchTerm("");
     setFilters({});
+    localStorage.removeItem('searchTerm'); 
+    localStorage.removeItem('filters');
     setLoading(true);
     try {
       let results = [];
@@ -233,7 +227,7 @@ const ListFoodPage = () => {
         <ResetButton type="primary" onClick={resetFilters}>
           {t("reset")}
         </ResetButton>
-        <SelectWrapper defaultValue={sortOrder} onChange={handleSortChange}>
+        <SelectWrapper value={sortOrder} onChange={handleSortChange}>
           <Option value="default">{t("default")}</Option>
           <Option value="rating_desc">{t("rating_desc")}</Option>
           <Option value="rating_asc">{t("rating_asc")}</Option>
@@ -250,25 +244,26 @@ const ListFoodPage = () => {
         >
           {t("filter")}
         </FilterButton>
-        {(searchTerm || Object.keys(filters).length > 0) && (
-          <p style={{ textAlign: "center", margin: "0 16px" }}>
-            {searchTerm && (
-              <>
-                {t("searching_for")}: <b>{searchTerm}</b> ,{" "}
-              </>
-            )}
-            {Object.keys(filters).length > 0 && (
-              <>
-                {Object.keys(filters).map((key) => (
-                  <span key={key}>
-                    {t(key)}: <b>{filters[key].join(", ")}</b>,{" "}
-                  </span>
-                ))}
-              </>
-            )}
-          </p>
-        )}
       </div>
+      {(searchTerm ||
+        Object.keys(filters).some((key) => filters[key].length > 0)) && (
+        <p style={{ textAlign: "center", margin: "0 16px" }}>
+          {searchTerm && (
+            <>
+              {t("searching_for")}: <b>{searchTerm}</b> ,{" "}
+            </>
+          )}
+          {Object.keys(filters).map(
+            (key) =>
+              filters[key].length > 0 && (
+                <span key={key}>
+                  {t(key)}: <b>{filters[key].join(", ")}</b>,{" "}
+                </span>
+              )
+          )}
+        </p>
+      )}
+
       <StyledModal
         open={isFilterVisible}
         onCancel={() => setIsFilterVisible(false)}
@@ -280,15 +275,12 @@ const ListFoodPage = () => {
 
       <Row
         gutter={[16, 16]}
-        style={{ padding: "0 100px", marginTop: 50, minWidth: 1400 }}
+        style={{ padding: "0 100px", marginTop: 50, minWidth: 1600 }}
       >
         {data.length > 0 ? (
           data.map((food, index) => (
             <Col
               key={index}
-              xs={24}
-              sm={8}
-              md={8}
               lg={6}
               style={{
                 display: "flex",
@@ -302,6 +294,7 @@ const ListFoodPage = () => {
                 description={getLocalizedText(food.description)}
                 img_path={food.img_path}
                 num_likes={food.num_likes + 105}
+                region={getLocalizedText(food.region)}
                 rating={food.rating ?? 5}
                 isLike={likedDishes.some((dish) => dish.id === food.id) ? 1 : 0}
               />
