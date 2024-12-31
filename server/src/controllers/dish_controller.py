@@ -1,8 +1,9 @@
 from multiprocessing import Value
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, make_response, request
 from unidecode import unidecode as udec
 
 from models.dish import Dish
+from models import db
 
 
 dish_blueprint = Blueprint("dishes", __name__)
@@ -77,3 +78,29 @@ def get_dishes_by_region(region):
     dishes = filter(lambda item: udec(region.lower()) in udec(item.region.lower()), dishes)
     
     return jsonify([dish.to_dict() for dish in dishes])
+
+
+@dish_blueprint.route("/api/j_like", methods=["POST"])
+def j_like():
+    data = request.get_json()
+    
+    dish_id = int(data["dish_id"])
+    
+    Dish.query.get(dish_id).j_likes += 1
+    
+    db.session.commit()
+    
+    return make_response("OK")
+
+
+@dish_blueprint.route("/api/j_dislike", methods=["POST"])
+def j_dislike():
+    data = request.get_json()
+    
+    dish_id = int(data["dish_id"])
+    
+    Dish.query.get(dish_id).j_dislikes += 1
+    
+    db.session.commit()
+    
+    return make_response("OK")

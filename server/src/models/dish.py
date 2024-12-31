@@ -17,6 +17,8 @@ class Dish(db.Model):
     rating = db.Column(db.Float, default=0.0)
     num_ratings = db.Column(db.Integer, default=0)
     num_likes = db.Column(db.Integer, default=0)
+    j_likes = db.Column(db.Integer, default=0)
+    j_dislikes = db.Column(db.Integer, default=0)
     
     def to_dict(self):
         return {
@@ -31,7 +33,9 @@ class Dish(db.Model):
             "region": self.region,
             "allergy": self.allergy,
             "rating": self.rating,
-            "num_likes": self.num_likes
+            "num_likes": self.num_likes,
+            "j_likes": self.j_likes,
+            "j_dislike": self.j_dislikes
         }
     
     def meet_criteria(self, flavors: list, ingredients: list, allergy: list, region: list = None):
