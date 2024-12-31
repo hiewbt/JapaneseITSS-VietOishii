@@ -8,7 +8,7 @@ test*
 *.csv
 *.ign
 *.out
-migrations
+*.old
 
 # C extensions
 *.so

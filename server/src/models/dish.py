@@ -13,6 +13,7 @@ class Dish(db.Model):
     img_path = db.Column(db.String(500))
     category = db.Column(db.String(50))
     region = db.Column(db.String(100))
+    allergy = db.Column(db.String(500))
     rating = db.Column(db.Float, default=0.0)
     num_ratings = db.Column(db.Integer, default=0)
     num_likes = db.Column(db.Integer, default=0)
@@ -28,6 +29,7 @@ class Dish(db.Model):
             "img_path": self.img_path,
             "category": self.category,
             "region": self.region,
+            "allergy": self.allergy,
             "rating": self.rating,
             "num_likes": self.num_likes
         }
