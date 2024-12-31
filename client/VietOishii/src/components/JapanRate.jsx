@@ -9,7 +9,7 @@ import axios from 'axios';
 
 const { Title } = Typography;
 
-const JapanRate = ({ id, j_likes = 0, j_dislike = 0 }) => {
+const JapanRate = ({ id, j_likes, j_dislike }) => {
     const { t } = useTranslation();
     const [likes, setLikes] = useState(j_likes);
     const [dislikes, setDislikes] = useState(j_dislike);
@@ -42,7 +42,7 @@ const JapanRate = ({ id, j_likes = 0, j_dislike = 0 }) => {
                         onClick={() => handleVote('like')}
                     />
                     <Typography.Text style={{ fontSize: '18px', marginTop: 15 }}>{t('Hài lòng')}</Typography.Text>
-                    <Circle>{likes}</Circle>
+                    <Circle>{likes ?? 0}</Circle>
                 </ImageContainer>
                 <ImageContainer>
                     <Image 
@@ -51,7 +51,7 @@ const JapanRate = ({ id, j_likes = 0, j_dislike = 0 }) => {
                         onClick={() => handleVote('dislike')}
                     />
                     <Typography.Text style={{ fontSize: '18px', marginTop: 15 }}>{t('Không hài lòng')}</Typography.Text>
-                    <Circle>{dislikes}</Circle>
+                    <Circle>{dislikes ?? 0}</Circle>
                 </ImageContainer>
             </div>
         </div>
