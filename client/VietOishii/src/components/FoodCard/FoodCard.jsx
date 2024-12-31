@@ -75,7 +75,7 @@ const FoodCard = ({
         }
         onClick={handleCardClick}
       >
-        <div style={{ textAlign: "center" }}>
+        <div >
           <Card.Meta
             title={<span style={{ fontSize: "22px" }}>{name}</span>}
             style={{ marginBottom: 20 }}

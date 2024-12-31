@@ -90,15 +90,15 @@ const Header = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="profile" onClick={() => navigate('/profile')}>
-        <UserOutlined style={{ marginRight: 8 }} />
+        <UserOutlined style={{ marginRight: 8, fontSize: '20px' }} />
         {t('profile')}
       </Menu.Item>
       <Menu.Item key="like" onClick={() => navigate('/like')}>
-        <HeartOutlined style={{ marginRight: 8 }} />
+        <HeartOutlined style={{ marginRight: 8, fontSize: '20px' }} />
         {t('like')}
       </Menu.Item>
       <Menu.Item key="logout" onClick={handleLogout}>
-        <LogoutOutlined style={{ marginRight: 8 }} />
+        <LogoutOutlined style={{ marginRight: 8, fontSize: '20px' }} />
         {t('logout')}
       </Menu.Item>
     </Menu>
@@ -122,7 +122,7 @@ const Header = () => {
               onClick: ({ key }) => changeLanguage(key),
             }}
           >
-            <LanguageSelector>
+            <LanguageSelector style={{fontSize: '20px'}}>
               <Space>
                 <GlobalOutlined />
                 {language === 'vi' ? 'Tiếng Việt' : '日本語'}
@@ -203,7 +203,7 @@ const NavItems = styled.div`
   display: flex;
   align-items: center;
   gap: 24px;
-  font-size: 18px;
+  font-size: 20px;
 `;
 
 const NavLink = styled(Link)`
@@ -252,7 +252,7 @@ const LoginButton = styled.button`
 
 const UserName = styled.span`
   color: #333;
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 500;
   cursor: pointer;
 `;
