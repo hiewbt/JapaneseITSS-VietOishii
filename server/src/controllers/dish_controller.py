@@ -41,9 +41,15 @@ def get_dish(id):
 @dish_blueprint.route("/api/search/<query>", methods=["GET"])
 def search(query):
     def matched(dish):
+        query = udec(query).lower()
+        name = udec(dish.name).lower()
+        desc = udec(dish.description).lower()
+        japdish = udec(dish.similar_japanese_dish).lower()
+        
         return (
-            query.lower() in dish.name.lower() or
-            query.lower() in dish.description.lower()
+            query in name or
+            query in desc or
+            query in japdish
         )
 
     dishes = Dish.query.all()
