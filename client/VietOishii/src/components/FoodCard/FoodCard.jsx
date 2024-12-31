@@ -30,14 +30,14 @@ const FoodCard = ({ id, name, description, img_path, num_likes, isLike, rating }
           />
         </div>
         <div style={{ marginTop: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <Rate disabled allowHalf value={rating} />
+          <span style={{marginRight: 5, display: "flex", alignItems: "center"}}><Rate disabled allowHalf value={rating} /><div style={{fontSize: '18px'}}>{rating.toFixed(1)}</div></span>
           <div style={{ display: "flex", alignItems: "center" }}>
             {isLike ? (
               <HeartFilled style={{ fontSize: 20, color: "red" }} />
             ) : (
               <HeartOutlined style={{ fontSize: 20, cursor: "pointer" }} />
             )}
-            <span style={{ marginLeft: 5 }}>{num_likes ?? 0}</span>
+            <span style={{ marginLeft: 5, fontSize: '18px' }}>{num_likes ?? 0}</span>
           </div>
         </div>
       </Card>

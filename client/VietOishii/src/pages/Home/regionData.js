@@ -10,8 +10,8 @@ export const regionData = {
       jp: '北海道 は、日本の最北端の島であり、特に冬の厚い雪と寒冷な気候で有名です。ニセコや富良野（ふらの）などのスキーリゾートがあり、冬季スポーツに理想的な目的地です。夏には、富良野のラベンダー畑や山岳風景が観光客を魅了します。また、この島には多くの国立公園があり、特にユネスコ世界遺産に登録されている知床（しれとこ）が有名です。'
     },
     taste: {
-      vi: 'Ẩm thực Hokkaido nổi bật nhờ nguồn nguyên liệu địa phương phong phú. Hải sản như cua hoàng đế, nhím biển, cá hồi được đánh giá cao về độ tươi ngon. Các món đặc sản nổi tiếng gồm miso ramen, lẩu hải sản Ishikari nabe và bơ sữa từ các nông trại. Món thịt cừu nướng Jingisukan độc đáo cũng là điểm nhấn đậm chất Hokkaido.',
-      jp: '北海道の料理は、豊富な地元の食材で際立っています。タラバガニ、ウニ、サケなどの海産物は、その新鮮さで高く評価されています。有名な名物料理には、味噌ラーメン、海鮮鍋の石狩鍋（いしかりなべ）、そして牧場からのバターや乳製品があります。また、独特なジンギスカン（羊肉の焼き料理）も、北海道らしい魅力的な一品です。'
+      vi: 'Người dân ưa chuộng các món đậm đà, béo và giàu năng lượng để chống lại khí hậu lạnh. Hokkaido nổi tiếng với các món như cua, nhím biển, hàu, tôm và sashimi cá hồi. Các món mì như mì miso ramen (mì ramen nấu với nước dùng đậm vị miso) và nabe (lẩu) cũng phổ biến.',
+      jp: '地元の人々は、寒い気候に対抗するために、濃厚でコクがあり、エネルギー豊富な料理を好みます。北海道は、カニ、ウニ、牡蠣、エビ、サーモンの刺身などで有名です。味噌ラーメン（濃厚な味噌スープで作るラーメン）や鍋（ナベ）などの麺料理も一般的です。'
     },
   },
   Kanto: {
@@ -25,8 +25,8 @@ export const regionData = {
       jp: '関東は、本州の東部に位置し、東京、横浜、千葉、埼玉、群馬、栃木、茨城を含む日本最大の都市圏です。ここは日本の政治、経済、文化の中心地であり、現代建築や歴史的な場所、例えば浅草寺や皇居などが集中しています。関東はまた、特に地下鉄システムの発展で有名です。'
     },
     taste: {
-      vi: 'Ẩm thực Kanto rất đa dạng, từ các món truyền thống đến hiện đại. Sushi từ các nhà hàng cao cấp ở Tokyo được đánh giá là đỉnh cao của nghệ thuật ẩm thực. Monjayaki, một món bột rán với nhiều nguyên liệu trộn lẫn, là món ăn đường phố được yêu thích. Sukiyaki, món lẩu với thịt bò và rau, cũng phổ biến trong các bữa ăn gia đình. Các loại mì ramen, udon, và soba với hương vị đặc trưng từ vùng này cũng rất được yêu thích.',
-      jp: '関東の料理は、伝統的なものから現代的なものまで多様です。東京の高級寿司店の寿司は、料理の芸術の頂点と評価されています。もんじゃ焼きは、多くの材料を混ぜた粉物料理で、人気のあるストリートフードです。すき焼きは、牛肉と野菜を使った鍋料理で、家庭料理としても人気です。この地域の特有の風味を持つラーメン、うどん、そばも非常に人気があります。'
+      vi: 'Người dân Kanto ưa chuộng các món ăn mang phong cách hiện đại và tinh tế, nhưng không quá đậm đà. Sushi, tempura và soba là các món phổ biến. Sushi kiểu Edo-mae (Tokyo) với hải sản tươi sống và cơm giấm nhẹ là một trong những đặc sản nổi tiếng.',
+      jp: '関東地方の人々は、現代的で洗練されたが、味が濃すぎない料理を好みます。寿司、天ぷら、そばが一般的な料理です。新鮮な海鮮と軽めの酢飯を使った江戸前寿司（東京スタイル）は、有名な名物の一つです。'
     },
   },
   Chubu: {
@@ -40,8 +40,8 @@ export const regionData = {
       jp: '中部は日本の中央に位置し、新潟、富山、石川、福井、長野、岐阜、静岡、愛知、山梨などの県を含みます。この地域の地形は非常に多様で、日本アルプスの高い山々から太平洋沿岸の海岸線まであります。この地域には日本の象徴である富士山もあり、毎年何百万人もの観光客を引きつけています。'
     },
     taste: {
-      vi: 'Ẩm thực Chubu phong phú và đa dạng nhờ vào sự khác biệt về địa lý. Hida-gyu (thịt bò Hida) nổi tiếng với vị mềm và thơm, thường được chế biến thành steak hoặc dùng trong lẩu sukiyaki. Sushi từ cá nước ngọt như cá chép và cá hồi là đặc sản của vùng này. Chubu cũng là nơi sản xuất wasabi tươi ngon nhất Nhật Bản, được dùng làm gia vị trong nhiều món ăn. Các món mì như hoto của Yamanashi hay miso katsu ở Nagoya cũng rất được yêu thích.',
-      jp: '中部の料理は、地理的な違いのおかげで豊かで多様です。飛騨牛はその柔らかさと香りで有名で、ステーキやすき焼きに使われます。鯉やサケなどの淡水魚の寿司はこの地域の特産品です。中部はまた、日本で最も美味しいわさびの生産地でもあり、多くの料理の調味料として使用されます。山梨のほうとうや名古屋の味噌カツなどの麺料理も非常に人気があります。'
+      vi: 'Người dân Chūbu thích các món ăn mang đậm bản sắc địa phương. Nagoya nổi tiếng với miso katsu (thịt heo chiên với sốt miso), hitsumabushi (cơm với cá nướng) và tenmusu (bánh tempura tôm kẹp với cơm). Ngoài ra, vùng này cũng nổi tiếng với các món ăn từ gạo và các loại rau củ tươi ngon được trồng tại địa phương.',
+      jp: '中部地方の人々は、地元の特色が色濃い料理を好みます。名古屋は味噌カツ（味噌ソースをかけたとんかつ）、ひつまぶし（焼き魚のご飯）、天むす（天ぷらエビを握ったおにぎり）で有名です。また、この地域は地元で栽培された新鮮な米や野菜を使った料理でも知られています。'
     },
   },
   Kansai: {
@@ -55,8 +55,8 @@ export const regionData = {
       jp: '関西は、本州の中央西部に位置し、日本の伝統文化の中心地です。この地域には、大阪、京都、奈良、兵庫、和歌山、滋賀などの県が含まれます。京都と奈良は、寺院、神社、伝統的な庭園で有名な二つの古都です。関西最大の都市である大阪は、その豊かな料理文化のおかげで「日本の台所」として知られています。関西には、世界遺産である姫路城もあります。'
     },
     taste: {
-      vi: 'Ẩm thực Kansai đặc trưng bởi sự tinh tế và đa dạng. Kyoto nổi tiếng với kaiseki, các món ăn truyền thống được trình bày đẹp mắt. Osaka là quê hương của các món ăn đường phố như okonomiyaki (bánh xèo Nhật Bản), takoyaki (bánh bạch tuộc), và kushikatsu (xiên chiên). Nara mang đến những món ăn cổ xưa như chagayu (cháo gạo nấu với trà). Kansai cũng có nhiều loại bánh kẹo truyền thống như yatsuhashi ở Kyoto và mochi dango.',
-      jp: '関西の料理は、その繊細さと多様性で特徴づけられます。京都は、美しく盛り付けられた伝統的な料理である懐石料理で有名です。大阪は、お好み焼き、たこ焼き、串カツなどのストリートフードの発祥地です。奈良は、茶粥などの古代料理を提供しています。関西には、京都の八ツ橋や餅団子など、多くの伝統的な菓子もあります。'
+      vi: 'Người Kansai thường thích các món có vị thanh và ít sử dụng gia vị nặng như miso đỏ. Takoyaki (bánh bạch tuộc), Okonomiyaki (bánh xèo Nhật), và các món ăn từ đậu nành như đậu phụ Kyoto là các món phổ biến. Kansai cũng nổi tiếng với sashimi cá nóc và các món từ thịt bò Kobe.',
+      jp: '関西地方の人々は、さっぱりとした味を好み、赤味噌のような重い調味料はあまり使いません。たこ焼き、お好み焼き、そして京都の豆腐などの大豆を使った料理が一般的です。関西はフグの刺身や神戸牛を使った料理でも有名です。'
     },
   },
   Shikoku: {
@@ -70,8 +70,8 @@ export const regionData = {
       jp: '四国は、日本の四つの主要な島の中で最も小さく、香川、徳島、愛媛、高知の四つの県を含みます。この地域は、88箇所の寺院を巡る巡礼路で有名で、多くの人々が参加する精神的な旅です。四国には、高知の静かな四万十川から愛媛の柑橘園まで、美しい自然景観がたくさんあります。この地域の伝統文化は、特に徳島の阿波踊りなどの祭りを通じて、今でも保存されています。'
     },
     taste: {
-      vi: 'Shikoku nổi tiếng với các món ăn truyền thống đậm đà. Sanuki udon, loại mì dày dai từ Kagawa, là món ăn biểu tượng của vùng. Các món hải sản như cá ngừ tataki (cá ngừ nướng sơ) ở Kochi hay các món ăn từ bạch tuộc và tôm cũng rất phổ biến. Ehime nổi tiếng với cam quýt chất lượng cao, được dùng để làm các món tráng miệng như bánh ngọt và mứt.',
-      jp: '四国は、濃厚な伝統料理で有名です。香川の讃岐うどんは、この地域の象徴的な料理です。高知のカツオのたたきやタコやエビを使った料理などの海産物も非常に人気があります。愛媛は、高品質の柑橘類で有名で、ケーキやジャムなどのデザートに使用されます。'
+      vi: 'Người dân Shikoku nổi tiếng với món soba (mì kiều mạch) và udon (mì dày). Đặc biệt, soba ở Shikoku thường có hương vị nhẹ nhàng và tươi mát. Vùng này cũng nổi tiếng với cà ri Shikoku và các món ăn từ hải sản như cá ngừ và hàu. Các loại trái cây như cam và chanh cũng được trồng nhiều ở đây, tạo nên các món tráng miệng đặc trưng.',
+      jp: '四国地方の人々は、そば（そば粉の麺）やうどん（太い麺）で有名です。特に、四国のそばは軽やかでさっぱりとした味わいが特徴です。この地域は四国カレーや、マグロや牡蠣などの海産物を使った料理でも知られています。また、みかんやレモンなどの果物が多く栽培されており、これらを使った特徴的なデザートもあります。'
     },
   },
   Kyushu: {
@@ -85,8 +85,8 @@ export const regionData = {
       jp: '九州は、日本の南部に位置し、福岡、佐賀、長崎、熊本、大分、宮崎、鹿児島の七つの県を含みます。この地域は、温暖な気候、多くの火山、そして別府や湯布院などの有名な温泉で知られています。鹿児島は、桜島火山のおかげで「日本のナポリ」とも呼ばれています。九州はまた、長崎の大浦天主堂などの遺産を通じて示されるように、長い国際貿易の歴史を持っています。'
     },
     taste: {
-      vi: 'Ẩm thực Kyushu đa dạng và mang đậm nét đặc trưng của khí hậu ấm áp. Tonkotsu ramen (ramen nước dùng xương heo) là món ăn nổi tiếng của Fukuoka. Nagasaki nổi tiếng với champon, một món mì kết hợp giữa ẩm thực Nhật Bản và Trung Quốc. Các món hải sản tươi sống như cá cam, hàu, và tôm cũng rất phổ biến. Kyushu còn là nơi sản xuất rượu shochu hàng đầu Nhật Bản, thường được uống kèm với các món ăn đậm vị.',
-      jp: '九州の料理は、その温暖な気候の特徴を反映して多様です。福岡の豚骨ラーメンは有名な料理です。長崎は、日本料理と中国料理を組み合わせたちゃんぽんで有名です。ブリ、カキ、エビなどの新鮮な海産物も非常に人気があります。九州はまた、日本でトップクラスの焼酎の生産地であり、濃厚な料理と一緒に飲まれることが多いです。'
+      vi: 'Người dân Kyūshū thường ưa chuộng các món ăn đậm đà với nhiều gia vị. Ramen Kyūshū (mì ramen tonkotsu) nổi tiếng với nước dùng từ xương lợn, rất béo và thơm. Ngoài ra, cà ri Kyūshū và các món ăn từ thịt như thịt nướng cũng rất được yêu thích. Kyūshū cũng là nơi sản xuất nhiều loại sake chất lượng cao.',
+      jp: '九州地方の人々は、濃厚で多くのスパイスを使った料理を好みます。九州ラーメン（豚骨ラーメン）は、豚骨から取ったスープが特徴で、非常に濃厚で香り高いです。また、九州カレーや焼肉などのお肉料理も人気です。九州は高品質な酒の生産地としても知られています。'
     },
   },
 };

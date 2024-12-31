@@ -1,12 +1,22 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Select, Input, Row, Col, Spin, Alert, Modal, Button, Typography } from 'antd';
+import {
+  Select,
+  Input,
+  Row,
+  Col,
+  Spin,
+  Alert,
+  Modal,
+  Button,
+  Typography,
+} from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import FoodCard from '../../components/FoodCard/FoodCard';
+import FoodCard from "../../components/FoodCard/FoodCard";
 import styled from "@emotion/styled";
-import axios from 'axios';
-import DishService from '../../services/DishService';
+import axios from "axios";
+import DishService from "../../services/DishService";
 import FilterComponent from "../../components/Filter/FilterComponent";
 
 const API_URL = `${import.meta.env.VITE_API_URL}`;
@@ -19,11 +29,13 @@ const ListFoodPage = () => {
   const location = useLocation();
 
   const getInitialSearchTerm = () => {
-    return location.state?.searchTerm || localStorage.getItem('searchTerm') || '';
+    return (
+      location.state?.searchTerm || localStorage.getItem("searchTerm") || ""
+    );
   };
 
   const getInitialFilters = () => {
-    const savedFilters = localStorage.getItem('filters');
+    const savedFilters = localStorage.getItem("filters");
     return savedFilters ? JSON.parse(savedFilters) : {};
   };
 
@@ -34,11 +46,11 @@ const ListFoodPage = () => {
   const [error, setError] = useState(null);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [likedDishes, setLikedDishes] = useState([]);
-  const [sortOrder, setSortOrder] = useState('default');
+  const [sortOrder, setSortOrder] = useState("default");
 
   const getLocalizedText = (text) => {
-    const [viText, jpText] = text.split('|');
-    return i18n.language === 'vi' ? viText : jpText;
+    const [viText, jpText] = text.split("|");
+    return i18n.language === "vi" ? viText : jpText;
   };
 
   useEffect(() => {
@@ -46,24 +58,41 @@ const ListFoodPage = () => {
       setLoading(true);
       try {
         const params = new URLSearchParams(location.search);
-        const categorical = params.get('categorical');
+        const categorical = params.get("categorical");
         let results = [];
-        const categoricalResults = categorical ? (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data : [];
-        const searchResults = searchTerm ? await DishService.searchDishes(searchTerm) : [];
-        const filterResults = Object.keys(filters).length > 0 ? await DishService.filterDishes(filters) : [];
+        const categoricalResults = categorical
+          ? (
+              await axios.get(
+                `${API_URL}/by_category/${encodeURIComponent(categorical)}`
+              )
+            ).data
+          : [];
+        const searchResults = searchTerm
+          ? await DishService.searchDishes(searchTerm)
+          : [];
+        const filterResults =
+          Object.keys(filters).length > 0
+            ? await DishService.filterDishes(filters)
+            : [];
 
         if (categoricalResults.length > 0) {
           results = categoricalResults;
           if (searchResults.length > 0) {
-            results = results.filter(dish => searchResults.some(searchDish => searchDish.id === dish.id));
+            results = results.filter((dish) =>
+              searchResults.some((searchDish) => searchDish.id === dish.id)
+            );
           }
           if (filterResults.length > 0) {
-            results = results.filter(dish => filterResults.some(filterDish => filterDish.id === dish.id));
+            results = results.filter((dish) =>
+              filterResults.some((filterDish) => filterDish.id === dish.id)
+            );
           }
         } else if (searchResults.length > 0) {
           results = searchResults;
           if (filterResults.length > 0) {
-            results = results.filter(dish => filterResults.some(filterDish => filterDish.id === dish.id));
+            results = results.filter((dish) =>
+              filterResults.some((filterDish) => filterDish.id === dish.id)
+            );
           }
         } else if (filterResults.length > 0) {
           results = filterResults;
@@ -73,9 +102,9 @@ const ListFoodPage = () => {
         }
 
         // Sắp xếp dữ liệu dựa trên lựa chọn của người dùng
-        if (sortOrder === 'rating_desc') {
+        if (sortOrder === "rating_desc") {
           results.sort((a, b) => b.rating - a.rating);
-        } else if (sortOrder === 'rating_asc') {
+        } else if (sortOrder === "rating_asc") {
           results.sort((a, b) => a.rating - b.rating);
         }
 
@@ -99,7 +128,7 @@ const ListFoodPage = () => {
         });
         setLikedDishes(response.data);
       } catch (error) {
-        console.error('Failed to fetch liked dishes:', error);
+        console.error("Failed to fetch liked dishes:", error);
       }
     };
 
@@ -107,15 +136,15 @@ const ListFoodPage = () => {
   }, [i18n.language]);
 
   useEffect(() => {
-    localStorage.setItem('searchTerm', searchTerm);
-    localStorage.setItem('filters', JSON.stringify(filters));
+    localStorage.setItem("searchTerm", searchTerm);
+    localStorage.setItem("filters", JSON.stringify(filters));
   }, [searchTerm, filters]);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const categorical = params.get('categorical');
+    const categorical = params.get("categorical");
     if (categorical) {
-      setSearchTerm('');
+      setSearchTerm("");
       setFilters({});
     }
   }, [location.search]);
@@ -135,22 +164,26 @@ const ListFoodPage = () => {
 
   const resetFilters = async () => {
     const params = new URLSearchParams(location.search);
-    const categorical = params.get('categorical');
-    setSearchTerm('');
+    const categorical = params.get("categorical");
+    setSearchTerm("");
     setFilters({});
     setLoading(true);
     try {
       let results = [];
       if (categorical) {
-        results = (await axios.get(`${API_URL}/by_category/${encodeURIComponent(categorical)}`)).data;
+        results = (
+          await axios.get(
+            `${API_URL}/by_category/${encodeURIComponent(categorical)}`
+          )
+        ).data;
       } else {
         const response = await DishService.getDishes();
         results = response || []; // Lấy danh sách mặc định
       }
       setData(results);
     } catch (error) {
-      console.error('Failed to fetch dishes:', error);
-      setError(t('failed_to_fetch_dishes'));
+      console.error("Failed to fetch dishes:", error);
+      setError(t("failed_to_fetch_dishes"));
     } finally {
       setLoading(false);
     }
@@ -158,8 +191,15 @@ const ListFoodPage = () => {
 
   if (loading) {
     return (
-      <Container style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-        <Spin size="large" tip={t('loading')} />
+      <Container
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "60vh",
+        }}
+      >
+        <Spin size="large" tip={t("loading")} />
       </Container>
     );
   }
@@ -167,23 +207,32 @@ const ListFoodPage = () => {
   if (error) {
     return (
       <Container>
-        <Alert message={t('error')} description={error.message} type="error" showIcon />
+        <Alert
+          message={t("error")}
+          description={error.message}
+          type="error"
+          showIcon
+        />
       </Container>
     );
   }
 
   return (
     <Container>
-      <Header level={2}>{t('list_food')}</Header>
-      <div style={{ 
-        marginBottom: 20, 
-        display: "flex", 
-        justifyContent: "center", 
-        alignItems: "center", 
-        gap: "16px", 
-        flexWrap: "wrap" 
-      }}>
-        <ResetButton type="primary" onClick={resetFilters}>{t("reset")}</ResetButton>
+      <Header level={2}>{t("list_food")}</Header>
+      <div
+        style={{
+          marginBottom: 20,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "16px",
+          flexWrap: "wrap",
+        }}
+      >
+        <ResetButton type="primary" onClick={resetFilters}>
+          {t("reset")}
+        </ResetButton>
         <SelectWrapper defaultValue={sortOrder} onChange={handleSortChange}>
           <Option value="default">{t("default")}</Option>
           <Option value="rating_desc">{t("rating_desc")}</Option>
@@ -199,20 +248,20 @@ const ListFoodPage = () => {
           size="large"
           onClick={() => setIsFilterVisible(true)}
         >
-          {t('filter')}
+          {t("filter")}
         </FilterButton>
         {(searchTerm || Object.keys(filters).length > 0) && (
           <p style={{ textAlign: "center", margin: "0 16px" }}>
             {searchTerm && (
               <>
-                {t('searching_for')}: <b>{searchTerm}</b> ,{' '}
+                {t("searching_for")}: <b>{searchTerm}</b> ,{" "}
               </>
             )}
             {Object.keys(filters).length > 0 && (
               <>
                 {Object.keys(filters).map((key) => (
                   <span key={key}>
-                    {t(key)}: <b>{filters[key].join(', ')}</b>,{' '}
+                    {t(key)}: <b>{filters[key].join(", ")}</b>,{" "}
                   </span>
                 ))}
               </>
@@ -220,7 +269,7 @@ const ListFoodPage = () => {
           </p>
         )}
       </div>
-      <StyledModal 
+      <StyledModal
         open={isFilterVisible}
         onCancel={() => setIsFilterVisible(false)}
         footer={null}
@@ -229,10 +278,24 @@ const ListFoodPage = () => {
         <FilterComponent onFilter={handleFilter} />
       </StyledModal>
 
-      <Row gutter={[16, 16]} style={{ padding: '0 100px',marginTop: 50, minWidth: 1400 }}>
+      <Row
+        gutter={[16, 16]}
+        style={{ padding: "0 100px", marginTop: 50, minWidth: 1400 }}
+      >
         {data.length > 0 ? (
           data.map((food, index) => (
-            <Col key={index} xs={24} sm={8} md={8} lg={6} style={{ display: 'flex', justifyContent: 'center', marginTop: 25 }}>
+            <Col
+              key={index}
+              xs={24}
+              sm={8}
+              md={8}
+              lg={6}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: 25,
+              }}
+            >
               <FoodCard
                 id={food.id}
                 name={getLocalizedText(food.name)}
@@ -240,13 +303,13 @@ const ListFoodPage = () => {
                 img_path={food.img_path}
                 num_likes={food.num_likes + 105}
                 rating={food.rating ?? 5}
-                isLike={likedDishes.some(dish => dish.id === food.id) ? 1 : 0}
+                isLike={likedDishes.some((dish) => dish.id === food.id) ? 1 : 0}
               />
             </Col>
           ))
         ) : (
-          <Col span={24} style={{ textAlign: 'center', marginTop: 50 }}>
-            <Alert message={t('no_dishes_found')} type="info" />
+          <Col span={24} style={{ textAlign: "center", marginTop: 50 }}>
+            <Alert message={t("no_dishes_found")} type="info" />
           </Col>
         )}
       </Row>
@@ -265,10 +328,10 @@ const ResetButton = styled(Button)`
   border-color: #d9d9d9;
   color: #333;
   padding: 3px 10px;
-  &:hover ,
+  &:hover,
   &:focus .ant-select-selector {
-    color: #E4003A !important;
-    border-color: #E4003A !important;
+    color: #e4003a !important;
+    border-color: #e4003a !important;
     background: rgba(228, 0, 58, 0.05) !important;
   }
 `;
@@ -285,8 +348,8 @@ const SelectWrapper = styled(Select)`
   width: 200px;
   &:hover .ant-select-selector,
   &:focus .ant-select-selector {
-    color: #E4003A !important;
-    border-color: #E4003A !important;
+    color: #e4003a !important;
+    border-color: #e4003a !important;
     background: rgba(228, 0, 58, 0.05) !important;
   }
 `;
@@ -295,7 +358,7 @@ const StyledSearch = styled(Search)`
     border-color: #d9d9d9;
     &:hover,
     &:focus {
-      border-color: #E4003A !important;
+      border-color: #e4003a !important;
     }
   }
   .ant-btn {
@@ -304,8 +367,8 @@ const StyledSearch = styled(Search)`
     color: #333;
     &:hover,
     &:focus {
-      color: #E4003A !important;
-      border-color: #E4003A !important;
+      color: #e4003a !important;
+      border-color: #e4003a !important;
       background: rgba(228, 0, 58, 0.05) !important;
     }
   }
@@ -321,8 +384,8 @@ const FilterButton = styled(Button)`
 
   &:hover,
   &:focus {
-    color: #E4003A !important;
-    border-color: #E4003A !important;
+    color: #e4003a !important;
+    border-color: #e4003a !important;
     background: rgba(228, 0, 58, 0.05) !important;
   }
 `;
@@ -331,7 +394,7 @@ const StyledModal = styled(Modal)`
   .ant-modal-content {
     border-radius: 12px;
   }
-  
+
   .ant-modal-header {
     border-bottom: 1px solid #f0f0f0;
     padding: 16px 24px;
@@ -345,7 +408,7 @@ const StyledModal = styled(Modal)`
   .ant-modal-close,
   .ant-modal-close:hover,
   .ant-modal-close:focus {
-    color: #E4003A !important;
+    color: #e4003a !important;
   }
 `;
 

@@ -10,7 +10,8 @@ import ArrowLeftCircle from "../../assets/arrow-left-circle-fill.svg";
 import ArrowRightCircle from "../../assets/arrow-right-circle-fill.svg";
 import DishService from '../../services/DishService';
 import FoodCard from '../../components/FoodCard/FoodCardHome';
-
+import axios from 'axios';
+const API_URL = `${import.meta.env.VITE_API_URL}`;
 const { Content } = Layout;
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
   const carouselRef = useRef([]);
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [dishesByRegion, setDishesByRegion] = useState({});
+  const [likedDishes, setLikedDishes] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,6 +41,21 @@ const Home = () => {
       fetchDishesByRegion();
     }
   }, [regions, dishesByRegion]);
+  useEffect(() => {
+    const fetchLikedDishes = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/liked_dishes`, {
+          params: { language: i18n.language },
+          withCredentials: true,
+        });
+        setLikedDishes(response.data);
+      } catch (error) {
+        console.error('Failed to fetch liked dishes:', error);
+      }
+    };
+
+    fetchLikedDishes();
+  }, [i18n.language]);
 
   const handleSearch = async (value) => {
     try {
@@ -89,7 +106,7 @@ const Home = () => {
             <FilterComponent onFilter={handleFilter}/>
           </StyledModal>
 
-          <PageHeader>{t('explore_taste')}</PageHeader>
+          <PageHeader style={{ marginTop: 50 }}>{t('explore_taste')}</PageHeader>
           <StyledTabs
             defaultActiveKey="Hokkaido"
             centered
@@ -98,13 +115,13 @@ const Home = () => {
             {regions.map((region, idx) => (
               <Tabs.TabPane tab={regionData[region].name[i18n.language]} key={region}>
                 <TabContent>
-                  <div style={{ display: "flex", marginBottom: 32 }}>
+                  <div style={{ display: "flex", marginBottom: 32, justifyContent: "center" }}>
                     <RegionImage
                       src={regionData[region].image}
                       alt={regionData[region].name[i18n.language]}
                     />
                     <RegionInfo>
-                      <h2>{regionData[region].name[i18n.language]}</h2>
+                      <h2 style={{ fontSize: "28px", fontWeight: "bold" }}>{regionData[region].name[i18n.language]}</h2>
                       <ul>
                         <li>
                           <p>
@@ -120,7 +137,7 @@ const Home = () => {
                       </ul>
                     </RegionInfo>
                   </div>
-
+                  <div style={{ textAlign: "center", fontSize: "26px", fontWeight: "bold" }}>{t('de_xuat_mon_an_hop_khau_vi')}</div>
                   <CarouselContainer>
                     <NavButton
                       className="prev"
@@ -147,7 +164,8 @@ const Home = () => {
                     >
                       {dishesByRegion[region]?.map((dish, index) => (
                         <div key={index} style={{ padding: "16px 32px" }}>
-                          <FoodCard dish={dish} />
+                          <FoodCard dish={dish}
+                          isLike={likedDishes.some(likedDish => likedDish.id === dish.id)} />
                         </div>
                       ))}
                     </Carousel>
