@@ -1,3 +1,4 @@
+from multiprocessing import Value
 from flask import Blueprint, jsonify, request
 from unidecode import unidecode as udec
 
@@ -39,12 +40,12 @@ def get_dish(id):
 
 
 @dish_blueprint.route("/api/search/<query>", methods=["GET"])
-def search(query):
+def search(query: str):
     def matched(dish):
-        query = udec(query).lower()
-        name = udec(dish.name).lower()
-        desc = udec(dish.description).lower()
-        japdish = udec(dish.similar_japanese_dish).lower()
+        query = query.lower()
+        name = dish.name.lower()
+        desc = dish.description.lower()
+        japdish = dish.similar_japanese_dish.lower()
         
         return (
             query in name or
