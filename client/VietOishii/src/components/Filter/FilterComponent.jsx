@@ -1,10 +1,10 @@
 import { Form, Checkbox, Button, Divider } from 'antd';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-
+import { useTranslation } from 'react-i18next';
 const FilterComponent = ({ onFilter }) => {
   const [form] = Form.useForm();
-
+  const { t } = useTranslation();
   const handleFilter = (values) => {
     console.log('Filter values:', values);
 
@@ -22,39 +22,40 @@ const FilterComponent = ({ onFilter }) => {
 
   const filterCategories = {
     flavors: [
-      { label: 'Chua', value: 'chua' },
-      { label: 'Cay', value: 'cay' },
-      { label: 'Mặn', value: 'mặn' },
-      { label: 'Ngọt', value: 'ngọt' },
-      { label: 'Đắng', value: 'đắng' },
+      { label: t('Chua'), value: 'Chua' },
+      { label: t('Cay'), value: 'Cay' },
+      { label: t('Mặn'), value: 'Mặn' },
+      { label: t('Ngọt'), value: 'Ngọt' },
+      { label: t('Đắng'), value: 'Đắng' },
     ],
     mainIngredients: [
-      { label: 'Thịt gà', value: 'gà' },
-      { label: 'Thịt heo', value: 'heo' },
-      { label: 'Thịt bò', value: 'bò' },
-      { label: 'Hải sản', value: 'hải sản' },
-      { label: 'Gạo', value: 'gạo' },
-      { label: 'Ngô', value: 'ngô' },
+      { label: t('Thịt gà'), value: 'Gà' },
+      { label: t('Thịt heo'), value: 'Heo' },
+      { label: t('Thịt bò'), value: 'Bò' },
+      { label: t('Hải sản'), value: 'Hải sản' },
+      { label: t('Gạo'), value: 'Gạo' },
+      { label: t('Ngô'), value: 'Ngô' },
     ],
     allergens: [
-      { label: 'Sữa', value: 'sữa' },
-      { label: 'Đậu nành', value: 'đậu nành' },
-      { label: 'Hạt điều', value: 'hạt điều' },
-      { label: 'Ngũ cốc', value: 'ngũ cốc' },
-      { label: 'Tôm', value: 'tôm' },
+      { label: t('Sữa'), value: 'Sữa' },
+      { label: t('Đậu nành'), value: 'Đậu nành' },
+      { label: t('Hạt điều'), value: 'Hạt điều' },
+      { label: t('Ngũ cốc'), value: 'Ngũ cốc' },
+      { label: t('Tôm'), value: 'Tôm' },
     ],
     region: [
-      { label: 'Hokkaidō', value: 'hokkaido' },
-      { label: 'Tōhoku', value: 'tohoku' },
-      { label: 'Kantō', value: 'kanto' },
-      { label: 'Chūbu', value: 'chubu' },
-      { label: 'Kansai', value: 'kansai' },
+      { label: t('Hokkaido'), value: 'Hokkaido' },
+      { label: t('Kanto'), value: 'Kanto' },
+      { label: t('Chubu'), value: 'Chubu' },
+      { label: t('Kansai'), value: 'Kansai' },
+      { label: t('Shikoku'), value: 'Shikoku' },
+      { label: t('Kyushu'), value: 'Kyushu' },
     ],
   };
 
   return (
     <FilterContainer>
-      <FilterHeader>Lọc theo danh mục</FilterHeader>
+      <FilterHeader>{t('Lọc theo danh mục')}</FilterHeader>
       <Form form={form} onFinish={handleFilter} layout="vertical">
         {/* Flavors */}
         <FilterSection name="flavors" label="Hương vị">

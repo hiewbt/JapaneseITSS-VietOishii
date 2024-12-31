@@ -12,7 +12,7 @@ import {
   Button,
   Typography,
 } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { FilterOutlined } from "@ant-design/icons";
 import FoodCard from "../../components/FoodCard/FoodCard";
 import styled from "@emotion/styled";
 import axios from "axios";
@@ -238,7 +238,7 @@ const ListFoodPage = () => {
           style={{ width: 350 }}
         />
         <FilterButton
-          icon={<SearchOutlined />}
+          icon={<FilterOutlined />}
           size="large"
           onClick={() => setIsFilterVisible(true)}
         >
