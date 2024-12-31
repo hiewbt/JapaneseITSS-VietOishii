@@ -9,18 +9,21 @@ import axios from 'axios';
 
 const { Title } = Typography;
 
-
-
-const JapanRate = ({ id, j_like = 0, j_dislike = 0 }) => {
+const JapanRate = ({ id, j_likes = 0, j_dislike = 0 }) => {
     const { t } = useTranslation();
-    const [likes] = useState(j_like);
-    const [dislikes] = useState(j_dislike);
+    const [likes, setLikes] = useState(j_likes);
+    const [dislikes, setDislikes] = useState(j_dislike);
 
     const handleVote = async (type) => {
         try {
             const endpoint = type === 'like' ? `${import.meta.env.VITE_API_URL}/j_like` : `${import.meta.env.VITE_API_URL}/j_dislike`;
             await axios.post(endpoint, { dish_id: id });
 
+            if (type === 'like') {
+                setLikes(likes + 1);
+            } else {
+                setDislikes(dislikes + 1);
+            }
         } catch (error) {
             console.error('Error voting:', error);
         }
@@ -57,9 +60,10 @@ const JapanRate = ({ id, j_like = 0, j_dislike = 0 }) => {
 
 JapanRate.propTypes = {
     id: PropTypes.number.isRequired,
-    j_like: PropTypes.number,
+    j_likes: PropTypes.number,
     j_dislike: PropTypes.number
 };
+
 const Image = styled.img`
     width: 100px;
     height: 100px;
@@ -89,4 +93,5 @@ const Circle = styled.div`
     top: 35px;
     font-weight: 500;
 `;
+
 export default JapanRate;

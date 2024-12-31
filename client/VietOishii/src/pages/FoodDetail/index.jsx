@@ -257,7 +257,7 @@ const FoodDetail = () => {
             </div>
             {/* Review Section */}
             <div style={{ marginTop: "20px", padding: "20px", textAlign: "center" }}>
-            <JapanRate id={dishDetail.id} j_like={dishDetail.j_like} j_dislike={dishDetail.j_dislike} />
+            <JapanRate id={dishDetail.id} j_likes={dishDetail.j_likes} j_dislike={dishDetail.j_dislike} />
             </div> 
 
             {/* Ratings Section */}
