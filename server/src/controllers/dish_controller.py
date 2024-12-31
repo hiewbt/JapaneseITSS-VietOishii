@@ -51,13 +51,11 @@ def search(query: str):
         name = udec(dish.name).lower()
         desc = udec(dish.description).lower()
         japdish = udec(dish.similar_japanese_dish).lower()
-        region = udec(dish.region).lower()
         
         return (
             query in name or
             query in desc or
-            query in japdish or
-            query in region
+            query in japdish
         )
 
     dishes = Dish.query.all()
