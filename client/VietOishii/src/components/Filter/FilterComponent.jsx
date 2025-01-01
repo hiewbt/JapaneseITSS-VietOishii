@@ -27,11 +27,12 @@ const FilterComponent = ({ onFilter }) => {
       { label: t('Mặn'), value: 'Mặn' },
       { label: t('Ngọt'), value: 'Ngọt' },
       { label: t('Đắng'), value: 'Đắng' },
+      { label: t('Đậm đà'), value: 'Đậm đà' },
     ],
     mainIngredients: [
       { label: t('Thịt gà'), value: 'Gà' },
       { label: t('Thịt heo'), value: 'Heo' },
-      { label: t('Thịt bò'), value: 'Bò' },
+      { label: t('Tôm'), value: 'Tôm' },
       { label: t('Hải sản'), value: 'Hải sản' },
       { label: t('Gạo'), value: 'Gạo' },
       { label: t('Ngô'), value: 'Ngô' },
